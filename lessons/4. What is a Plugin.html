@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الدليل الشامل لتطوير إضافات ووردبريس: المفهوم، البنية الهيكلية، وأفضل الممارسات البرمجية | دليل مذاكرة جاهز للطباعة والمذاكرة بدون إنترنت</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f5f5f4;
+      color: #1c1917;
+      line-height: 1.7;
+      padding: 0;
+    }
+    .top-bar {
+      background: #065f46;
+      color: white;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .top-bar-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .print-btn {
+      background: #ffffff;
+      color: #065f46;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+    .print-btn:hover {
+      background: #ecfdf5;
+    }
+    .page-container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #ffffff;
+      padding: 40px 48px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .doc-header {
+      border-bottom: 2px solid #e7e5e4;
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+    .badge {
+      display: inline-block;
+      background: #ecfdf5;
+      color: #047857;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #1c1917;
+      margin-bottom: 12px;
+    }
+    .doc-date {
+      font-size: 13px;
+      color: #78716c;
+      margin-bottom: 16px;
+    }
+    .overview-text {
+      font-size: 16px;
+      color: #44403c;
+      line-height: 1.8;
+      background: #fcfcfb;
+      border-right: 4px solid #10b981;
+      padding: 16px 20px;
+      border-radius: 8px;
+    }
+    .page-section {
+      margin-top: 40px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #e7e5e4;
+      padding-bottom: 12px;
+    }
+    .section-number {
+      background: #047857;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #1c1917;
+    }
+    .section-desc {
+      font-size: 14px;
+      color: #57534e;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e7e5e4;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1c1917;
+    }
+    .source-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .source-badge {
+      font-size: 11px;
+      font-weight: 600;
+      background: #f5f5f4;
+      color: #44403c;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid #e7e5e4;
+    }
+    .type-badge {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .card-content {
+      font-size: 15px;
+      color: #292524;
+      line-height: 1.8;
+    }
+    .explanation-text {
+      font-size: 15px;
+      color: #44403c;
+      margin-bottom: 12px;
+    }
+    .takeaway-box {
+      background: #fcfcfb;
+      border: 1px solid #e7e5e4;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: #1c1917;
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    .glossary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    .glossary-table th {
+      background: #f5f5f4;
+      padding: 12px 14px;
+      text-align: right;
+      font-size: 13px;
+      font-weight: 700;
+      color: #44403c;
+      border-bottom: 2px solid #e7e5e4;
+    }
+    .glossary-table td {
+      padding: 14px;
+      border-bottom: 1px solid #e7e5e4;
+      font-size: 14px;
+      vertical-align: top;
+    }
+    .term-cell {
+      color: #047857;
+      width: 22%;
+    }
+    .def-cell {
+      width: 43%;
+    }
+    .example-cell {
+      color: #57534e;
+      width: 25%;
+    }
+    .source-cell {
+      width: 10%;
+    }
+    .question-card {
+      border-right: 4px solid #10b981;
+    }
+    .question-num {
+      font-weight: 700;
+      font-size: 13px;
+      color: #57534e;
+    }
+    .question-text {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .mcq-options {
+      list-style: none;
+      margin-bottom: 14px;
+    }
+    .mcq-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #44403c;
+      margin-bottom: 6px;
+    }
+    .opt-bullet {
+      color: #10b981;
+      font-weight: 700;
+    }
+    .answer-box {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: #064e3b;
+    }
+    .blank-answer-box {
+      background: #f5f5f4;
+      border: 1px dashed #d6d3d1;
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 14px;
+      color: #78716c;
+      margin-top: 10px;
+    }
+    .card-footer {
+      font-size: 12px;
+      color: #a8a29e;
+      margin-top: 10px;
+      text-align: left;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+      border: 1px solid #d6d3d1;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 10px 12px;
+      border: 1px solid #e7e5e4;
+      text-align: right;
+    }
+    th {
+      background: #f5f5f4;
+      font-weight: bold;
+      color: #1c1917;
+    }
+    blockquote {
+      margin: 16px 0;
+      padding: 12px 16px;
+      background: #fffbeb;
+      border-right: 4px solid #f59e0b;
+      border-radius: 8px 0 0 8px;
+      color: #78350f;
+      font-weight: 500;
+    }
+    h1, h2, h3, h4 {
+      color: #1c1917;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    h2 {
+      border-right: 4px solid #059669;
+      padding-right: 12px;
+      background: #ecfdf5;
+      padding: 8px 12px;
+      border-radius: 8px 0 0 8px;
+    }
+    strong {
+      color: #1c1917;
+      background: #fef3c7;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    .checklist-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #ffffff;
+      border: 1px solid #e7e5e4;
+      border-radius: 10px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background 0.2s;
+    }
+    .check-item:hover {
+      background: #fafaf9;
+    }
+    .check-item input[type="checkbox"] {
+      margin-top: 4px;
+      width: 18px;
+      height: 18px;
+      accent-color: #10b981;
+    }
+    .doc-footer {
+      margin-top: 48px;
+      border-top: 1px solid #e7e5e4;
+      padding-top: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: #78716c;
+    }
+    .top-bar-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .direct-pdf-btn {
+      background: #047857;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.2s;
+    }
+    .direct-pdf-btn:hover {
+      background: #065f46;
+    }
+    .mobile-notice-bar {
+      background: #fffbeb;
+      border-bottom: 1px solid #fde68a;
+      padding: 12px 20px;
+      font-size: 13px;
+      color: #92400e;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      line-height: 1.6;
+    }
+    .mobile-notice-bar code {
+      background: #fef3c7;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-weight: bold;
+    }
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+      .top-bar, .mobile-notice-bar {
+        display: none !important;
+      }
+      .page-container {
+        box-shadow: none;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .card {
+        page-break-inside: avoid;
+        break-inside: avoid;
+        border: 1px solid #d6d3d1;
+      }
+      .page-section {
+        page-break-inside: auto;
+      }
+      @page {
+        size: A4;
+        margin: 15mm 15mm 15mm 15mm;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-bar-title">📑 أداة تلخيص وربط النصوص للمذاكرة | الدليل المستقل بدون إنترنت</div>
+    <div class="top-bar-buttons">
+      <button class="direct-pdf-btn" id="directPdfBtn" onclick="exportDirectPdf()">
+        📥 تنزيل PDF مباشر (للهواتف - حل مشكلة 1.pdf)
+      </button>
+      <button class="print-btn" onclick="safePrint()">
+        🖨️ طباعة عبر المتصفح (للكمبيوتر وChrome)
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-notice-bar" id="androidNotice">
+    <div>
+      <strong>📱 تنبيه لمستخدمي هواتف أندرويد (لحل مشكلة الملف التالف <code>1.pdf</code>):</strong><br/>
+      عند فتح هذا الملف في "عارض HTML الافتراضي" في الهاتف واستخدام زر الطباعة العادي، يقوم أندرويد بإنشاء ملف مؤقت باسم <code>1.pdf</code> لا يعمل.<br/>
+      <strong>الحل المضمون:</strong> اضغط على زر <b>[📥 تنزيل PDF مباشر]</b> بأعلى الصفحة لتحويل وتنزيل الملف بشكل صحيح، أو افتح هذا الملف باستخدام <b>متصفح Google Chrome</b> ثم اختر <i>(مشاركة &gt; طباعة)</i>.
+    </div>
+    <button onclick="document.getElementById('androidNotice').style.display='none'" style="background:none;border:none;font-size:16px;cursor:pointer;color:#92400e;">✕</button>
+  </div>
+
+  <main class="page-container">
+    <header class="doc-header">
+      <span class="badge">دليل مذاكرة مترابط وشامل (مرتب منطقياً)</span>
+      <h1>الدليل الشامل لتطوير إضافات ووردبريس: المفهوم، البنية الهيكلية، وأفضل الممارسات البرمجية</h1>
+      <div class="doc-date">تاريخ الإنشاء: ٢‏/٨‏/٢٠٢٦</div>
+      <div class="overview-text">
+        <strong>نظرة عامة: </strong>
+        يقدم هذا الدليل دراسة أكاديمية شاملة لمفهوم إضافات ووردبريس (WordPress Plugins) وكيفية توسيع وظائف النظام الأساسي (WordPress Core) دون المساس بكوده الأصلي. يتناول الدليل المكونات البرمجية للإضافة بدءاً من لغة PHP والأصول المساعدة مثل CSS وJavaScript، وصولاً إلى الحد الأدنى لتشغيل الإضافة عبر رأس الإضافة (Plugin Header / DocBlock). كما يشرح الدليل تدرج الإضافات في التعقيد وطريقة توزيعها عبر مستودع ووردبريس الرسمي.
+      </div>
+      
+      <div class="overview-text" style="margin-top: 10px; border-right-color: #10b981; background: #ecfdf5;">
+        <strong>✨ ترتيب النصوص والمواضيع: </strong>
+        تم ترتيب المادة العلمية منطقياً بالبدء بالمفاهيم الأساسية وتعرّف ماهية الإضافات، ثم التدرج نحو البنية الهيكلية والحد الأدنى المتطلب لتشغيلها، يلي ذلك عرض مستويات التعقيد البرمجي عبر أمثلة عملية، وانتهت بالمعايير الخاصة بنشر وتوزيع الإضافات على المستودع الرسمي.
+      </div>
+      
+    </header>
+
+    
+      <section class="page-section">
+        <div class="section-header">
+          <span class="section-number">1</span>
+          <h2>التلخيص المترابط للموضوعات</h2>
+        </div>
+        <p class="section-desc">تم دمج الأفكار المتشابهة والمكملة لبعضها من النصوص المدخلة تحت أقسام موضوعية واضحة للمذاكرة.</p>
+        <div class="summary-list">
+          
+              <div class="card" >
+                <div class="card-title-row">
+                  <h3>
+                    
+                    1. ## ١. المفهوم الأساسي والبنية الهيكلية لإضافات ووردبريس
+                  </h3>
+                  <div class="source-tags">
+                    <span class="source-badge">تعليم ووردبريس</span>
+                  </div>
+                </div>
+                
+                <div class="card-content">
+                  <h3 style="font-weight:700; margin:12px 0 8px;">١. المفهوم الأساسي والبنية الهيكلية لإضافات ووردبريس</h3><p style="margin-top:10px;"></p><h4 style="font-weight:700; margin:10px 0 6px;">١.١ ماهية الإضافة وتأثيرها على النواة</h4><p style="margin-top:10px;"></p>تُعرف <strong>الإضافة (Plugin)</strong> في بيئة ووردبريس بأنها حزمة برمجية مستقلة (Software Package) تهدف إلى توسيع وإضافة وظائف جديدة للنظام الأساسي (<strong>WordPress Core</strong>) دون الحاجة لتعديل الشفرة البرمجية المصدرية للنواة. يضمن هذا النهج عدم ضياع التعديلات عند التحديث المستقبلي للنظام.<p style="margin-top:10px;"></p>> 💡 <strong>ملاحظة للمذاكرة:</strong> التعديل المباشر على نواة ووردبريس يُعد خطأً برمجياً جسيماً؛ الإضافات هي الوسيلة الآمنة والمعتمدة رسمياً للتوسعة البرمجية.<p style="margin-top:10px;"></p><h4 style="font-weight:700; margin:10px 0 6px;">١.٢ المكونات والأصول البرمجية للإضافة</h4><p style="margin-top:10px;"></p>تتكون الإضافة الحديثة من مجموعة متكاملة من التقنيات والأصول (Assets):<p style="margin-top:10px;"></p>- <strong>لغة PHP (Hypertext Preprocessor):</strong> المكون الرئيسي واللغة الأساسية التي تُكتب بها منطق الإضافة (Business Logic) والتفاعل مع قاعدة البيانات.<br/>- <strong>أوراق الأنماط المتتالية (CSS - Cascading Style Sheets):</strong> تُستخدم للتحكم في المظهر البصري والتنسيقات الخاصة بالإضافة سواء في الواجهة الأمامية (Frontend) أو لوحة التحكم (Admin Dashboard).<br/>- <strong>لغة جافا سكريبت (JavaScript):</strong> تُستخدم لإضافة التفاعلية الديناميكية، ومعالجة الطلبات في الخلفية دون إعادة تحميل الصفحة (AJAX).<br/>- <strong>الوسائط والصور (Images & Assets):</strong> الأيقونات والتصميمات الرسومية التوضيحية الخاصة بالإضافة.<p style="margin-top:10px;"></p>| المكون التقني | لغة البرمجة / التقنية | الوظيفة الرئيسية في الإضافة |<br/>| :--- | :--- | :--- |<br/>| <strong>المنطق البرمجي (Logic)</strong> | PHP | معالجة البيانات، الربط مع خطاطيف ووردبريس (Hooks) والقواعد البيانات |<br/>| <strong>التنسيق البصري (Styling)</strong> | CSS | تصميم الواجهات، ضبط الألوان والأبعاد في لوحة التحكم والواجهة |<br/>| <strong>التفاعلية (Interactivity)</strong> | JavaScript | إضافة السلوك الديناميكي، الاتصالات غير التزامنية (AJAX/Fetch) |<br/>| <strong>الأصول (Assets)</strong> | Media / Images | تحسين تجربة المستخدم البصرية وتوفير الأيقونات |
+                </div>
+              </div>
+            
+              <div class="card" >
+                <div class="card-title-row">
+                  <h3>
+                    
+                    2. ## ٢. الحد الأدنى للتكوين الهيكلي وأمثلة التطبيق
+                  </h3>
+                  <div class="source-tags">
+                    <span class="source-badge">تعليم ووردبريس</span>
+                  </div>
+                </div>
+                
+                <div class="card-content">
+                  <h3 style="font-weight:700; margin:12px 0 8px;">٢. الحد الأدنى للتكوين الهيكلي وأمثلة التطبيق</h3><p style="margin-top:10px;"></p><h4 style="font-weight:700; margin:10px 0 6px;">٢.١ رأس الإضافة (Plugin Header / DocBlock)</h4><p style="margin-top:10px;"></p>رغم أن الإضافات المتقدمة قد تحتوي على مئات الملفات والمجلدات، إلا أن الحد الأدنى المطلوب برمجياً لتشغيل أي إضافة هو <strong>ملف PHP واحد</strong> يحتوي في بدايته على كتلة تعليق توثيقية مخصصة تُعرف بـ <strong>رأس الإضافة (Plugin Header)</strong> أو (<strong>DocBlock</strong>).<p style="margin-top:10px;"></p>```php<br/><?php<br/>/<em></em><br/> * Plugin Name: My Custom Plugin<br/> * Plugin URI:  https://example.com/my-plugin<br/> * Description: إضافة مخصصة لتوسيع وظائف ووردبريس.<br/> * Version:     1.0.0<br/> * Author:      Developer Name<br/> * Author URI:  https://example.com<br/> * License:     GPL2<br/> */<p style="margin-top:10px;"></p>// منع الوصول المباشر للملف للأمان<br/>if (!defined('ABSPATH')) {<br/>    exit;<br/>}<br/>```<p style="margin-top:10px;"></p>> ⚠️ <strong>تنبيه امتحاني هام:</strong> يقرأ نظام ووردبريس رأس الإضافة (DocBlock) عند مسح مجلد `wp-content/plugins`؛ وبدونه لن يستطيع النظام التعرف على الإضافة أو تفعيلها في لوحة التحكم.<p style="margin-top:10px;"></p><h4 style="font-weight:700; margin:10px 0 6px;">٢.٢ دراسة حالة: إضافة هالو دولي (Hello Dolly)</h4><p style="margin-top:10px;"></p>تُعد إضافة <strong>هالو دولي (Hello Dolly)</strong> من أوائل الإضافات التاريخية في ووردبريس، وتُستخدم كنموذج إرشادي بسيط للبنية البرمجية:<p style="margin-top:10px;"></p>- <strong>حجم الكود:</strong> يتكون الملف من قرابة 100 سطر برمي فقط في ملف واحد.<br/>- <strong>الوظيفة:</strong> عرض كلمات من أغنية شهيرة بشكل عشوائي في أعلى لوحة تحكم الأدمن.<br/>- <strong>البنية البرمجية:</strong> تدمج بين كود PHP لاستخراج الكلمات وتنسيقات CSS مصغرة للتحكم في مظهر النص العلوي.
+                </div>
+              </div>
+            
+              <div class="card" >
+                <div class="card-title-row">
+                  <h3>
+                    
+                    3. ## ٣. مستويات التعقيد ونشر الإضافات على المستودع الرسمي
+                  </h3>
+                  <div class="source-tags">
+                    <span class="source-badge">تعليم ووردبريس</span>
+                  </div>
+                </div>
+                
+                <div class="card-content">
+                  <h3 style="font-weight:700; margin:12px 0 8px;">٣. مستويات التعقيد ونشر الإضافات على المستودع الرسمي</h3><p style="margin-top:10px;"></p><h4 style="font-weight:700; margin:10px 0 6px;">٣.١ نطاق وتدرج الإضافات (Scope & Complexity)</h4><p style="margin-top:10px;"></p>تتدرج الإضافات في تعقيدها البرمجي بناءً على المتطلبات الوظيفية للمشروع:<p style="margin-top:10px;"></p>- <strong>الإضافات البسيطة (Simple Plugins):</strong> مثل إضافة تقوم بجمع وتتبع أحدث 10 مقالات وعرض روابطها في شريط جانبي.<br/>- <strong>الأنظمة البرمجية المكتملة (Complex Systems):</strong> مثل بناء <strong>نظام تذاكر الدعم الفني (Support Ticketing System)</strong> الكامل الذي يتضمن:<br/>  - <strong>أنواع المقالات المخصصة (Custom Post Types):</strong> لإنشاء وإدارة التذاكر ككيانات مستقلة.<br/>  - <strong>الحالات المخصصة (Custom Statuses):</strong> مثل (مفتوحة، قيد المعالجة، مغلقة).<br/>  - <strong>نظام التنبيهات عبر البريد الإلكتروني (Email Notifications):</strong> لإشعارات العميل والفريق الفني.<br/>  - <strong>بوابة العميل (Client Portal):</strong> واجهة أمامية مخصصة للعملاء لمتابعة التذاكر.<p style="margin-top:10px;"></p><h4 style="font-weight:700; margin:10px 0 6px;">٣.٢ النشر والتوزيع في دليل ووردبريس (WordPress.org Directory)</h4><p style="margin-top:10px;"></p>عند تطوير الإضافة وفق معايير التوثيق وجودة الكود القياسية، يتاح للمطور نشرها في <strong>مستودع إضافات ووردبريس الرسمي (WordPress.org Plugin Directory)</strong>، مما يتيح:<p style="margin-top:10px;"></p>1. وصول الإضافة لملايين المستخدمين حول العالم.<br/>2. إمكانية الحصول على التحديثات التلقائية والتغذية الراجعة من مجتمع المطورين.<br/>3. بناء سمعة برمجية للمطور والمساهمة في بيئة المصدر المفتوح.
+                </div>
+              </div>
+            
+        </div>
+      </section>
+    
+    
+      <section class="page-section">
+        <div class="section-header">
+          <span class="section-number">2</span>
+          <h2>شبكة ربط المفاهيم والمقارنات</h2>
+        </div>
+        <p class="section-desc">توضيح أوجه التكامل والاختلاف والسبب والنتيجة بين المحاضرات والمصادر.</p>
+        <div class="links-grid">
+          
+                <div class="card">
+                  <div class="card-title-row">
+                    <h3>العلاقة بين نواة ووردبريس والإضافة البرمجية</h3>
+                    <span class="type-badge" style="background-color: #04785715; color: #047857; border: 1px solid #04785740;">
+                      تكامل وإضافة
+                    </span>
+                  </div>
+                  <p class="explanation-text">تكمل الإضافة وظائف النواة الأساسية بدون التعديل المباشر عليها، مما يحافظ على استقرار النظام وموثوقية التحديثات.</p>
+                  <div class="takeaway-box">
+                    <strong>💡 خلاصة الربط والامتحان:</strong>
+                    <p>الإضافة تمتد فوق النواة لتوفير وظائف إضافية دون كسر كود النظام الأصلي.</p>
+                  </div>
+                </div>
+              
+                <div class="card">
+                  <div class="card-title-row">
+                    <h3>الحد الأدنى للملف الواحد مقابل الأنظمة البرمجية المتقدمة</h3>
+                    <span class="type-badge" style="background-color: #6d28d915; color: #6d28d9; border: 1px solid #6d28d940;">
+                      تطور أو تسلسل
+                    </span>
+                  </div>
+                  <p class="explanation-text">تبدأ الإضافة بملف PHP واحد يحمل الترويسة التوثيقية (DocBlock)، وتتطور لتصبح نظاماً كبيراً يضم أنماط مقالات مخصصة وبوابات عملاء.</p>
+                  <div class="takeaway-box">
+                    <strong>💡 خلاصة الربط والامتحان:</strong>
+                    <p>الشرط الأساسي لتسجيل الإضافة ثابت بغض النظر عن حجم الإضافة وتعدد ملفاتها.</p>
+                  </div>
+                </div>
+              
+        </div>
+      </section>
+    
+    
+      <section class="page-section">
+        <div class="section-header">
+          <span class="section-number">3</span>
+          <h2>جدول التعاريف والمصطلحات الأكاديمية</h2>
+        </div>
+        <div class="table-container">
+          <table class="glossary-table">
+            <thead>
+              <tr>
+                <th>المصطلح / المفهوم</th>
+                <th>التعريف الأكاديمي</th>
+                <th>مثال أو سياق</th>
+                <th>المصدر</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td class="term-cell"><strong>الإضافة (Plugin)</strong></td>
+                  <td class="def-cell">حزمة برمجية تُكتب بلغة PHP وتُستخدم لتوسيع وإضافة وظائف جديدة للنظام الأساسي لووردبريس دون التعديل على نواة النظام.</td>
+                  <td class="example-cell">إضافة عرض أحدث المقالات أو إضافة نظام تذاكر الدعم الفني.</td>
+                  <td class="source-cell"><span class="source-badge">تعليم ووردبريس</span></td>
+                </tr>
+              
+                <tr>
+                  <td class="term-cell"><strong>نواة ووردبريس (WordPress Core)</strong></td>
+                  <td class="def-cell">الشفرة البرمجية الأساسية المبني عليها نظام ووردبريس والتي تضمن عمل النظام وتحديثاته المستمرة.</td>
+                  <td class="example-cell">الملفات الأساسية للنظام في المجلد الرئيسي و`wp-includes`.</td>
+                  <td class="source-cell"><span class="source-badge">تعليم ووردبريس</span></td>
+                </tr>
+              
+                <tr>
+                  <td class="term-cell"><strong>رأس الإضافة (DocBlock / Plugin Header)</strong></td>
+                  <td class="def-cell">كتلة تعليق مخصصة تُكتب في بداية ملف PHP الرئيسي للإضافة لتعريف ووردبريس باسم الإضافة والمطور والإصدار.</td>
+                  <td class="example-cell">التعليق المكتوب داخل `/* ... */` في بداية ملف الإضافة.</td>
+                  <td class="source-cell"><span class="source-badge">تعليم ووردبريس</span></td>
+                </tr>
+              
+                <tr>
+                  <td class="term-cell"><strong>أنواع المقالات المخصصة (Custom Post Types)</strong></td>
+                  <td class="def-cell">بنية بيانات في ووردبريس تتيح للمطورين إنشاء أنواع محتوى جديدة تختلف عن المقالات والصفحات التقليدية.</td>
+                  <td class="example-cell">إنشاء نوع محتوى مخصص باسم 'تذاكر الدعم' (Support Tickets).</td>
+                  <td class="source-cell"><span class="source-badge">تعليم ووردبريس</span></td>
+                </tr>
+              
+                <tr>
+                  <td class="term-cell"><strong>إضافة هالو دولي (Hello Dolly)</strong></td>
+                  <td class="def-cell">واحدة من أوائل الإضافات المرجعية في ووردبريس، تتكون من ملف واحد بحجم 100 سطر تقريباً لتعلم بنية الإضافات.</td>
+                  <td class="example-cell">عرض كلمات أغنية شهيرة داخل لوحة التحكم كنموذج إرشادي.</td>
+                  <td class="source-cell"><span class="source-badge">تعليم ووردبريس</span></td>
+                </tr>
+              
+                <tr>
+                  <td class="term-cell"><strong>مستودع ووردبريس (WordPress.org Directory)</strong></td>
+                  <td class="def-cell">المتجر الرسمي المجاني لمجتمع ووردبريس لنشر وتوزيع الإضافات واستقبال التحديثات الآلية.</td>
+                  <td class="example-cell">رفع الإضافة ليستخدمها ملايين المطورين والمستخدمين حول العالم.</td>
+                  <td class="source-cell"><span class="source-badge">تعليم ووردبريس</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+    
+      <section class="page-section">
+        <div class="section-header">
+          <span class="section-number">4</span>
+          <h2>أسئلة المراجعة واختبار الذات (للامتحانات)</h2>
+        </div>
+        <div class="questions-list">
+          
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 1 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #065f4615; color: #065f46;">
+                      سهل
+                    </span>
+                  </div>
+                  <h3 class="question-text">ما هي اللغة البرمجية الأساسية التي تُكتب بها إضافات ووردبريس؟</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>Python</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>PHP</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>Java</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>Ruby</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: PHP</strong>
+                      <p><em>الشرح والمراجعة:</em> تُبنى منطق إضافات ووردبريس بشكل رئيسي بلغة PHP لتتكامل مع نواة النظام وقاعدة البيانات.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 2 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #b4530915; color: #b45309;">
+                      متوسط
+                    </span>
+                  </div>
+                  <h3 class="question-text">ما هو المكون الإجباري الذي يجب أن يتوافر في أي إضافة لكي يتعرف عليها نظام ووردبريس؟</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>مجلد يحتوي على ملفات JavaScript وCSS فقط</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>ملف PHP واحد يحتوي على DocBlock / Plugin Header في البداية</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>قاعدة بيانات MySQL مستقلة</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>ملف HTML رئيسي في مجلد Root</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: ملف PHP واحد يحتوي على DocBlock / Plugin Header في البداية</strong>
+                      <p><em>الشرح والمراجعة:</em> يحتاج نظام ووردبريس لملف PHP واحد على الأقل يبدأ برأس الإضافة (Plugin Header) ليتعرف عليها وينشطها.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 3 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #065f4615; color: #065f46;">
+                      سهل
+                    </span>
+                  </div>
+                  <h3 class="question-text">كم عدد الأسطر التقريبي لكتلة الكود في إضافة Hello Dolly التاريخية؟</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>10 أسُطر</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>100 سطر تقريباً</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>1000 سطر</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>5000 سطر</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: 100 سطر تقريباً</strong>
+                      <p><em>الشرح والمراجعة:</em> إضافة Hello Dolly هي نموذج بسيط يضم حوالي 100 سطر كود فقط داخل ملف واحد.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 4 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #065f4615; color: #065f46;">
+                      سهل
+                    </span>
+                  </div>
+                  <h3 class="question-text">تُستخدم تقنية CSS في إضافات ووردبريس من أجل:</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>إدارة الاتصال بقاعدة البيانات</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>إرسال البريد الإلكتروني للعملاء</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>التحكم في المظهر والتنسيق البصري للإضافة</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>معالجة عمليات التشفير والأمان</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: التحكم في المظهر والتنسيق البصري للإضافة</strong>
+                      <p><em>الشرح والمراجعة:</em> تُستخدم ملفات CSS للتحكم بالأنماط البصرية والشكل الجمالي للإضافة في لوحة التحكم والواجهة.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 5 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #b4530915; color: #b45309;">
+                      متوسط
+                    </span>
+                  </div>
+                  <h3 class="question-text">أي مما يلي يُعد مثالاً على نظام إضافة معقد حسب المستند؟</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>إضافة عرض أحدث 10 مقالات</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>إضافة Hello Dolly</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>نظام تذاكر الدعم الفني (Support Ticketing System)</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>ملف CSS مستقل للتنسيق</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: نظام تذاكر الدعم الفني (Support Ticketing System)</strong>
+                      <p><em>الشرح والمراجعة:</em> أشار النص إلى أن الإضافة قد تتطور لتصبح نظام تذاكر دعم كامل يضم أنواع مقالات وحالات مخصصة وإشعارات بريدية.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 6 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #b4530915; color: #b45309;">
+                      متوسط
+                    </span>
+                  </div>
+                  <h3 class="question-text">ما هي الفائدة الرئيسية لتطوير الوظائف كإضافة بدلاً من التعديل على نواة ووردبريس؟</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>تسريع استعلامات قاعدة البيانات تلقائياً</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>إلغاء الحاجة إلى استخدام خادم محلي</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>توسيع الوظائف دون فقدان التعديلات عند تحديث النواة</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>تحويل الموقع إلى تطبيق هاتف محمول تلقائياً</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: توسيع الوظائف دون فقدان التعديلات عند تحديث النواة</strong>
+                      <p><em>الشرح والمراجعة:</em> تسمح الإضافة بالتوسع والابتكار مع الحفاظ على نواة ووردبريس كما هي، لتسهيل التحديث الأمني والدوري.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 7 (سؤال مقالي)</span>
+                    <span class="type-badge" style="background-color: #065f4615; color: #065f46;">
+                      سهل
+                    </span>
+                  </div>
+                  <h3 class="question-text">عرف 'الإضافة' (Plugin) في ووردبريس واذكر مكوناتها الرئيسية.</h3>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: الإضافة هي حزمة برمجية توسع وظائف ووردبريس الأساسية، وتتكون من كود PHP رئيسي وقد تشمل أصولاً مثل CSS، JavaScript، والصور.</strong>
+                      <p><em>الشرح والمراجعة:</em> الإضافة تُمكّن المطور من إضافة ميزات مخصصة على النظام فوق البنية الأصلية لـ WordPress Core.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 8 (سؤال مقالي)</span>
+                    <span class="type-badge" style="background-color: #b4530915; color: #b45309;">
+                      متوسط
+                    </span>
+                  </div>
+                  <h3 class="question-text">ما هي الوظيفة الأساسية لرأس الإضافة (DocBlock / Plugin Header)؟</h3>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: توفير معلومات توثيقية في بداية ملف PHP الرئيسي ليتمكن نظام ووردبريس من التعرف على الإضافة وتفعيلها.</strong>
+                      <p><em>الشرح والمراجعة:</em> بدون رأس الإضافة في الملف الرئيسي، لن يتمكن النظام من مسح الإضافة وقراءتها في لوحة تحكم الإضافات.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 9 (سؤال مقالي)</span>
+                    <span class="type-badge" style="background-color: #b4530915; color: #b45309;">
+                      متوسط
+                    </span>
+                  </div>
+                  <h3 class="question-text">وضح كيف تظهر التفاعلية والبنية البسيطة في إضافة Hello Dolly.</h3>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: تستعمل حوالي 100 سطر كود داخل ملف واحد يدمج كود PHP لعرض الكلمات عشوائياً مع كود CSS مصغر لتنسيق النص في لوحة التحكم.</strong>
+                      <p><em>الشرح والمراجعة:</em> تُظهر إضافة Hello Dolly إمكانية بناء إضافة عملية ومفيدة بأقل عدد ممكن من الملفات والأسطر البرمجية.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 10 (سؤال مقالي)</span>
+                    <span class="type-badge" style="background-color: #991b1b15; color: #991b1b;">
+                      صعب
+                    </span>
+                  </div>
+                  <h3 class="question-text">اذكر أربعة مكونات وظيفية قد يتضمنها 'نظام تذاكر الدعم الفني' كإضافة متقدمة.</h3>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: 1. أنواع مقالات مخصصة (Custom Post Types)
+2. حالات مخصصة للتذاكر (Custom Statuses)
+3. نظام تنبيهات عبر البريد الإلكتروني
+4. بوابة العميل (Client-facing portal)</strong>
+                      <p><em>الشرح والمراجعة:</em> هذه المكونات تعكس قدرة الإضافات على التدرج من السهولة إلى إمكانية بناء أنظمة متكاملة.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 11 (سؤال مقالي)</span>
+                    <span class="type-badge" style="background-color: #b4530915; color: #b45309;">
+                      متوسط
+                    </span>
+                  </div>
+                  <h3 class="question-text">ما هي أهمية نشر الإضافة على مستودع ووردبريس الرسمي (WordPress.org)؟</h3>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: تسمح بإتاحة الإضافة لملايين المستخدمين حول العالم، والحصول على تجربة واستجابة المجتمع وتوفير تحديثات آمنة تلقائية.</strong>
+                      <p><em>الشرح والمراجعة:</em> المستودع الرسمي يوفر منصة انتشار واسعة للمطورين الملتزمين بدليل تطوير الإضافات.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 12 (سؤال مقالي)</span>
+                    <span class="type-badge" style="background-color: #991b1b15; color: #991b1b;">
+                      صعب
+                    </span>
+                  </div>
+                  <h3 class="question-text">لماذا يُحظر التعديل المباشر على ملفات نواة ووردبريس (WordPress Core) لتوسيع الوظائف؟</h3>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: لأن أي تحديث قادم لنواة ووردبريس سيمحو جميع التعديلات المباشرة، ويجعل التطوير غير آمن وغير قابل للصيانة.</strong>
+                      <p><em>الشرح والمراجعة:</em> تطوير الإضافات هو الأسلوب الصحيح والمعتمد لضمان استقلالية الكود المخصص عن كود النظام الأساسي.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+        </div>
+      </section>
+    
+    
+      <section class="page-section">
+        <div class="section-header">
+          <span class="section-number">5</span>
+          <h2>قائمة الحفظ السريع ليلة الامتحان</h2>
+        </div>
+        <p class="section-desc">نقاط مركزة ومباشرة للمراجعة السريعة. يمكنك استخدامها لاختبار حفظك قبل الامتحان.</p>
+        <div class="checklist-container">
+          
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">الإضافة (Plugin) هي حزمة برمجية لتوسيع وظائف WordPress Core دون التعديل عليه.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">لغة PHP هي اللغة البرمجية الأساسية لتشغيل منطق الإضافة (Logic).</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">تُستخدم ملفات CSS لتنسيق واجهات الإضافة بصرياً في لوحة التحكم والموقع.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">تُستخدم جافا سكريبت (JavaScript) لإضافة التفاعلية والعمليات غير التزامنية (AJAX).</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">الحد الأدنى لتشغيل أي إضافة هو ملف PHP رئيسي واحد.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">يجب إدراج رأس الإضافة (DocBlock) في بداية الملف الرئيسي ليتعرف عليها النظام.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">إضافة Hello Dolly هي نموذج برمي بسيط يتكون من قرابة 100 سطر كود.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">تتدرج الإضافات من ميزات بسيطة (مثل عرض 10 مقالات) إلى أنظمة ضخمة.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">الأنظمة المعقدة قد تتضمن أنواع مقالات مخصصة (Custom Post Types) وحالات مخصصة.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">يمكن للإضافات التفاعل مع المستخدم عبر بريد إلكتروني وبوابات عملاء (Client Portals).</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">نشر الإضافة على WordPress.org يتطلب الالتزام بمعايير دليل الإضافات (Plugin Handbook).</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">يضمن تطوير الإضافات بقاء كودك المخصص يعمل بسلام بعد تحديثات ووردبريس.</span>
+              </label>
+            
+        </div>
+      </section>
+    
+
+    <footer class="doc-footer">
+      <p>تم الإنشاء بواسطة <strong>أداة تلخيص وربط النصوص للمذاكرة</strong> بالذكاء الاصطناعي الأكاديمي.</p>
+      <p style="margin-top: 4px; font-size: 12px; color: #a8a29e;">جاهز للطباعة أو الحفظ كـ PDF للمذاكرة بدون اتصال بالإنترنت.</p>
+    </footer>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    function exportDirectPdf() {
+      var btn = document.getElementById('directPdfBtn');
+      var oldText = btn.innerHTML;
+      btn.innerHTML = '⏳ جاري إنشاء ملف PDF المباشر...';
+      btn.disabled = true;
+
+      if (typeof html2pdf === 'undefined') {
+        alert('تنبيه: أنت غير متصل بالإنترنت حالياً للتحويل المباشر.\n\nللطباعة وحفظ PDF بدون اتصال وبدون خطأ 1.pdf:\n1- افتح هذا الملف باستخدام متصفح Google Chrome على هاتفك.\n2- اضغط على قائمة الخيارات (⋮) ثم اختر (مشاركة -> طباعة -> حفظ بتنسيق PDF).');
+        btn.innerHTML = oldText;
+        btn.disabled = false;
+        return;
+      }
+
+      var element = document.querySelector('.page-container');
+      var opt = {
+        margin:       [10, 10, 10, 10],
+        filename:     'الدليل-الشامل-لتطوير-إضافات-ووردبريس-المفهوم،-البنية-الهيكلية،-وأفضل-الممارسات-البرمجية.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save().then(function() {
+        btn.innerHTML = '✓ تم تنزيل ملف PDF بنجاح';
+        setTimeout(function() {
+          btn.innerHTML = oldText;
+          btn.disabled = false;
+        }, 3000);
+      }).catch(function(err) {
+         console.error(err);
+         alert('حدث خطأ أثناء الإنشاء المباشر. يرجى استخدام متصفح Chrome واختيار (مشاركة -> طباعة).');
+         btn.innerHTML = oldText;
+         btn.disabled = false;
+      });
+    }
+
+    function safePrint() {
+      var isAndroid = /Android/i.test(navigator.userAgent);
+      if (isAndroid) {
+        var proceed = confirm('تنبيه لمستخدمي أندرويد:\nإذا ظهرت رسالة خطأ (1.pdf تالف) عند الطباعة العادية في عارض HTML، يرجى استخدام زر [تنزيل PDF مباشر (للهواتف)] بدلاً من هذا الزر.\n\nهل تريد المتابعة للطباعة العادية الآن؟');
+        if (!proceed) return;
+      }
+      window.print();
+    }
+  </script>
+</body>
+</html>
