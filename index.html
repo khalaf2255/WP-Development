@@ -4,22 +4,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Lessons</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f4f7fc, #eef3ff);
+            padding: 60px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 42px;
+            color: #1e293b;
+            position: relative;
+        }
+
+        h1::after {
+            content: "";
+            width: 80px;
+            height: 4px;
+            background: #2563eb;
+            display: block;
+            margin: 15px auto 0;
+            border-radius: 50px;
+        }
+
+        .lesson-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .lesson-list li a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            background: #fff;
+            padding: 22px 28px;
+            border-radius: 18px;
+            color: #1e293b;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+            transition: .35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lesson-list li a::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 6px;
+            height: 100%;
+            background: #2563eb;
+            transition: .35s;
+        }
+
+        .lesson-list li a::after {
+            content: "→";
+            font-size: 24px;
+            color: #2563eb;
+            transition: .35s;
+        }
+
+        .lesson-list li a:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(37, 99, 235, .18);
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .lesson-list li a:hover::before {
+            width: 100%;
+            opacity: .08;
+        }
+
+        .lesson-list li a:hover::after {
+            color: #fff;
+            transform: translateX(8px);
+        }
+
+        @media (max-width:768px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            .lesson-list li a {
+                padding: 18px 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
+
 </head>
 
 <body>
-    <h1>Lessons</h1>
-    <ul>
-        <li><a href="lessons/دليل-مذاكرة-دليل-المذاكرة-الشامل-لتطوير-إضافات-ووردبريس-WordPress-Plugin-Development.html">Lesson
-                1: Introduction to WordPress Plugin Development</a></li>
-        <li><a href="lessons/دليل-مذاكرة-دليل-المذاكرة-الشامل-لتطوير-إضافات-ووردبريس-WordPress-Plugin-Development.html">Lesson
-                2: Setting Up Your Development Environment</a></li>
-        <li><a href="lessons/3.Introduction to Plugin Development.html">Lesson
-                3: Creating Your First Plugin</a></li>
-        <li><a href="lessons/4.Plugin Structure and Files.html">Lesson
-            4: Plugin Structure and Files</a></li>
 
-    </ul>
+    <div class="container">
+
+        <h1>📚 Lessons</h1>
+
+        <ul class="lesson-list">
+
+            <li>
+                <a href="lessons/دليل-مذاكرة-دليل-المذاكرة-الشامل-لتطوير-إضافات-ووردبريس-WordPress-Plugin-Development.html">
+                    Lesson 1: Introduction to WordPress Plugin Development
+                </a>
+            </li>
+
+            <li>
+                <a href="lessons/دليل-مذاكرة-دليل-المذاكرة-الشامل-لتطوير-إضافات-ووردبريس-WordPress-Plugin-Development.html">
+                    01
+                </a>
+            </li>
+
+            <li>
+                <a href="lessons/1. Plugin Handbook.html">
+                    02
+                </a>
+            </li>
+
+            <li>
+                <a href="lessons/2. Introduction to Plugin Development.html">
+                    Lesson 2: Setting Up Your Development Environment
+                </a>
+            </li>
+
+            <li>
+                <a href="lessons/3.Introduction to Plugin Development.html">
+                    Lesson 3: Creating Your First Plugin
+                </a>
+            </li>
+
+            <li>
+                <a href="lessons/4.Plugin Structure and Files.html">
+                    Lesson 4: Plugin Structure and Files
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+
 </body>
 
 </html>

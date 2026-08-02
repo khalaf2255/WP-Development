@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الدليل الشامل والمعمق لتطوير إضافات ووردبريس (WordPress Plugin Development) | دليل مذاكرة جاهز للطباعة والمذاكرة بدون إنترنت</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f5f5f4;
+      color: #1c1917;
+      line-height: 1.7;
+      padding: 0;
+    }
+    .top-bar {
+      background: #065f46;
+      color: white;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .top-bar-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .print-btn {
+      background: #ffffff;
+      color: #065f46;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+    .print-btn:hover {
+      background: #ecfdf5;
+    }
+    .page-container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #ffffff;
+      padding: 40px 48px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .doc-header {
+      border-bottom: 2px solid #e7e5e4;
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+    .badge {
+      display: inline-block;
+      background: #ecfdf5;
+      color: #047857;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #1c1917;
+      margin-bottom: 12px;
+    }
+    .doc-date {
+      font-size: 13px;
+      color: #78716c;
+      margin-bottom: 16px;
+    }
+    .overview-text {
+      font-size: 16px;
+      color: #44403c;
+      line-height: 1.8;
+      background: #fcfcfb;
+      border-right: 4px solid #10b981;
+      padding: 16px 20px;
+      border-radius: 8px;
+    }
+    .page-section {
+      margin-top: 40px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #e7e5e4;
+      padding-bottom: 12px;
+    }
+    .section-number {
+      background: #047857;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #1c1917;
+    }
+    .section-desc {
+      font-size: 14px;
+      color: #57534e;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e7e5e4;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1c1917;
+    }
+    .source-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .source-badge {
+      font-size: 11px;
+      font-weight: 600;
+      background: #f5f5f4;
+      color: #44403c;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid #e7e5e4;
+    }
+    .type-badge {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .card-content {
+      font-size: 15px;
+      color: #292524;
+      line-height: 1.8;
+    }
+    .explanation-text {
+      font-size: 15px;
+      color: #44403c;
+      margin-bottom: 12px;
+    }
+    .takeaway-box {
+      background: #fcfcfb;
+      border: 1px solid #e7e5e4;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: #1c1917;
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    .glossary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    .glossary-table th {
+      background: #f5f5f4;
+      padding: 12px 14px;
+      text-align: right;
+      font-size: 13px;
+      font-weight: 700;
+      color: #44403c;
+      border-bottom: 2px solid #e7e5e4;
+    }
+    .glossary-table td {
+      padding: 14px;
+      border-bottom: 1px solid #e7e5e4;
+      font-size: 14px;
+      vertical-align: top;
+    }
+    .term-cell {
+      color: #047857;
+      width: 22%;
+    }
+    .def-cell {
+      width: 43%;
+    }
+    .example-cell {
+      color: #57534e;
+      width: 25%;
+    }
+    .source-cell {
+      width: 10%;
+    }
+    .question-card {
+      border-right: 4px solid #10b981;
+    }
+    .question-num {
+      font-weight: 700;
+      font-size: 13px;
+      color: #57534e;
+    }
+    .question-text {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .mcq-options {
+      list-style: none;
+      margin-bottom: 14px;
+    }
+    .mcq-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #44403c;
+      margin-bottom: 6px;
+    }
+    .opt-bullet {
+      color: #10b981;
+      font-weight: 700;
+    }
+    .answer-box {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: #064e3b;
+    }
+    .blank-answer-box {
+      background: #f5f5f4;
+      border: 1px dashed #d6d3d1;
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 14px;
+      color: #78716c;
+      margin-top: 10px;
+    }
+    .card-footer {
+      font-size: 12px;
+      color: #a8a29e;
+      margin-top: 10px;
+      text-align: left;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+      border: 1px solid #d6d3d1;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 10px 12px;
+      border: 1px solid #e7e5e4;
+      text-align: right;
+    }
+    th {
+      background: #f5f5f4;
+      font-weight: bold;
+      color: #1c1917;
+    }
+    blockquote {
+      margin: 16px 0;
+      padding: 12px 16px;
+      background: #fffbeb;
+      border-right: 4px solid #f59e0b;
+      border-radius: 8px 0 0 8px;
+      color: #78350f;
+      font-weight: 500;
+    }
+    h1, h2, h3, h4 {
+      color: #1c1917;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    h2 {
+      border-right: 4px solid #059669;
+      padding-right: 12px;
+      background: #ecfdf5;
+      padding: 8px 12px;
+      border-radius: 8px 0 0 8px;
+    }
+    strong {
+      color: #1c1917;
+      background: #fef3c7;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    .checklist-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #ffffff;
+      border: 1px solid #e7e5e4;
+      border-radius: 10px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background 0.2s;
+    }
+    .check-item:hover {
+      background: #fafaf9;
+    }
+    .check-item input[type="checkbox"] {
+      margin-top: 4px;
+      width: 18px;
+      height: 18px;
+      accent-color: #10b981;
+    }
+    .doc-footer {
+      margin-top: 48px;
+      border-top: 1px solid #e7e5e4;
+      padding-top: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: #78716c;
+    }
+    .top-bar-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .direct-pdf-btn {
+      background: #047857;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.2s;
+    }
+    .direct-pdf-btn:hover {
+      background: #065f46;
+    }
+    .mobile-notice-bar {
+      background: #fffbeb;
+      border-bottom: 1px solid #fde68a;
+      padding: 12px 20px;
+      font-size: 13px;
+      color: #92400e;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      line-height: 1.6;
+    }
+    .mobile-notice-bar code {
+      background: #fef3c7;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-weight: bold;
+    }
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+      .top-bar, .mobile-notice-bar {
+        display: none !important;
+      }
+      .page-container {
+        box-shadow: none;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .card {
+        page-break-inside: avoid;
+        break-inside: avoid;
+        border: 1px solid #d6d3d1;
+      }
+      .page-section {
+        page-break-inside: auto;
+      }
+      @page {
+        size: A4;
+        margin: 15mm 15mm 15mm 15mm;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-bar-title">📑 أداة تلخيص وربط النصوص للمذاكرة | الدليل المستقل بدون إنترنت</div>
+    <div class="top-bar-buttons">
+      <button class="direct-pdf-btn" id="directPdfBtn" onclick="exportDirectPdf()">
+        📥 تنزيل PDF مباشر (للهواتف - حل مشكلة 1.pdf)
+      </button>
+      <button class="print-btn" onclick="safePrint()">
+        🖨️ طباعة عبر المتصفح (للكمبيوتر وChrome)
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-notice-bar" id="androidNotice">
+    <div>
+      <strong>📱 تنبيه لمستخدمي هواتف أندرويد (لحل مشكلة الملف التالف <code>1.pdf</code>):</strong><br/>
+      عند فتح هذا الملف في "عارض HTML الافتراضي" في الهاتف واستخدام زر الطباعة العادي، يقوم أندرويد بإنشاء ملف مؤقت باسم <code>1.pdf</code> لا يعمل.<br/>
+      <strong>الحل المضمون:</strong> اضغط على زر <b>[📥 تنزيل PDF مباشر]</b> بأعلى الصفحة لتحويل وتنزيل الملف بشكل صحيح، أو افتح هذا الملف باستخدام <b>متصفح Google Chrome</b> ثم اختر <i>(مشاركة &gt; طباعة)</i>.
+    </div>
+    <button onclick="document.getElementById('androidNotice').style.display='none'" style="background:none;border:none;font-size:16px;cursor:pointer;color:#92400e;">✕</button>
+  </div>
+
+  <main class="page-container">
+    <header class="doc-header">
+      <span class="badge">دليل مذاكرة مترابط وشامل (مرتب منطقياً)</span>
+      <h1>الدليل الشامل والمعمق لتطوير إضافات ووردبريس (WordPress Plugin Development)</h1>
+      <div class="doc-date">تاريخ الإنشاء: ٢‏/٨‏/٢٠٢٦</div>
+      <div class="overview-text">
+        <strong>نظرة عامة: </strong>
+        يقدم هذا الدليل نظرة شمولية وتطويرية لمستندات مطوري إضافات ووردبريس (WordPress Plugin Developer Handbook). يتناول الدليل كيفية بناء إضافات ووردبريس متكاملة وآمنة بدءاً من المفاهيم الأساسية، مروراً بآليات التفاعل عبر الخطافات (Hooks)، والتعامل مع البيانات والخصوصية، والوظائف المدمجة كأنواع المنشورات المخصصة والتصنيفات والواجهات المخصصة، وصولاً إلى التقنيات المتقدمة مثل استدعاءات HTTP API وتنفيذ المهام المجدولة (Cron) والنشر في مستودع ووردبريس الرسمي.
+      </div>
+      
+      <div class="overview-text" style="margin-top: 10px; border-right-color: #10b981; background: #ecfdf5;">
+        <strong>✨ ترتيب النصوص والمواضيع: </strong>
+        تم ترتيب المحتوى بشكل تصاعدي منطقي يبدأ بمفاهيم تطوير الإضافات الأساسية وتطبيق المعايير الأمنية، يليه شرح آليات التفاعل عبر الخطافات والخصوصية، ثم استخدام المكونات المدمجة للنظام، وصولاً إلى التقنيات المتقدمة والنشر في مستودع ووردبريس الرسمي دون إغفال أي معلومة.
+      </div>
+      
+    </header>
+
+    
+      <section class="page-section">
+        <div class="section-header">
+          <span class="section-number">1</span>
+          <h2>التلخيص المترابط للموضوعات</h2>
+        </div>
+        <p class="section-desc">تم دمج الأفكار المتشابهة والمكملة لبعضها من النصوص المدخلة تحت أقسام موضوعية واضحة للمذاكرة.</p>
+        <div class="summary-list">
+          
+              <div class="card" >
+                <div class="card-title-row">
+                  <h3>
+                    
+                    1. ## ١. المدخل والأساسيات وأفضل الممارسات الألمانية والأمنية (WordPress Plugin Basics & Security)
+                  </h3>
+                  <div class="source-tags">
+                    <span class="source-badge">تعليم ووردبريس</span>
+                  </div>
+                </div>
+                
+                <div class="card-content">
+                  <h4 style="font-weight:700; margin:10px 0 6px;">١.١ مفاهيم تطوير الإضافات الهيكلية</h4><br/>تُعد إضافات ووردبريس (<strong>WordPress Plugins</strong>) المكون الأساسي لتوسيع وظائف المنصة دون التعديل على النواة البرمجية (<strong>Core</strong>).<p style="margin-top:10px;"></p>* <strong>مفهوم الإضافة (Plugin Concept):</strong> هي مجموعة من الملفات البرمجية بلغة PHP تتكامل مع ووردبريس لإضافة وظائف جديدة أو تعديل سلوك قائم.<br/>* <strong>البداية الصحيحة:</strong> يُنصح المطوّر ببدء رحلته من خلال استيعاب المفاهيم الأساسية وهيكلية الملفات قبل الانتقال إلى كتابة الشفرات المتقدمة.<p style="margin-top:10px;"></p><h4 style="font-weight:700; margin:10px 0 6px;">١.٢ أفضل ممارسات الأمان (Security Best Practices)</h4><br/>تعتبر حماية البيانات وتأمين الشفرة البرمجية حجر الزاوية في تطوير الإضافات التنافسية.<p style="margin-top:10px;"></p>* <strong>التحقق من صحة المدخلات (Input Sanitization):</strong> تصفية كافة البيانات القادمة من المستخدمين قبل معالجتها.<br/>* <strong>الهروب من المخرجات (Output Escaping):</strong> تأمين البيانات قبل عرضها في المتصفح لمنع ثغرات <strong>XSS</strong>.<br/>* <strong>التحقق من الصلاحيات (Nonce & Capability Checks):</strong> التأكد من أن المستخدم يملك الصلاحية المناسبة للقيام بالإجراء بطلب مشروع.<p style="margin-top:10px;"></p>> 💡 <strong>ملاحظة للمذاكرة:</strong> لا تعتمد أبداً على بيانات المستخدم المدخلة دون فحص. استخدم دوال ووردبريس الآمنة مثل `sanitize_text_field()` و `esc_html()`.<p style="margin-top:10px;"></p>```php<br/>// مثال برمجي لتأمين المخرجات في ووردبريس<br/>$user_input = sanitize_text_field( $_POST['user_data'] );<br/>echo esc_html( $user_input );<br/>```
+                </div>
+              </div>
+            
+              <div class="card" >
+                <div class="card-title-row">
+                  <h3>
+                    
+                    2. ## ٢. آليات التفاعل والتكامل: الخطافات والخصوصية (Hooks & Privacy Management)
+                  </h3>
+                  <div class="source-tags">
+                    <span class="source-badge">تعليم ووردبريس</span>
+                  </div>
+                </div>
+                
+                <div class="card-content">
+                  <h4 style="font-weight:700; margin:10px 0 6px;">٢.١ آليات الخطافات (WordPress Hooks System)</h4><br/>تُمثل الخطافات (<strong>Hooks</strong>) وسيلة التواصل المحورية بين الإضافة ونواة ووردبريس، وتُقسم إلى نوعين أساسيين:<p style="margin-top:10px;"></p>| نوع الخطاف | الوظيفة الرئيسية | دوال الاستخدام التابعة | مثال عملي |<br/>| :--- | :--- | :--- | :--- |<br/>| <strong>الأفعال (Actions)</strong> | تنفيذ شفرات برمجية مخصصة عند نقطة محددة | `add_action()`, `do_action()` | إرسال بريد إلكتروني عند نشر مقال جديد |<br/>| <strong>الفلاتر (Filters)</strong> | تعديل وتصفية البيانات قبل حفظها أو عرضها | `add_filter()`, `apply_filters()` | تعديل عنوان المقال أو محتواه قبل العرض |<p style="margin-top:10px;"></p>```php<br/>// مثال على الفلاتر (Filters)<br/>function custom_title_prefix( $title ) {<br/>    return 'مهم: ' . $title;<br/>}<br/>add_filter( 'the_title', 'custom_title_prefix' );<br/>```<p style="margin-top:10px;"></p><h4 style="font-weight:700; margin:10px 0 6px;">٢.٢ إدارة الخصوصية والبيانات الحساسة (Privacy & Sensitive Data)</h4><br/>يتوجب على المطورين الالتزام بقوانين حماية البيانات العامة (<strong>GDPR</strong>):<p style="margin-top:10px;"></p>* <strong>تصدير وحذف البيانات:</strong> استخدام أدوات ووردبريس المدمجة لتصدير أو مسح بيانات المستخدم بناءً على طلبه.<br/>* <strong>سياسة الخصوصية:</strong> الإفصاح عن أي بيانات يتم جمعها عبر الإضافة وإضافتها لسياسة الخصوصية الخاصة بالموقع.<p style="margin-top:10px;"></p>> ⚠️ <strong>تنبيه امتحاني هام:</strong> يختلف الفعل (Action) عن الفلتر (Filter) في أن الفلتر <strong>يستقبل قيمة ويقوم بإرجاعها معدلة</strong>، بينما الفعل ينفذ عملية دون الحاجة لإرجاع قيمة.
+                </div>
+              </div>
+            
+              <div class="card" >
+                <div class="card-title-row">
+                  <h3>
+                    
+                    3. ## ٣. الوظائف والمكونات المدمجة في ووردبريس (Built-in WordPress Functionality)
+                  </h3>
+                  <div class="source-tags">
+                    <span class="source-badge">تعليم ووردبريس</span>
+                  </div>
+                </div>
+                
+                <div class="card-content">
+                  <h4 style="font-weight:700; margin:10px 0 6px;">٣.١ قوائم الإدارة والإعدادات (Administration Menus & Settings API)</h4><br/>تسمح ووردبريس للمطورين بإنشاء لوحات تحكم مخصصة لإضافاتهم:<p style="margin-top:10px;"></p>* <strong>قوائم لوحة التحكم (Administration Menus):</strong> إضافة صفحات جديدة في لوحة التحكم باستخدام `add_menu_page()`.<br/>* <strong>واجهة برمجة الإعدادات (Settings API):</strong> حفظ وتحديث إعدادات الإضافة بأمان وسهولة.<p style="margin-top:10px;"></p><h4 style="font-weight:700; margin:10px 0 6px;">٣.٢ أنواع المنشورات المخصصة والتصنيفات (Custom Post Types & Taxonomies)</h4><br/>توسيع ووردبريس من منصة تدوين إلى نظام إدارة محتوى شامل (<strong>CMS</strong>):<p style="margin-top:10px;"></p>* <strong>أنواع المنشورات المخصصة (Custom Post Types - CPT):</strong> تعيين أنواع محتوى جديدة مثل (منتجات، دورات، عقارات).<br/>* <strong>التصنيفات المخصصة (Custom Taxonomies):</strong> تنظيم المحتوى المخصص وتصنيفه (مثل: تصنيف حسب السعر أو القسم).<p style="margin-top:10px;"></p><h4 style="font-weight:700; margin:10px 0 6px;">٣.٣ البيانات الوصفية والوسوم والرموز القصيرة والمستخدمين (Metadata, Shortcodes & Users)</h4><p style="margin-top:10px;"></p>* <strong>البيانات الوصفية (Metadata):</strong> تخزين معلومات إضافية مرتبطة بالمشاركات أو المستخدمين عبر Meta Fields.<br/>* <strong>الرموز القصيرة (Shortcodes):</strong> تمكين المستخدمين من تضمين المحتوى الديناميكي داخل التدوينات باستخدام أقواس مربعة مثل `[my_shortcode]`.<br/>* <strong>إدارة المستخدمين (Users & Roles):</strong> التعامل مع أدوار المستخدمين وزيادة صلاحياتهم بناءً على هيكل الإضافة.
+                </div>
+              </div>
+            
+              <div class="card" >
+                <div class="card-title-row">
+                  <h3>
+                    
+                    4. ## ٤. التقنيات المتقدمة: واجهات البرمجة، الواجهات التفاعلية والمهام المجدولة (Advanced Technologies & Cron)
+                  </h3>
+                  <div class="source-tags">
+                    <span class="source-badge">تعليم ووردبريس</span>
+                  </div>
+                </div>
+                
+                <div class="card-content">
+                  <h4 style="font-weight:700; margin:10px 0 6px;">٤.١ واجهة برمجة HTTP وتكامل الشبكات (HTTP API)</h4><br/>تمكن دوال <strong>HTTP API</strong> في ووردبريس الإضافة من إجراء طلبات خارجية بمرونة وإرسال واستقبال البيانات بصيغة <strong>JSON</strong> أو <strong>XML</strong> دون الحاجة لاستخدام `cURL` المباشر.<p style="margin-top:10px;"></p><h4 style="font-weight:700; margin:10px 0 6px;">٤.٢ استخدام JavaScript و jQuery و Ajax (Client-side Integration)</h4><br/>لإضافة تفاعلية سلسة وتحديث البيانات دون إعادة تحميل الصفحة:<p style="margin-top:10px;"></p>* <strong>إدراج السكريبتات (Enqueue Scripts):</strong> استخدام `wp_enqueue_script()` لإضافة ملفات JS وتجنب تكرار المكتبات.<br/>* <strong>معالجة Ajax الآمنة:</strong> استخدام `wp_localize_script()` لتمرير متغيرات PHP والرموز الأمنية (Nonces) إلى ملفات JavaScript.<p style="margin-top:10px;"></p><h4 style="font-weight:700; margin:10px 0 6px;">٤.٣ المهام المجدولة والترجمة الدولية (Cron Tasks & Internationalization - i18n)</h4><p style="margin-top:10px;"></p>* <strong>نظام كرون ووردبريس (WP-Cron):</strong> جدولة تنفيذ الشفرات في أوقات محددة (مثل إرسال تقارير يومية أو تنظيف قاعدة البيانات).<br/>* <strong>الترجمة الدولية وتدويل الإضافات (Internationalization - i18n):</strong> تجهيز النص للترجمة باستخدام دوال مثل `__()` و `_e()` ليكون من السهل دعم لغات متعددة.<p style="margin-top:10px;"></p>> 💡 <strong>ملاحظة للمذاكرة:</strong> يعمل نظام <strong>WP-Cron</strong> عند زيارة المستخدمين للموقع وليس كـ Daemon حقيقي على السيرفر، ما لم يتم إعداده ليعمل عبر سيرفر النظام.
+                </div>
+              </div>
+            
+              <div class="card" >
+                <div class="card-title-row">
+                  <h3>
+                    
+                    5. ## ٥. نشر الإضافة وأدوات التطوير والمساهمة المجتمعية (Deployment, Developer Tools & Community)
+                  </h3>
+                  <div class="source-tags">
+                    <span class="source-badge">تعليم ووردبريس</span>
+                  </div>
+                </div>
+                
+                <div class="card-content">
+                  <h4 style="font-weight:700; margin:10px 0 6px;">٥.١ التجهيز للنشر في دليل الإضافات الرسمي (Plugin Directory Preparation)</h4><br/>عند اكتمال الإضافة وتجربتها، يتم تحضيرها للنشر في دليل ووردبريس (<strong>WordPress.org Plugin Directory</strong>):<p style="margin-top:10px;"></p>1. مراجعة الشفرة والتأكد من توافقها مع إرشادات المجتمع.<br/>2. إنشاء ملف `readme.txt` يحتوي على وصف الإضافة، تعليمات التثبيت، والتغيرات (<strong>Changelog</strong>).<br/>3. استخدام نظام التحكم بالنسخ <strong>SVN</strong> لرفع الإضافة للمستودع الرسمي.<p style="margin-top:10px;"></p><h4 style="font-weight:700; margin:10px 0 6px;">٥.٢ أدوات المطور والمساهمة (Developer Tools & Community Involvement)</h4><p style="margin-top:10px;"></p>* <strong>أدوات التطوير (Developer Tools):</strong> استغلال إضافة <strong>Query Monitor</strong> أو بيئات التطوير المحلية للتأكد من عدم وجود أخطاء برمجية.<br/>* <strong>المساهمة مجتمعياً (Community Contribution):</strong> الدليل البرمجي تم إنشاؤه بواسطة المجتمع ولأجل المجتمع، ويمكن للمطورين الانضمام لفريق التوثيق (<strong>Docs Team</strong>) لإثراء الدليل.
+                </div>
+              </div>
+            
+        </div>
+      </section>
+    
+    
+      <section class="page-section">
+        <div class="section-header">
+          <span class="section-number">2</span>
+          <h2>شبكة ربط المفاهيم والمقارنات</h2>
+        </div>
+        <p class="section-desc">توضيح أوجه التكامل والاختلاف والسبب والنتيجة بين المحاضرات والمصادر.</p>
+        <div class="links-grid">
+          
+                <div class="card">
+                  <div class="card-title-row">
+                    <h3>الربط بين الأمان والخطافات (Security & Hooks Integration)</h3>
+                    <span class="type-badge" style="background-color: #04785715; color: #047857; border: 1px solid #04785740;">
+                      تكامل وإضافة
+                    </span>
+                  </div>
+                  <p class="explanation-text">يتم دمج أفضل ممارسات الأمان مثل فحص الصلاحيات ورموز Nonces داخل دالّة الخطاف (Hook Callback) لضمان عدم تنفيذ الإجراءات إلا من قِبل مستخدمين معتمدين وبطريقة آمنة.</p>
+                  <div class="takeaway-box">
+                    <strong>💡 خلاصة الربط والامتحان:</strong>
+                    <p>الأمان والخطافات يكملان بعضهما لضمان عمل الإضافة بكفاءة ودون ثغرات.</p>
+                  </div>
+                </div>
+              
+                <div class="card">
+                  <div class="card-title-row">
+                    <h3>تطور تخصيص البيانات: من المنشورات العادية إلى أنواع المنشورات المخصصة والتصنيفات</h3>
+                    <span class="type-badge" style="background-color: #6d28d915; color: #6d28d9; border: 1px solid #6d28d940;">
+                      تطور أو تسلسل
+                    </span>
+                  </div>
+                  <p class="explanation-text">تطورت ووردبريس من منصة مدونات تعتمد على التدوينات والصفحات فقط، إلى نظام CMS كامل يسمح بتعريف Custom Post Types و Custom Taxonomies وهياكل بيانات معقدة.</p>
+                  <div class="takeaway-box">
+                    <strong>💡 خلاصة الربط والامتحان:</strong>
+                    <p>أنواع المنشورات المخصصة تمنح المطور المرونة لتحويل ووردبريس إلى أي تطبيق ويب متكامل.</p>
+                  </div>
+                </div>
+              
+                <div class="card">
+                  <div class="card-title-row">
+                    <h3>المقارنة بين الأفعال (Actions) والفلاتر (Filters)</h3>
+                    <span class="type-badge" style="background-color: #b4530915; color: #b45309; border: 1px solid #b4530940;">
+                      مقارنة واختلاف
+                    </span>
+                  </div>
+                  <p class="explanation-text">الأفعال تتنفذ عند نقاط زمنية محددة لإضافة سلوك جديد، بينما الفلاتر تستقبل بيانات وتقوم بتعديلها وإرجاعها للنظام.</p>
+                  <div class="takeaway-box">
+                    <strong>💡 خلاصة الربط والامتحان:</strong>
+                    <p>استخدم Actions لإضافة سلوك/إجراء، واستخدم Filters لتعديل البيانات قبل عرضها أو معالجتها.</p>
+                  </div>
+                </div>
+              
+                <div class="card">
+                  <div class="card-title-row">
+                    <h3>التفاعل بين JavaScript و Ajax مع نظام ووردبريس</h3>
+                    <span class="type-badge" style="background-color: #04785715; color: #047857; border: 1px solid #04785740;">
+                      تكامل وإضافة
+                    </span>
+                  </div>
+                  <p class="explanation-text">يربط المطور بين الواجهة الأمامية والواجهة الخلفية عبر إدراج JavaScript باستخدام `wp_enqueue_script` ومعالجة طلبات Ajax في الخلفية بواسطة Action Hooks مخصصة.</p>
+                  <div class="takeaway-box">
+                    <strong>💡 خلاصة الربط والامتحان:</strong>
+                    <p>الجمع بين Ajax و Hooks يمنح المستخدم تجربة تفاعلية سريعة وديناميكية.</p>
+                  </div>
+                </div>
+              
+        </div>
+      </section>
+    
+    
+      <section class="page-section">
+        <div class="section-header">
+          <span class="section-number">3</span>
+          <h2>جدول التعاريف والمصطلحات الأكاديمية</h2>
+        </div>
+        <div class="table-container">
+          <table class="glossary-table">
+            <thead>
+              <tr>
+                <th>المصطلح / المفهوم</th>
+                <th>التعريف الأكاديمي</th>
+                <th>مثال أو سياق</th>
+                <th>المصدر</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td class="term-cell"><strong>الخطافات (Hooks)</strong></td>
+                  <td class="def-cell">نقاط اتصال تسمح للإضافة بالتفاعل مع نواة ووردبريس أو الإضافات الأخرى، وتتكون من الأفعال والفلاتر.</td>
+                  <td class="example-cell">استخدام `add_action('init', 'my_custom_function');` لربط دالة بحدث تهيئة النظام.</td>
+                  <td class="source-cell"><span class="source-badge">تعليم ووردبريس</span></td>
+                </tr>
+              
+                <tr>
+                  <td class="term-cell"><strong>أنواع المنشورات المخصصة (Custom Post Types - CPT)</strong></td>
+                  <td class="def-cell">ميزة تتيح للمطورين إنشاء أنواع جديدة من المحتوى تختلف عن المقالات والصفحات القياسية.</td>
+                  <td class="example-cell">إنشاء نوع محتوى خاص بـ 'المنتجات' أو 'العقارات' في موقع ووردبريس.</td>
+                  <td class="source-cell"><span class="source-badge">تعليم ووردبريس</span></td>
+                </tr>
+              
+                <tr>
+                  <td class="term-cell"><strong>التدويل والترجمة (Internationalization - i18n)</strong></td>
+                  <td class="def-cell">عملية برمجية يتم فيها إعداد شفرة الإضافة لتكون قابلة للترجمة إلى لغات وثقافات متعددة.</td>
+                  <td class="example-cell">غلاف النصوص باستخدام الدالة `__('مرحباً بك', 'my-plugin-slug')`.</td>
+                  <td class="source-cell"><span class="source-badge">تعليم ووردبريس</span></td>
+                </tr>
+              
+                <tr>
+                  <td class="term-cell"><strong>كرون ووردبريس (WP-Cron)</strong></td>
+                  <td class="def-cell">نظام مجدولة المهام المدمج في ووردبريس لتنفيذ الأنشطة البرمجية المؤتمتة والمحددة بأوقات معينة.</td>
+                  <td class="example-cell">جدولة مهمة يومية لمسح المسودات القديمة أو إرسال النشرات الإخبارية.</td>
+                  <td class="source-cell"><span class="source-badge">تعليم ووردبريس</span></td>
+                </tr>
+              
+                <tr>
+                  <td class="term-cell"><strong>الرمز القصير (Shortcode)</strong></td>
+                  <td class="def-cell">رمز برمجي مختصر محاط بأقواس مربعة يسمح للمستخدم بوضع محتوى ديناميكي معقد داخل المقالات.</td>
+                  <td class="example-cell">كتابة `[gallery id='123']` لعرض معرض صور مخصص.</td>
+                  <td class="source-cell"><span class="source-badge">تعليم ووردبريس</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+    
+      <section class="page-section">
+        <div class="section-header">
+          <span class="section-number">4</span>
+          <h2>أسئلة المراجعة واختبار الذات (للامتحانات)</h2>
+        </div>
+        <div class="questions-list">
+          
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 1 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #065f4615; color: #065f46;">
+                      سهل
+                    </span>
+                  </div>
+                  <h3 class="question-text">ما هي الوظيفة الرئيسية للفلاتر (Filters) في ووردبريس؟</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>تعديل البيانات وتصفيتها قبل حفظها أو عرضها ثم إرجاعها</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>حذف قواعد البيانات غير المستخدمة بشكل تلقائي</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>إضافة صفحات جديدة في لوحة التحكم فقط</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>إنشاء جداول جديدة في قاعدة البيانات</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: تعديل البيانات وتصفيتها قبل حفظها أو عرضها ثم إرجاعها</strong>
+                      <p><em>الشرح والمراجعة:</em> تُستخدم الفلاتر لتعديل وتمرير البيانات وإرجاعها بعد التعديل، بينما تنفذ الأفعال (Actions) الإجراءات دون الحاجة لإرجاع قيم.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 2 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #065f4615; color: #065f46;">
+                      سهل
+                    </span>
+                  </div>
+                  <h3 class="question-text">أي من الخيارات التالية يُستخدم لتسهيل استخدام البرمجيات بلغات متعددة في إضافات ووردبريس؟</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>التدويل والترجمة الدولية (Internationalization)</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>واجهة برمجة الإعدادات (Settings API)</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>نظام WP-Cron</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>الرموز القصيرة (Shortcodes)</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: التدويل والترجمة الدولية (Internationalization)</strong>
+                      <p><em>الشرح والمراجعة:</em> التدويل (i18n) هو العملية التي تجعل الإضافة جاهزة للترجمة والاستخدام في بلدان ولغات مختلفة.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 3 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #b4530915; color: #b45309;">
+                      متوسط
+                    </span>
+                  </div>
+                  <h3 class="question-text">ما المكون المسؤول عن تنفيذ المهام المؤقتة والمحددة بمواعيد في ووردبريس؟</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>WP-Cron</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>HTTP API</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>Metadata API</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>SVN Directory</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: WP-Cron</strong>
+                      <p><em>الشرح والمراجعة:</em> مكون Cron في ووردبريس مخصص لتنفيذ المهام المؤتمتة المبنية على الوقت.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 4 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #b4530915; color: #b45309;">
+                      متوسط
+                    </span>
+                  </div>
+                  <h3 class="question-text">أي تقنية تُستخدم لاستدعاء بيانات من خوادم وخدمات خارجية داخل إضافة ووردبريس؟</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>HTTP API</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>Shortcode API</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>Taxonomy API</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>Settings API</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: HTTP API</strong>
+                      <p><em>الشرح والمراجعة:</em> تسهل واجهة HTTP API التعامل مع الطلبات والاستجابات الخارجية مثل REST APIs.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 5 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #065f4615; color: #065f46;">
+                      سهل
+                    </span>
+                  </div>
+                  <h3 class="question-text">أين ينبغي تحميل وتخزين الإضافات النهائية ليتمكن جميع مستخدمي ووردبريس من تثبيتها رسمياً؟</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>دليل الإضافات الرسمي (Plugin Directory)</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>خادم التطوير المحلي دون نشر</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>ملف العوامل التمكينية في الثيم</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>قاعدة بيانات التدوينات مباشرة</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: دليل الإضافات الرسمي (Plugin Directory)</strong>
+                      <p><em>الشرح والمراجعة:</em> دليل الإضافات (Plugin Directory) هو المستودع الرسمي المتاح لمجتمع ووردبريس ونشر الإضافات.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 6 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #b4530915; color: #b45309;">
+                      متوسط
+                    </span>
+                  </div>
+                  <h3 class="question-text">ما الهدف الأساسي من فحص وتنظيف مدخلات المستخدم (Sanitization) في الإضافة؟</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>تعزيز أمان الإضافة وحمايتها من الثغرات والبيانات الخبيثة</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>تسريع استجابة الخادم وتخفيف الضغط</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>ترجمة النصوص بشكل تلقائي</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>إنشاء كتل شفرة موحدة في المتصفح</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: تعزيز أمان الإضافة وحمايتها من الثغرات والبيانات الخبيثة</strong>
+                      <p><em>الشرح والمراجعة:</em> Sanitization يضمن عدم إدخال بيانات ضارة أو شفرات خبيثة إلى قاعدة البيانات والنظام.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 7 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #b4530915; color: #b45309;">
+                      متوسط
+                    </span>
+                  </div>
+                  <h3 class="question-text">كيف تساهم التقنيات مثل Ajax و jQuery في إضافات ووردبريس؟</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>تتيح تحديث وتفاعل البيانات في الواجهة دون إعادة تحميل الصفحة</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>تزيد من حماية قاعدة البيانات عند التوقف</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>تُستخدم لتسجيل المنشورات المخصصة فقط</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>تغني المطور عن استخدام لغة PHP تماماً</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: تتيح تحديث وتفاعل البيانات في الواجهة دون إعادة تحميل الصفحة</strong>
+                      <p><em>الشرح والمراجعة:</em> تساعد برمجيات Client-side مثل Ajax و JavaScript في توفير تجربة تفاعلية سلسة وسريعة للمستخدم.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 8 (اختيار من متعدد)</span>
+                    <span class="type-badge" style="background-color: #065f4615; color: #065f46;">
+                      سهل
+                    </span>
+                  </div>
+                  <h3 class="question-text">ما هي الأداة التي تستخدمها لإضافة أجزاء محتوى ديناميكي داخل التدوينات باستخدام أقواس مثل [example]؟</h3>
+                  
+                    <ul class="mcq-options">
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>الرموز القصيرة (Shortcodes)</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>التصنيفات المخصصة (Custom Taxonomies)</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>قوائم الإدارة (Administration Menus)</span>
+                        </li>
+                      
+                        <li class="mcq-option">
+                          <span class="opt-bullet">•</span>
+                          <span>البيانات الوصفية (Metadata)</span>
+                        </li>
+                      
+                    </ul>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: الرموز القصيرة (Shortcodes)</strong>
+                      <p><em>الشرح والمراجعة:</em> الرموز القصيرة تتيح للمستخدم إدراج عناصر برمجية معقدة عبر كود مختصر داخل محرر النصوص.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 9 (سؤال مقالي)</span>
+                    <span class="type-badge" style="background-color: #b4530915; color: #b45309;">
+                      متوسط
+                    </span>
+                  </div>
+                  <h3 class="question-text">وضّح الفرق الجوهري بين الأفعال (Actions) والفلاتر (Filters) في نظام ووردبريس.</h3>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: الأفعال (Actions) تُستخدم لتنفيذ وظائف وإجراءات معينة عند نقاط زمنيّة محددة أثناء تشغيل ووردبريس ولا تتطلب إرجاع قيمة، بينما الفلاتر (Filters) تستقبل بيانات ومحتوى، وتتيح تعديله ثم إرجاعه من جديد للنظام.</strong>
+                      <p><em>الشرح والمراجعة:</em> Action ينفذ حدثاً، و Filter يعدل البيانات ويعيدها.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 10 (سؤال مقالي)</span>
+                    <span class="type-badge" style="background-color: #b4530915; color: #b45309;">
+                      متوسط
+                    </span>
+                  </div>
+                  <h3 class="question-text">ما أهمية مراعاة متطلبات الخصوصية (Privacy) عند تصميم إضافة ووردبريس؟</h3>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: تضمن الخصوصية التعامل الآمن والأخلاقي مع البيانات الحساسة والشخصية للمستخدمين، وتتوافق مع تشريعات حماية البيانات مثل GDPR من خلال توفير أدوات لتصدير أو حذف بيانات المستخدمين والإفصاح عنها.</strong>
+                      <p><em>الشرح والمراجعة:</em> معالجة البيانات الحساسة مطلوبة لضمان توافق الإضافة مع القوانين وحماية أمن المستخدمين.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 11 (سؤال مقالي)</span>
+                    <span class="type-badge" style="background-color: #065f4615; color: #065f46;">
+                      سهل
+                    </span>
+                  </div>
+                  <h3 class="question-text">اذكر اثنين من المكونات المدمجة في ووردبريس التي تساعد على توسيع هيكل البيانات والمحتوى.</h3>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: أنواع المنشورات المخصصة (Custom Post Types) والتصنيفات المخصصة (Custom Taxonomies).</strong>
+                      <p><em>الشرح والمراجعة:</em> تُستخدم CPTs لإنشاء محتوى جديد، بينما تُستخدم Taxonomies لتصنيف هذا المحتوى وتنظيمه.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+                <div class="card question-card">
+                  <div class="card-title-row">
+                    <span class="question-num">سؤال 12 (سؤال مقالي)</span>
+                    <span class="type-badge" style="background-color: #065f4615; color: #065f46;">
+                      سهل
+                    </span>
+                  </div>
+                  <h3 class="question-text">كيف يساهم مجتمع ووردبريس (WordPress Community) في كتابة وتطوير دليل مطوري الإضافات؟</h3>
+                  
+                  
+                    <div class="answer-box">
+                      <strong>✅ الإجابة النموذجية: يتم إنشاء الدليل وتحديثه بجهود جماعية مستمرة من قِبل متطوعين ومطورين في مجتمع ووردبريس عبر فريق التوثيق (Docs Team)، ويمكن لأي مطور المساهمة فيه.</strong>
+                      <p><em>الشرح والمراجعة:</em> الدليل مصمم من المجتمع وإليه لتحسين وتحديث المستندات باستمرار.</p>
+                    </div>
+                  
+                  <div class="card-footer">
+                    المصدر: تعليم ووردبريس
+                  </div>
+                </div>
+              
+        </div>
+      </section>
+    
+    
+      <section class="page-section">
+        <div class="section-header">
+          <span class="section-number">5</span>
+          <h2>قائمة الحفظ السريع ليلة الامتحان</h2>
+        </div>
+        <p class="section-desc">نقاط مركزة ومباشرة للمراجعة السريعة. يمكنك استخدامها لاختبار حفظك قبل الامتحان.</p>
+        <div class="checklist-container">
+          
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">فهم دور الإضافة في توسيع وظائف ووردبريس دون التعديل على الشفرة الأساسية.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">تطبيق إجراءات الأمان: Sanitization للمدخلات و Escaping للمخرجات.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">التحقق من الصلاحيات وطلبات المستخدمين باستخدام Nonces.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">استخدام الأفعال (Actions) لإضافة أحداث وربط وظائف جديدة.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">استخدام الفلاتر (Filters) لتعديل المحتوى والبيانات وإرجاعها.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">الالتزام بقوانين الخصوصية (GDPR) ومعالجة البيانات الحساسة بحذر.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">إنشاء قوائم إدارة (Admin Menus) وتخزين البيانات عبر Settings API.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">استغلال tipos المنشورات المخصصة (CPTs) والتصنيفات لتنظيم البيانات.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">إضافة المحتوى الديناميكي للتدوينات عبر الرموز القصيرة (Shortcodes).</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">تخزين البيانات الإضافية في السجلات باستخدام البيانات الوصفية (Metadata).</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">استخدام HTTP API للاتصال بالخدمات والواجهات البرمجية الخارجية.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">إدراج السكريبتات بأمان والتعامل مع Ajax بواسطة JavaScript و jQuery.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">جدولة المهام والعمليات التلقائية باستخدام WP-Cron.</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">تهيئة نصوص الإضافة للتدوينات والتكليف اللغوي (Internationalization - i18n).</span>
+              </label>
+            
+              <label class="check-item">
+                <input type="checkbox" />
+                <span class="check-text">تجهيز الإضافة وملف readme.txt للتوافق والنشر في دليل الإضافات الرسمي.</span>
+              </label>
+            
+        </div>
+      </section>
+    
+
+    <footer class="doc-footer">
+      <p>تم الإنشاء بواسطة <strong>أداة تلخيص وربط النصوص للمذاكرة</strong> بالذكاء الاصطناعي الأكاديمي.</p>
+      <p style="margin-top: 4px; font-size: 12px; color: #a8a29e;">جاهز للطباعة أو الحفظ كـ PDF للمذاكرة بدون اتصال بالإنترنت.</p>
+    </footer>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    function exportDirectPdf() {
+      var btn = document.getElementById('directPdfBtn');
+      var oldText = btn.innerHTML;
+      btn.innerHTML = '⏳ جاري إنشاء ملف PDF المباشر...';
+      btn.disabled = true;
+
+      if (typeof html2pdf === 'undefined') {
+        alert('تنبيه: أنت غير متصل بالإنترنت حالياً للتحويل المباشر.\n\nللطباعة وحفظ PDF بدون اتصال وبدون خطأ 1.pdf:\n1- افتح هذا الملف باستخدام متصفح Google Chrome على هاتفك.\n2- اضغط على قائمة الخيارات (⋮) ثم اختر (مشاركة -> طباعة -> حفظ بتنسيق PDF).');
+        btn.innerHTML = oldText;
+        btn.disabled = false;
+        return;
+      }
+
+      var element = document.querySelector('.page-container');
+      var opt = {
+        margin:       [10, 10, 10, 10],
+        filename:     'الدليل-الشامل-والمعمق-لتطوير-إضافات-ووردبريس-WordPress-Plugin-Development.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save().then(function() {
+        btn.innerHTML = '✓ تم تنزيل ملف PDF بنجاح';
+        setTimeout(function() {
+          btn.innerHTML = oldText;
+          btn.disabled = false;
+        }, 3000);
+      }).catch(function(err) {
+         console.error(err);
+         alert('حدث خطأ أثناء الإنشاء المباشر. يرجى استخدام متصفح Chrome واختيار (مشاركة -> طباعة).');
+         btn.innerHTML = oldText;
+         btn.disabled = false;
+      });
+    }
+
+    function safePrint() {
+      var isAndroid = /Android/i.test(navigator.userAgent);
+      if (isAndroid) {
+        var proceed = confirm('تنبيه لمستخدمي أندرويد:\nإذا ظهرت رسالة خطأ (1.pdf تالف) عند الطباعة العادية في عارض HTML، يرجى استخدام زر [تنزيل PDF مباشر (للهواتف)] بدلاً من هذا الزر.\n\nهل تريد المتابعة للطباعة العادية الآن؟');
+        if (!proceed) return;
+      }
+      window.print();
+    }
+  </script>
+</body>
+</html>
