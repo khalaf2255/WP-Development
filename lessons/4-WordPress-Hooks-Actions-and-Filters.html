@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الدرس الرابع: الخطاطيف والربط (WordPress Hooks: Actions & Filters) | كورس تطوير إضافات ووردبريس الشامل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --youtube-red: #ff0000;
+      --accent: #10b981;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --vscode-bg: #1e1e1e;
+      --vscode-header: #2d2d2d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      padding-bottom: 60px;
+    }
+
+    /* Top Bar Header */
+    .top-nav {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .top-nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 17px;
+      color: #ffffff;
+      text-decoration: none;
+    }
+    .top-nav-brand span {
+      background: var(--youtube-red);
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .nav-btn {
+      background: rgba(255,255,255,0.1);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover { background: var(--primary); }
+
+    /* Main Container */
+    .container {
+      max-width: 980px;
+      margin: 40px auto;
+      background: var(--card-bg);
+      padding: 48px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+    }
+
+    /* Lesson Header */
+    .lesson-header {
+      border-bottom: 2px dashed var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 28px;
+    }
+    .lesson-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .lesson-title {
+      font-size: 32px;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    /* YouTube Creator Panel Toggle Button */
+    .yt-toggle-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: #ffffff;
+      border: 2px solid #334155;
+      padding: 16px 24px;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      transition: all 0.3s;
+      font-family: 'Tajawal', sans-serif;
+    }
+    .yt-toggle-btn:hover {
+      border-color: var(--youtube-red);
+      background: #0f172a;
+      box-shadow: 0 8px 25px rgba(255, 0, 0, 0.15);
+    }
+    .yt-badge {
+      background: var(--youtube-red);
+      color: #ffffff;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    /* Creator Box Content */
+    .yt-creator-box {
+      display: none;
+      background: #fff5f5;
+      border: 2px solid #fca5a5;
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 36px;
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.08);
+    }
+    .yt-creator-box.active { display: block; }
+    .yt-box-title {
+      color: #991b1b;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .yt-section-card {
+      background: #ffffff;
+      border: 1px solid #fecaca;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .yt-section-card h4 {
+      color: #7f1d1d;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .yt-copy-text {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #334155;
+      margin-top: 8px;
+      position: relative;
+    }
+    .yt-copy-btn {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: #475569;
+      color: #ffffff;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    /* Section titles */
+    h2.section-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 40px 0 20px;
+      padding-right: 14px;
+      border-right: 5px solid var(--primary);
+    }
+
+    h3.subsection-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 28px 0 14px;
+    }
+
+    p { margin-bottom: 16px; color: #334155; font-size: 16.5px; }
+    ul, ol { margin-bottom: 20px; padding-right: 24px; }
+    li { margin-bottom: 8px; color: #334155; font-size: 16px; }
+
+    .info-box {
+      background: #f0f9ff;
+      border-right: 4px solid var(--primary);
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin: 24px 0;
+    }
+    .warning-box {
+      background: #fff1f2;
+      border-right: 4px solid #f43f5e;
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin: 24px 0;
+    }
+    .tip-box {
+      background: #ecfdf5;
+      border-right: 4px solid var(--accent);
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin: 24px 0;
+    }
+
+    /* VS Code Code Block */
+    .vscode-container {
+      background-color: var(--vscode-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 28px 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      direction: ltr;
+      font-family: 'Fira Code', Consolas, Monaco, monospace;
+    }
+    .vscode-header {
+      background-color: var(--vscode-header);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #3c3c3c;
+    }
+    .vscode-controls { display: flex; align-items: center; gap: 8px; }
+    .vscode-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-red { background-color: #ff5f56; }
+    .dot-yellow { background-color: #ffbd2e; }
+    .dot-green { background-color: #27c93f; }
+    
+    .vscode-file-tab {
+      color: #cccccc;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+    .vscode-lang {
+      background: #007acc;
+      color: #ffffff;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    .copy-btn {
+      background: #3a3d41;
+      color: #ffffff;
+      border: 1px solid #555555;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      font-family: 'Tajawal', sans-serif;
+      direction: rtl;
+    }
+    .copy-btn:hover { background: #4e5257; border-color: #007acc; }
+    .copy-btn.copied { background: #10b981; border-color: #10b981; }
+
+    .vscode-code-area {
+      padding: 20px;
+      overflow-x: auto;
+      color: #d4d4d4;
+      font-size: 14.5px;
+      line-height: 1.6;
+      white-space: pre;
+    }
+
+    .token-keyword { color: #569cd6; font-weight: bold; }
+    .token-string { color: #ce9178; }
+    .token-comment { color: #6a9955; font-style: italic; }
+    .token-function { color: #dcdcaa; }
+    .token-variable { color: #9cdcfe; }
+
+    /* Tables */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 28px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+    .custom-table th {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 18px;
+      text-align: right;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .custom-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: 15px;
+      color: #334155;
+    }
+    .custom-table tr:nth-child(even) { background-color: #f8fafc; }
+
+    /* Review Questions Card */
+    .qa-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+    .qa-card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+      border-color: var(--primary);
+    }
+    .qa-question {
+      font-weight: 700;
+      color: #0f172a;
+      font-size: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .qa-answer {
+      background: #f1f5f9;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 15px;
+      color: #1e293b;
+      border-right: 3px solid var(--accent);
+    }
+
+    /* Cheatsheet Box */
+    .cheatsheet-card {
+      background: #fdf4ff;
+      border: 2px solid #f0abfc;
+      border-radius: 14px;
+      padding: 24px;
+      margin: 32px 0;
+    }
+    .cheatsheet-card h3 {
+      color: #86198f;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .cheatsheet-card ul {
+      list-style-type: none;
+      padding-right: 0;
+    }
+    .cheatsheet-card li {
+      position: relative;
+      padding-right: 24px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #701a75;
+    }
+    .cheatsheet-card li::before {
+      content: "⚡";
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 50px;
+      padding-top: 28px;
+      border-top: 2px solid var(--border);
+    }
+    .bottom-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      background: #f1f5f9;
+      color: #0f172a;
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 12px;
+      transition: all 0.2s;
+    }
+    .bottom-nav-btn:hover { background: var(--primary); color: #ffffff; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="top-nav">
+    <a href="../index.html" class="top-nav-brand">
+      <span>WordPress Course</span> كورس تطوير إضافات ووردبريس الشامل
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-btn">📑 الفهرس الرئيسي</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="lesson-header">
+      <span class="lesson-badge">WordPress Plugin Developer Handbook - Chapter 4</span>
+      <h1 class="lesson-title">الدرس الرابع: الخطاطيف والربط (WordPress Hooks: Actions & Filters)</h1>
+    </div>
+
+    <!-- YouTube Presenter Panel Toggle -->
+    <button class="yt-toggle-btn" onclick="toggleYtPanel()">
+      <span>🎬 دليل التسجيل وصانع المحتوى لليوتيوب (YouTube Creator Guide)</span>
+      <span class="yt-badge">اضغط للعرض / الإخفاء 🔻</span>
+    </button>
+
+    <div class="yt-creator-box" id="ytCreatorPanel">
+      <div class="yt-box-title">🎥 أدوات ودليل صانع المحتوى لتسجيل هذا الدرس على يوتيوب</div>
+      
+      <div class="yt-section-card">
+        <h4>🎯 خطة الخطاب وافتتاحية الفيديو (Hook):</h4>
+        <p>"المفهوم ده هو المحرك الرئيسي لكل ووردبريس! يعني إيه Hooks؟ وإيه الفرق الجوهري بين Actions و Filters اللي أوجع دماغ معظم المطورين؟ الفيديو ده هيبسطها لك للأبد!"</p>
+      </div>
+
+      <div class="yt-section-card">
+        <h4>🗣️ نقاط الشرح أثناء التسجيل:</h4>
+        <ol>
+          <li>استخدام تشبيه الخطاف الصنارة اللي بتعلق فيه كودك في أحداث ووردبريس.</li>
+          <li>تطبيق عملي لأول الأكشن: إضافة كود في <code>wp_head</code> أو <code>wp_footer</code>.</li>
+          <li>تطبيق عملي لأول فلتر: تعديل محتوى المقال <code>the_content</code> والتأكيد على أهمية كلمة <code>return</code>.</li>
+        </ol>
+      </div>
+
+      <div class="yt-section-card">
+        <h4>📝 جاهز للنسخ: عنوان المقطع والوصف (YouTube Metadata):</h4>
+        <div class="yt-copy-text">
+          <button class="yt-copy-btn" onclick="copyYtSnippet(this)">نسخ النص 📋</button>
+          <div class="yt-text-content">
+📌 عنوان الفيديو المقترح:
+كورس تطوير إضافات ووردبريس #4 - فهم الخطاطيف الـ Hooks والفرق بين Actions و Filters
+
+📌 وصف الفيديو (Description):
+شرح مبسط وعملي لأهم معمارية في تطوير ووردبريس: الـ Hooks!
+ستتعلم:
+- ما هي الـ Hooks وكيف تتيح حقن الكود؟
+- الدالة add_action وكيف تطلق الأفعال.
+- الدالة add_filter وكيف تعدل البيانات مع إرجاع return.
+
+#WordPressHooks #add_action #add_filter #ووردبريس #تطوير_ويب
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  <h2 class="section-title">📘 التلخيص المترابط للموضوعات</h2>
+
+  <h3 class="subsection-title">٤.١ نظام الخطاطيف (WordPress Hooks Architecture)</h3>
+  <p>الخطاطيف (Hooks) هي نقاط اتصال برمجية توفرها نواة ووردبريس لتسمح للإضافات بحقن أرقام ودوال مخصصة لتمكين التوسعة والتعديل دون مساس بالنواة (WordPress Core). تُعتبر الخطاطيف الحل التقني والتطبيقي المباشر لتنفيذ القاعدة الذهبية.</p>
+
+  <h3 class="subsection-title">٤.٢ الفرق الجوهري بين الإجراءات (Actions) والمرشحات (Filters)</h3>
+  <p>تنقسم الخطاطيف في ووردبريس إلى نوعين أساسيين محوريين:</p>
+
+  <ul>
+    <li><strong>الإجراءات (Actions - <code>add_action</code>):</strong> تُستخدم لتنفيذ أفعال أو أحداث برمجية إضافية عند وصول دورة حياة النظام لنقطة زمنية محددة (مثل إرسال بريد إلكتروني عند تسجيل مستخدم، أو طباعة كود في <code>wp_footer</code>). <em>الإجراء لا يتطلب إرجاع قيمة عبر <code>return</code>.</em></li>
+    <li><strong>المرشحات (Filters - <code>add_filter</code>):</strong> تُستخدم لاعتراض وتعديل البيانات قبل معالجتها أو عرضها على المتصفح (مثل تعديل عنوان المقال أو تصفية المحتوى). <em>المرشح يستقبل متغيراً ويجب إرجاعه معدلاً بـ <code>return</code> إجبارياً.</em></li>
+  </ul>
+
+  <div class="warning-box">
+    <strong>⚠️ تنبيه امتحاني وبرمجي هام:</strong>
+    <p>الفلاتر (Filters) تتطلب دائماً إرجاع القيمة المعدلة باستخدام كلمة <code>return</code> داخل الدالة، بينما الإجراءات (Actions) تقوم بتنفيذ مهمة ولا ترجع قيماً بالضرورة.</p>
+  </div>
+
+  <h2 class="section-title">💻 كود الدرس البرمجي (VS Code Dark Theme)</h2>
+  <p>مثال برمجي متكامل يوضح التطبيق العملي للـ Actions والـ Filters جنبًا إلى جنب:</p>
+
+  
+  <div class="vscode-container">
+    <div class="vscode-header">
+      <div class="vscode-controls">
+        <span class="vscode-dot dot-red"></span>
+        <span class="vscode-dot dot-yellow"></span>
+        <span class="vscode-dot dot-green"></span>
+      </div>
+      <div class="vscode-file-tab">
+        📄 hooks-master-demo.php
+        <span class="vscode-lang">PHP</span>
+      </div>
+      <button class="copy-btn" onclick="copyCode(this)">
+        📋 نسخ الكود
+      </button>
+    </div>
+    <div class="vscode-code-area"><span class="token-comment">&lt;?php</span>
+<span class="token-comment">/**
+ * Plugin Name: Master Hooks Demonstration
+ * Description: كود تطبيقي شامل لشرح الفرق بين Action Hooks و Filter Hooks.
+ */</span>
+
+<span class="token-keyword">if</span> ( ! <span class="token-function">defined</span>( <span class="token-string">'ABSPATH'</span> ) ) {
+    <span class="token-keyword">exit</span>;
+}
+
+<span class="token-comment">// 1. تطبيق Action Hook: تنفيذ حدث طباعة توقيع في نهاية الصفحة</span>
+<span class="token-keyword">function</span> <span class="token-function">academic_add_footer_notice</span>() {
+    <span class="token-keyword">echo</span> <span class="token-string">'&lt;div style="text-align:center; padding:10px; background:#e0f2fe;"&gt;'</span>;
+    <span class="token-keyword">echo</span> <span class="token-string">'تم تشغيل هذا الحدث عبر add_action في خطاف wp_footer'</span>;
+    <span class="token-keyword">echo</span> <span class="token-string">'&lt;/div&gt;'</span>;
+}
+<span class="token-function">add_action</span>( <span class="token-string">'wp_footer'</span>, <span class="token-string">'academic_add_footer_notice'</span>, 10 );
+
+<span class="token-comment">// 2. تطبيق Filter Hook: تعديل وعمل إرجاع لعنوان المقال</span>
+<span class="token-keyword">function</span> <span class="token-function">academic_modify_post_title</span>( <span class="token-variable">$title</span> ) {
+    <span class="token-comment">// تعديل القيمة وإرجاعها بـ return</span>
+    <span class="token-keyword">return</span> <span class="token-string">'مهم: '</span> . <span class="token-variable">$title</span>;
+}
+<span class="token-function">add_filter</span>( <span class="token-string">'the_title'</span>, <span class="token-string">'academic_modify_post_title'</span> );
+</div>
+  </div>
+  
+
+  <h2 class="section-title">📊 شبكة ربط المفاهيم والمقارنات</h2>
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th>وجه المقارنة</th>
+        <th>الإجراءات (Actions)</th>
+        <th>المرشحات (Filters)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>الدالة المستدعاة للربط</strong></td>
+        <td><code>add_action( 'tag', 'callback' )</code></td>
+        <td><code>add_filter( 'tag', 'callback' )</code></td>
+      </tr>
+      <tr>
+        <td><strong>القيمة المرجعة (Return)</strong></td>
+        <td>لا ترجع قيماً بل تنفذ أثراً جانبياً.</td>
+        <td><strong>إجبارية</strong> ويجب إرجاع القيمة بـ <code>return</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>الاستخدام الرئيسي</strong></td>
+        <td>إضافة سلوكيات أو طباعة أكواد عند حدث معين.</td>
+        <td>تعديل وتصفية البيانات القائمة قبل العرض.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="section-title">❓ أسئلة المراجعة واختبار الذات</h2>
+
+  <div class="qa-card">
+    <div class="qa-question">📌 س1 (اختيار من متعدد): ما الفارق الرئيسي بين الإجراءات (Actions) والفلاتر (Filters)؟</div>
+    <div class="qa-answer">✅ الإجابة النموذجية: الإجراء ينفذ حدثاً، بينما الفلتر يستقبل قيمة ويعيد تعديلها عبر return.</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-question">📌 س2 (سؤال مقالي): وضّح الفرق الجوهري بين الأفعال (Actions) والفلاتر (Filters) في نظام ووردبريس.</div>
+    <div class="qa-answer">✅ الإجابة النموذجية: تُستخدم الأفعال لتنفيذ كود أو حدث برمجي عند نقطة زمنية معينة دون الحاجة لإرجاع قيمة، بينما تُستخدم الفلاتر لتعديل بيانات أو محتوى وإرجاعه بـ return لاستكمال معالجة الصفحة.</div>
+  </div>
+
+  <div class="cheatsheet-card">
+    <h3>⚡ قائمة الحفظ السريع ليلة الامتحان</h3>
+    <ul>
+      <li>الخطاطيف (Hooks) هي نقاط اتصال برمجية تسمح بالتوسعة دون تعديل Core.</li>
+      <li>الإجراءات (Actions) تُستخدم لتنفيذ أحداث برمجية جديدة (<code>add_action</code>).</li>
+      <li>الفلاتر (Filters) تُستخدم لتعديل البيانات وتتطلب دائمًا استخدام <code>return</code> (<code>add_filter</code>).</li>
+      <li>الجمع بين Ajax و Hooks يمنح المستخدم تجربة تفاعلية سريعة وديناميكية.</li>
+    </ul>
+  </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <a href="3-Plugin-Security-and-Protection.html" class="bottom-nav-btn">➡️ الدرس الثالث: أمان وحماية ABSPATH</a>
+      <a href="../index.html" class="bottom-nav-btn">🏠 العودة للفهرس</a>
+      <a href="5-WordPress-Bootstrapping-and-Database-wpdb.html" class="bottom-nav-btn">الدرس الخامس: دورة الإقلاع وقاعدة البيانات ⬅️</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleYtPanel() {
+      const panel = document.getElementById('ytCreatorPanel');
+      panel.classList.toggle('active');
+    }
+
+    function copyYtSnippet(btn) {
+      const textBlock = btn.parentElement.querySelector('.yt-text-content').innerText;
+      navigator.clipboard.writeText(textBlock).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = 'تم النسخ! ✅';
+        setTimeout(() => btn.innerText = orig, 2000);
+      });
+    }
+
+    function copyCode(btn) {
+      const container = btn.closest('.vscode-container');
+      const codeText = container.querySelector('.vscode-code-area').innerText;
+      
+      navigator.clipboard.writeText(codeText).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'تم النسخ! ✅';
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('فشل النسخ:', err);
+      });
+    }
+  </script>
+</body>
+</html>

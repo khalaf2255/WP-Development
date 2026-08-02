@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الدرس الأول: الأساسيات والقاعدة الذهبية في تطوير ووردبريس | كورس تطوير إضافات ووردبريس الشامل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --youtube-red: #ff0000;
+      --accent: #10b981;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --vscode-bg: #1e1e1e;
+      --vscode-header: #2d2d2d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      padding-bottom: 60px;
+    }
+
+    /* Top Bar Header */
+    .top-nav {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .top-nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 17px;
+      color: #ffffff;
+      text-decoration: none;
+    }
+    .top-nav-brand span {
+      background: var(--youtube-red);
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .nav-btn {
+      background: rgba(255,255,255,0.1);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover { background: var(--primary); }
+
+    /* Main Container */
+    .container {
+      max-width: 980px;
+      margin: 40px auto;
+      background: var(--card-bg);
+      padding: 48px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+    }
+
+    /* Lesson Header */
+    .lesson-header {
+      border-bottom: 2px dashed var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 28px;
+    }
+    .lesson-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .lesson-title {
+      font-size: 32px;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    /* YouTube Creator Panel Toggle Button */
+    .yt-toggle-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: #ffffff;
+      border: 2px solid #334155;
+      padding: 16px 24px;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      transition: all 0.3s;
+      font-family: 'Tajawal', sans-serif;
+    }
+    .yt-toggle-btn:hover {
+      border-color: var(--youtube-red);
+      background: #0f172a;
+      box-shadow: 0 8px 25px rgba(255, 0, 0, 0.15);
+    }
+    .yt-badge {
+      background: var(--youtube-red);
+      color: #ffffff;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    /* Creator Box Content */
+    .yt-creator-box {
+      display: none;
+      background: #fff5f5;
+      border: 2px solid #fca5a5;
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 36px;
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.08);
+    }
+    .yt-creator-box.active { display: block; }
+    .yt-box-title {
+      color: #991b1b;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .yt-section-card {
+      background: #ffffff;
+      border: 1px solid #fecaca;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .yt-section-card h4 {
+      color: #7f1d1d;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .yt-copy-text {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #334155;
+      margin-top: 8px;
+      position: relative;
+    }
+    .yt-copy-btn {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: #475569;
+      color: #ffffff;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    /* Section titles */
+    h2.section-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 40px 0 20px;
+      padding-right: 14px;
+      border-right: 5px solid var(--primary);
+    }
+
+    h3.subsection-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 28px 0 14px;
+    }
+
+    p { margin-bottom: 16px; color: #334155; font-size: 16.5px; }
+    ul, ol { margin-bottom: 20px; padding-right: 24px; }
+    li { margin-bottom: 8px; color: #334155; font-size: 16px; }
+
+    .info-box {
+      background: #f0f9ff;
+      border-right: 4px solid var(--primary);
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin: 24px 0;
+    }
+    .warning-box {
+      background: #fff1f2;
+      border-right: 4px solid #f43f5e;
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin: 24px 0;
+    }
+    .tip-box {
+      background: #ecfdf5;
+      border-right: 4px solid var(--accent);
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin: 24px 0;
+    }
+
+    /* VS Code Code Block */
+    .vscode-container {
+      background-color: var(--vscode-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 28px 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      direction: ltr;
+      font-family: 'Fira Code', Consolas, Monaco, monospace;
+    }
+    .vscode-header {
+      background-color: var(--vscode-header);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #3c3c3c;
+    }
+    .vscode-controls { display: flex; align-items: center; gap: 8px; }
+    .vscode-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-red { background-color: #ff5f56; }
+    .dot-yellow { background-color: #ffbd2e; }
+    .dot-green { background-color: #27c93f; }
+    
+    .vscode-file-tab {
+      color: #cccccc;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+    .vscode-lang {
+      background: #007acc;
+      color: #ffffff;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    .copy-btn {
+      background: #3a3d41;
+      color: #ffffff;
+      border: 1px solid #555555;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      font-family: 'Tajawal', sans-serif;
+      direction: rtl;
+    }
+    .copy-btn:hover { background: #4e5257; border-color: #007acc; }
+    .copy-btn.copied { background: #10b981; border-color: #10b981; }
+
+    .vscode-code-area {
+      padding: 20px;
+      overflow-x: auto;
+      color: #d4d4d4;
+      font-size: 14.5px;
+      line-height: 1.6;
+      white-space: pre;
+    }
+
+    .token-keyword { color: #569cd6; font-weight: bold; }
+    .token-string { color: #ce9178; }
+    .token-comment { color: #6a9955; font-style: italic; }
+    .token-function { color: #dcdcaa; }
+    .token-variable { color: #9cdcfe; }
+
+    /* Tables */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 28px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+    .custom-table th {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 18px;
+      text-align: right;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .custom-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: 15px;
+      color: #334155;
+    }
+    .custom-table tr:nth-child(even) { background-color: #f8fafc; }
+
+    /* Review Questions Card */
+    .qa-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+    .qa-card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+      border-color: var(--primary);
+    }
+    .qa-question {
+      font-weight: 700;
+      color: #0f172a;
+      font-size: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .qa-answer {
+      background: #f1f5f9;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 15px;
+      color: #1e293b;
+      border-right: 3px solid var(--accent);
+    }
+
+    /* Cheatsheet Box */
+    .cheatsheet-card {
+      background: #fdf4ff;
+      border: 2px solid #f0abfc;
+      border-radius: 14px;
+      padding: 24px;
+      margin: 32px 0;
+    }
+    .cheatsheet-card h3 {
+      color: #86198f;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .cheatsheet-card ul {
+      list-style-type: none;
+      padding-right: 0;
+    }
+    .cheatsheet-card li {
+      position: relative;
+      padding-right: 24px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #701a75;
+    }
+    .cheatsheet-card li::before {
+      content: "⚡";
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 50px;
+      padding-top: 28px;
+      border-top: 2px solid var(--border);
+    }
+    .bottom-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      background: #f1f5f9;
+      color: #0f172a;
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 12px;
+      transition: all 0.2s;
+    }
+    .bottom-nav-btn:hover { background: var(--primary); color: #ffffff; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="top-nav">
+    <a href="../index.html" class="top-nav-brand">
+      <span>WordPress Course</span> كورس تطوير إضافات ووردبريس الشامل
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-btn">📑 الفهرس الرئيسي</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="lesson-header">
+      <span class="lesson-badge">WordPress Plugin Developer Handbook - Chapter 1</span>
+      <h1 class="lesson-title">الدرس الأول: الأساسيات والقاعدة الذهبية في تطوير ووردبريس</h1>
+    </div>
+
+    <!-- YouTube Presenter Panel Toggle -->
+    <button class="yt-toggle-btn" onclick="toggleYtPanel()">
+      <span>🎬 دليل التسجيل وصانع المحتوى لليوتيوب (YouTube Creator Guide)</span>
+      <span class="yt-badge">اضغط للعرض / الإخفاء 🔻</span>
+    </button>
+
+    <div class="yt-creator-box" id="ytCreatorPanel">
+      <div class="yt-box-title">🎥 أدوات ودليل صانع المحتوى لتسجيل هذا الدرس على يوتيوب</div>
+      
+      <div class="yt-section-card">
+        <h4>🎯 خطة الخطاب وافتتاحية الفيديو (Hook - أول 15 ثانية):</h4>
+        <p>"عايز تبرمج إضافة ووردبريس خاصة بيك وتبيعها أو تطلب عليها فلوس؟ في الفيديو ده هنبدأ أول خطوة عملية في تطوير إضافات ووردبريس من الصفر، وهنعرف أهم قاعدة ذهبية لو خالفتها موقعك هيتدمر مع أول تحديث!"</p>
+      </div>
+
+      <div class="yt-section-card">
+        <h4>🗣️ نقاط الشرح أثناء التسجيل (Video Outline):</h4>
+        <ol>
+          <li>اشرح مفهوم الإضافة (Plugin) وكيف تفصل منطق البرمجة عن النواة.</li>
+          <li>افتح مجلد <code>wp-includes</code> و <code>wp-content/plugins</code> على محرر VS Code ووضح الفرق للمشاهد.</li>
+          <li>اكتب كود أول إضافة بملف واحد مباشرة أمام المتابع وقم بتفعيلها من لوحة التحكم.</li>
+        </ol>
+      </div>
+
+      <div class="yt-section-card">
+        <h4>📝 جاهز للنسخ: عنوان المقطع والوصف (YouTube Metadata):</h4>
+        <div class="yt-copy-text">
+          <button class="yt-copy-btn" onclick="copyYtSnippet(this)">نسخ النص 📋</button>
+          <div class="yt-text-content">
+📌 عنوان الفيديو المقترح:
+كورس تطوير إضافات ووردبريس من الصفر #1 - القاعدة الذهبية وبناء أول إضافة WordPress
+
+📌 وصف الفيديو (Description):
+أهلاً بكم في الدرس الأول من كورس تطوير إضافات ووردبريس (WordPress Plugin Development) الشامل!
+في هذا الفيديو ستتعلم:
+- ما هي إضافة ووردبريس ولماذا نستخدمها؟
+- القاعدة الذهبية لعدم التعديل على WordPress Core.
+- كتابة وتفعيل أول إضافة ووردبريس خاصة بك خطوة بخطوة.
+
+⏱️ الفصول (Timestamps):
+00:00 المقدمة
+01:30 ما هي إضافة ووردبريس؟
+03:45 القاعدة الذهبية: حظر تعديل النواة
+07:10 كتابة أول كود برمجي للإضافة
+12:00 التجربة والتفعيل من لوحة التحكم
+14:30 السؤال التفاعلي والخاتمة
+
+#ووردبريس #WordPress #برمجة_إضافات #WordPressPlugin #PHP
+          </div>
+        </div>
+      </div>
+
+      <div class="yt-section-card">
+        <h4>❓ سؤال التفاعل للمتابعين (دعوة لكتابة تعليق):</h4>
+        <p>"اكتب لي في التعليقات: هل سبق لك التعديل على ملفات ووردبريس مباشرة وحدوث مشكلة عند التحديث؟"</p>
+      </div>
+
+    </div>
+
+  <h2 class="section-title">📘 التلخيص المترابط للموضوعات</h2>
+
+  <h3 class="subsection-title">١.١ القاعدة الذهبية في تطوير ووردبريس (The Cardinal Rule)</h3>
+  <p>تعتبر القاعدة الذهبية الأساسية والمطلقة في بيئة تطوير ووردبريس هي: <strong>"عدم مساس أو تعديل ملفات النواة المباشرة (Don't Touch WordPress Core)"</strong>. جميع الملفات البرمجية الموجودة في مجلدات النظام القياسية مثل <code>wp-includes</code> و <code>wp-admin</code> يُحظر تعديلها مباشرة تحت أي ظرف.</p>
+
+  <div class="warning-box">
+    <strong>⚠️ الأسباب العلمية والتقنية للحظر (Why Core Edits Fail):</strong>
+    <ul>
+      <li><strong>فقدان التعديلات مع التحديثات:</strong> تقوم شركة ووردبريس بتنفيذ تحديثات دورية تلقائية ويدوية للأنظمة (System Updates). عند كل تحديث، يتم مسح كافة ملفات المجلدات الأساسية واستبدالها بنسخة جديدة تماماً، مما يطمس أي تعديل مخصص جرى عليها.</li>
+      <li><strong>الانهيار البرمجي والتعارض (Conflicts):</strong> التعديل المباشر يزيد من مخاطر التعارض الخطيرة مع الإضافات والقوالب الأخرى وتوقيف الموقع بشاشة الأخطاء القاتلة (Fatal Error).</li>
+      <li><strong>صعوبة الصيانة:</strong> يصعب تتبع التغييرات وصيانتها عند خلط كود التطوير المخصص مع كود النظام الأصلي.</li>
+    </ul>
+  </div>
+
+  <h3 class="subsection-title">١.٢ الحل المعماري: الإضافات (Plugin Architecture)</h3>
+  <p>لتجنب مساس النواة، يُعتمد على معمارية <strong>الإضافات (Plugins)</strong> كطبقة برمجية مستقلة تُحقن داخل النظام. الإضافة هي برنامج أو مجموعة من ملفات PHP المستقلة التي تتصل بـ ووردبريس لتوسيع ميزاته وإضافة وظائف جديدة دون كسر الكود الأصلي.</p>
+
+  <ul>
+    <li><strong>الإضافة البسيطة (Simple Plugin):</strong> قد تتكون الإضافة من ملف PHP واحد فقط يوضع داخل مجلد الإضافات <code>wp-content/plugins/</code>. تعتبر إضافة <strong>Hello Dolly</strong> النموذج المعياري الأكثر بساطة للتعلم.</li>
+    <li><strong>المكونات الأساسية لإضافة ووردبريس:</strong>
+      <ol>
+        <li><strong>رأس الإضافة (Plugin Header):</strong> تعليق برمجي توثيقي في أوليّة الملف يتيح لووردبريس قراءته والتعرف على الإضافة وتفعيلها.</li>
+        <li><strong>الدوال البرمجية (PHP Functions):</strong> الكود والمنطق البرمجي المطلوب تنفيذه.</li>
+        <li><strong>الخطاطيف (Hooks):</strong> آليات اتصال لربط الدوال بأحداث ووردبريس الرسمية.</li>
+      </ol>
+    </li>
+  </ul>
+
+  <h2 class="section-title">💻 كود الدرس البرمجي (VS Code Dark Theme)</h2>
+  <p>أول كود إكاديمي معتمد لإضافة ووردبريس مخصصة تعمل كملف مستقل آمن:</p>
+
+  
+  <div class="vscode-container">
+    <div class="vscode-header">
+      <div class="vscode-controls">
+        <span class="vscode-dot dot-red"></span>
+        <span class="vscode-dot dot-yellow"></span>
+        <span class="vscode-dot dot-green"></span>
+      </div>
+      <div class="vscode-file-tab">
+        📄 my-academic-plugin.php
+        <span class="vscode-lang">PHP</span>
+      </div>
+      <button class="copy-btn" onclick="copyCode(this)">
+        📋 نسخ الكود
+      </button>
+    </div>
+    <div class="vscode-code-area"><span class="token-comment">&lt;?php</span>
+<span class="token-comment">/**
+ * Plugin Name: My Custom Academic Plugin
+ * Plugin URI:  https://example.com/plugins/my-custom-plugin
+ * Description: إضافة تعليمية لشرح مبادئ تطوير إضافات ووردبريس والقاعدة الذهبية.
+ * Version:     1.0.0
+ * Author:      Academic Developer
+ * Author URI:  https://example.com
+ */</span>
+
+<span class="token-comment">// منع الوصول المباشر للملف لأسباب أمنية</span>
+<span class="token-keyword">if</span> ( ! <span class="token-function">defined</span>( <span class="token-string">'ABSPATH'</span> ) ) {
+    <span class="token-keyword">exit</span>; <span class="token-comment">// Exit if accessed directly</span>
+}
+
+<span class="token-comment">// دالة مخصصة لعرض تنبيه تعليمي في لوحة التحكم</span>
+<span class="token-keyword">function</span> <span class="token-function">academic_custom_notice</span>() {
+    <span class="token-keyword">echo</span> <span class="token-string">'&lt;div class="notice notice-success is-dismissible"&gt;'</span>;
+    <span class="token-keyword">echo</span> <span class="token-string">'&lt;p&gt;مرحباً بك! تم تحميل كود الإضافة بنجاح دون المساس بنواة ووردبريس!&lt;/p&gt;'</span>;
+    <span class="token-keyword">echo</span> <span class="token-string">'&lt;/div&gt;'</span>;
+}
+<span class="token-function">add_action</span>( <span class="token-string">'admin_notices'</span>, <span class="token-string">'academic_custom_notice'</span> );
+</div>
+  </div>
+  
+
+  <h2 class="section-title">📊 شبكة ربط المفاهيم والمقارنات</h2>
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th>وجه المقارنة</th>
+        <th>تعديل النواة (Modifying Core)</th>
+        <th>استخدام الإضافات (Using Plugins)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>تأثير التحديثات</strong></td>
+        <td>تُحذف كافة التعديلات فوراً وتُمحى بالكامل.</td>
+        <td>تظل التعديلات محفوظة ومستقلة تماماً.</td>
+      </tr>
+      <tr>
+        <td><strong>الأمان والصيانة</strong></td>
+        <td>منخفض جداً وعرضة للأخطاء القاتلة والتعارضات.</td>
+        <td>عالٍ ويخضع لمعايير الأمان الرسمية والمستقلة.</td>
+      </tr>
+      <tr>
+        <td><strong>التوافقية وإعادة الاستخدام</strong></td>
+        <td>محصورة في الموقع وتتسبب في تدمير الاستقرار.</td>
+        <td>يمكن نقل الإضافة وتثبيتها على أي موقع ووردبريس آخر.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="section-title">❓ أسئلة المراجعة واختبار الذات</h2>
+
+  <div class="qa-card">
+    <div class="qa-question">📌 س1 (اختيار من متعدد): ما هي القاعدة الذهبية الأساسية في تطوير ووردبريس؟</div>
+    <div class="qa-answer">✅ الإجابة النموذجية: عدم تعديل ملفات النواة (WordPress Core) إطلاقاً.<br><em>الشرح:</em> لأن أي تحديث لنظام ووردبريس سيقوم باستبدال ملفات النواة ومسح التعديلات المباشرة.</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-question">📌 س2 (اختيار من متعدد): ماذا يحدث للتعديلات المباشرة التي تُجرى على ملفات wp-includes عند التحديث؟</div>
+    <div class="qa-answer">✅ الإجابة النموذجية: تُمسح ويتم الكتابة فوقها وتُفقد بالكامل.</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-question">📌 س3 (اختيار من متعدد): ما هو الحد الأدنى المكون لإضافة ووردبريس بسيطة مثل Hello Dolly؟</div>
+    <div class="qa-answer">✅ الإجابة النموذجية: ملف PHP واحد يحتوي على رأس الإضافة وبعض الدوال والخطاطيف.</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-question">📌 س4 (سؤال مقالي): لماذا يُحظر التعديل المباشر على ملفات WordPress Core؟</div>
+    <div class="qa-answer">✅ الإجابة النموذجية: لأن ووردبريس يستبدل ملفات النواة عند كل تحديث جديد للنظام، مما يؤدي لمسح وفقدان أي تعديلات برمجية جرت عليها مباشرة، إلى جانب خطر التسبب في تعارضات برمجية وأخطاء قاتلة بالموقع.</div>
+  </div>
+
+  <div class="cheatsheet-card">
+    <h3>⚡ قائمة الحفظ السريع ليلة الامتحان</h3>
+    <ul>
+      <li>القاعدة الذهبية: لا تقم أبداً بتعديل ملفات ووردبريس الأساسية (WordPress Core).</li>
+      <li>تُستخدم الإضافات (Plugins) كخيار حصري لتوسيع وظائف الموقع دون التأثر بالتحديثات.</li>
+      <li>أبسط إضافة تتكون من ملف PHP واحد فقط يوضع داخل مجلد <code>wp-content/plugins/</code>.</li>
+      <li>إضافة Hello Dolly هي النموذج المعياري للإضافة البسيطة المكونة من ملف واحد.</li>
+      <li>رأس الإضافة (Plugin Header) تعليق برمجي ضروري ليتعرف النظام على الإضافة وتفعيلها.</li>
+      <li>تحتوي الإضافة الأساسية على: Plugin Header، ودوال PHP، وخطاطيف (Hooks).</li>
+    </ul>
+  </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <div></div>
+      <a href="../index.html" class="bottom-nav-btn">🏠 العودة للفهرس</a>
+      <a href="2-Header-Requirements-and-Structure.html" class="bottom-nav-btn">الدرس الثاني: الترويسة والبنية الهيكلية ⬅️</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleYtPanel() {
+      const panel = document.getElementById('ytCreatorPanel');
+      panel.classList.toggle('active');
+    }
+
+    function copyYtSnippet(btn) {
+      const textBlock = btn.parentElement.querySelector('.yt-text-content').innerText;
+      navigator.clipboard.writeText(textBlock).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = 'تم النسخ! ✅';
+        setTimeout(() => btn.innerText = orig, 2000);
+      });
+    }
+
+    function copyCode(btn) {
+      const container = btn.closest('.vscode-container');
+      const codeText = container.querySelector('.vscode-code-area').innerText;
+      
+      navigator.clipboard.writeText(codeText).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'تم النسخ! ✅';
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('فشل النسخ:', err);
+      });
+    }
+  </script>
+</body>
+</html>

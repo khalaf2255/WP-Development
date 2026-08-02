@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الدرس الخامس: تسلسل دورة الإقلاع والتعامل مع قاعدة البيانات ($wpdb) | كورس تطوير إضافات ووردبريس الشامل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --youtube-red: #ff0000;
+      --accent: #10b981;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --vscode-bg: #1e1e1e;
+      --vscode-header: #2d2d2d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      padding-bottom: 60px;
+    }
+
+    /* Top Bar Header */
+    .top-nav {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .top-nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 17px;
+      color: #ffffff;
+      text-decoration: none;
+    }
+    .top-nav-brand span {
+      background: var(--youtube-red);
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .nav-btn {
+      background: rgba(255,255,255,0.1);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover { background: var(--primary); }
+
+    /* Main Container */
+    .container {
+      max-width: 980px;
+      margin: 40px auto;
+      background: var(--card-bg);
+      padding: 48px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+    }
+
+    /* Lesson Header */
+    .lesson-header {
+      border-bottom: 2px dashed var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 28px;
+    }
+    .lesson-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .lesson-title {
+      font-size: 32px;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    /* YouTube Creator Panel Toggle Button */
+    .yt-toggle-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: #ffffff;
+      border: 2px solid #334155;
+      padding: 16px 24px;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      transition: all 0.3s;
+      font-family: 'Tajawal', sans-serif;
+    }
+    .yt-toggle-btn:hover {
+      border-color: var(--youtube-red);
+      background: #0f172a;
+      box-shadow: 0 8px 25px rgba(255, 0, 0, 0.15);
+    }
+    .yt-badge {
+      background: var(--youtube-red);
+      color: #ffffff;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    /* Creator Box Content */
+    .yt-creator-box {
+      display: none;
+      background: #fff5f5;
+      border: 2px solid #fca5a5;
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 36px;
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.08);
+    }
+    .yt-creator-box.active { display: block; }
+    .yt-box-title {
+      color: #991b1b;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .yt-section-card {
+      background: #ffffff;
+      border: 1px solid #fecaca;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .yt-section-card h4 {
+      color: #7f1d1d;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .yt-copy-text {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #334155;
+      margin-top: 8px;
+      position: relative;
+    }
+    .yt-copy-btn {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: #475569;
+      color: #ffffff;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    /* Section titles */
+    h2.section-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 40px 0 20px;
+      padding-right: 14px;
+      border-right: 5px solid var(--primary);
+    }
+
+    h3.subsection-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 28px 0 14px;
+    }
+
+    p { margin-bottom: 16px; color: #334155; font-size: 16.5px; }
+    ul, ol { margin-bottom: 20px; padding-right: 24px; }
+    li { margin-bottom: 8px; color: #334155; font-size: 16px; }
+
+    .info-box {
+      background: #f0f9ff;
+      border-right: 4px solid var(--primary);
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin: 24px 0;
+    }
+    .warning-box {
+      background: #fff1f2;
+      border-right: 4px solid #f43f5e;
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin: 24px 0;
+    }
+    .tip-box {
+      background: #ecfdf5;
+      border-right: 4px solid var(--accent);
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin: 24px 0;
+    }
+
+    /* VS Code Code Block */
+    .vscode-container {
+      background-color: var(--vscode-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 28px 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      direction: ltr;
+      font-family: 'Fira Code', Consolas, Monaco, monospace;
+    }
+    .vscode-header {
+      background-color: var(--vscode-header);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #3c3c3c;
+    }
+    .vscode-controls { display: flex; align-items: center; gap: 8px; }
+    .vscode-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-red { background-color: #ff5f56; }
+    .dot-yellow { background-color: #ffbd2e; }
+    .dot-green { background-color: #27c93f; }
+    
+    .vscode-file-tab {
+      color: #cccccc;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+    .vscode-lang {
+      background: #007acc;
+      color: #ffffff;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    .copy-btn {
+      background: #3a3d41;
+      color: #ffffff;
+      border: 1px solid #555555;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      font-family: 'Tajawal', sans-serif;
+      direction: rtl;
+    }
+    .copy-btn:hover { background: #4e5257; border-color: #007acc; }
+    .copy-btn.copied { background: #10b981; border-color: #10b981; }
+
+    .vscode-code-area {
+      padding: 20px;
+      overflow-x: auto;
+      color: #d4d4d4;
+      font-size: 14.5px;
+      line-height: 1.6;
+      white-space: pre;
+    }
+
+    .token-keyword { color: #569cd6; font-weight: bold; }
+    .token-string { color: #ce9178; }
+    .token-comment { color: #6a9955; font-style: italic; }
+    .token-function { color: #dcdcaa; }
+    .token-variable { color: #9cdcfe; }
+
+    /* Tables */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 28px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+    .custom-table th {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 18px;
+      text-align: right;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .custom-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: 15px;
+      color: #334155;
+    }
+    .custom-table tr:nth-child(even) { background-color: #f8fafc; }
+
+    /* Review Questions Card */
+    .qa-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+    .qa-card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+      border-color: var(--primary);
+    }
+    .qa-question {
+      font-weight: 700;
+      color: #0f172a;
+      font-size: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .qa-answer {
+      background: #f1f5f9;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 15px;
+      color: #1e293b;
+      border-right: 3px solid var(--accent);
+    }
+
+    /* Cheatsheet Box */
+    .cheatsheet-card {
+      background: #fdf4ff;
+      border: 2px solid #f0abfc;
+      border-radius: 14px;
+      padding: 24px;
+      margin: 32px 0;
+    }
+    .cheatsheet-card h3 {
+      color: #86198f;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .cheatsheet-card ul {
+      list-style-type: none;
+      padding-right: 0;
+    }
+    .cheatsheet-card li {
+      position: relative;
+      padding-right: 24px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #701a75;
+    }
+    .cheatsheet-card li::before {
+      content: "⚡";
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 50px;
+      padding-top: 28px;
+      border-top: 2px solid var(--border);
+    }
+    .bottom-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      background: #f1f5f9;
+      color: #0f172a;
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 12px;
+      transition: all 0.2s;
+    }
+    .bottom-nav-btn:hover { background: var(--primary); color: #ffffff; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="top-nav">
+    <a href="../index.html" class="top-nav-brand">
+      <span>WordPress Course</span> كورس تطوير إضافات ووردبريس الشامل
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-btn">📑 الفهرس الرئيسي</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="lesson-header">
+      <span class="lesson-badge">WordPress Plugin Developer Handbook - Chapter 5</span>
+      <h1 class="lesson-title">الدرس الخامس: تسلسل دورة الإقلاع والتعامل مع قاعدة البيانات ($wpdb)</h1>
+    </div>
+
+    <!-- YouTube Presenter Panel Toggle -->
+    <button class="yt-toggle-btn" onclick="toggleYtPanel()">
+      <span>🎬 دليل التسجيل وصانع المحتوى لليوتيوب (YouTube Creator Guide)</span>
+      <span class="yt-badge">اضغط للعرض / الإخفاء 🔻</span>
+    </button>
+
+    <div class="yt-creator-box" id="ytCreatorPanel">
+      <div class="yt-box-title">🎥 أدوات ودليل صانع المحتوى لتسجيل هذا الدرس على يوتيوب</div>
+      
+      <div class="yt-section-card">
+        <h4>🎯 خطة الخطاب وافتتاحية الفيديو (Hook):</h4>
+        <p>"إزاي بتتعامل مع قاعدة بيانات ووردبريس بأمان وبسرعة وتعمل استعلامات معقدة من غير ما تسبب ثقل للموقع أو تفتح ثغرات SQL Injection؟ في الفيديو ده هتشوف الكائن السحري $wpdb!"</p>
+      </div>
+
+      <div class="yt-section-card">
+        <h4>🗣️ نقاط الشرح أثناء التسجيل:</h4>
+        <ol>
+          <li>شرح دورة الإقلاع وقراءة ملفات <code>wp-settings.php</code> بسرعة.</li>
+          <li>استدعاء <code>global $wpdb;</code> وكتابة استعلام آمن عبر <code>$wpdb->prepare()</code>.</li>
+          <li>التنبه للبادئة الديناميكية <code>$wpdb->prefix</code> وطباعة النتائج على الشاشة.</li>
+        </ol>
+      </div>
+
+      <div class="yt-section-card">
+        <h4>📝 جاهز للنسخ: عنوان المقطع والوصف (YouTube Metadata):</h4>
+        <div class="yt-copy-text">
+          <button class="yt-copy-btn" onclick="copyYtSnippet(this)">نسخ النص 📋</button>
+          <div class="yt-text-content">
+📌 عنوان الفيديو المقترح:
+كورس تطوير إضافات ووردبريس #5 - التعامل مع قاعدة البيانات $wpdb والاستعلامات الآمنة
+
+📌 وصف الفيديو (Description):
+التعامل المتقدم مع قاعدة البيانات في ووردبريس باستخدام الكائن العام $wpdb.
+المحاور:
+- دورة الإقلاع وتسلسل تحميل الإضافات.
+- استخدام الكائن $wpdb ودالة prepare لتأمين الاستعلامات.
+- البادئة الديناميكية $wpdb->prefix ودالة get_results.
+
+#wpdb #SQL_Injection #ووردبريس #قواعد_البيانات #PHP
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  
+  <h2 class="section-title">📘 التلخيص المترابط للموضوعات</h2>
+
+  <h3 class="subsection-title">٥.١ التسلسل البرمجي التفصيلي الكامل لدورة إقلاع ووردبريس (Bootstrapping Process)</h3>
+  <p>عند طلب أي صفحة في ووردبريس، يمر النظام بتسلسل إقلاع ملفي وتنفيذي منتظم لشحن البيئة البرمجية الكاملة من نقطة استقبال الطلب وحتى عرض استجابة الـ HTML على متصفح الزائر. يغطي هذا التسلسل كافة المراحل والملفات والأحداث (Hooks) بالتفصيل التام دون اختصار:</p>
+
+  <!-- Process Flowchart -->
+  <div style="background:#0f172a; color:#38bdf8; padding:24px; border-radius:14px; margin:24px 0; font-family:'Fira Code', Consolas, monospace; line-height:1.8; direction:ltr; text-align:left;">
+    <strong>HTTP Request ➔ index.php</strong><br>
+    &nbsp;&nbsp;└── <strong>wp-blog-header.php</strong><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <strong>wp-load.php</strong> ➔ <strong>wp-config.php</strong> (ABSPATH & DB Credentials)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <strong>wp-settings.php</strong> (Master Initialization Core)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <strong>mu-plugins</strong> & <code>muplugins_loaded</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Active Plugins & <code>plugins_loaded</code><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Pluggable & Theme Setup (<code>setup_theme</code>, <code>functions.php</code>, <code>after_setup_theme</code>)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Global Objects ($wpdb, $wp_rewrite, $wp, $wp_query, User Auth)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── Init & Loaded (<code>init</code> & <code>wp_loaded</code>)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <strong>wp()</strong> (URL Parsing & Main DB Query)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <strong>template-loader.php</strong> (Template Hierarchy & Output Response)
+  </div>
+
+  <h4 style="color:#0284c7; font-size:19px; margin:28px 0 14px;">المراحل والمحاور التفصيلية لدورة الإقلاع (من بداية الطلب إلى المخرجات):</h4>
+
+  <!-- Phase 1 -->
+  <div style="background:#f8fafc; border:1px solid #e2e8f0; border-right:5px solid #0284c7; border-radius:12px; padding:20px; margin-bottom:20px;">
+    <h4 style="color:#0369a1; font-size:17px; margin-bottom:10px;">١. مرحلة البداية والتوجيه (Initial Entry Points)</h4>
+    <ul>
+      <li><strong><code>index.php</code> ➔ يستدعي <code>wp-blog-header.php</code>:</strong> نقطة الاستقبال الأولى لجميع طلبات الموقع القادمة عبر الخادم.</li>
+      <li><strong><code>wp-load.php</code> ➔ يستدعي <code>wp-config.php</code>:</strong> يبحث عن ملف التهيئات لاستدعائه، حيث يُعرّف الثابت الأمني <code>ABSPATH</code> وثوابت قواعيد البيانات ومفاهيم التشفير.</li>
+      <li><strong><code>wp-settings.php</code>:</strong> الملف الرئيسي المسئول في خطوته الخامسة عن مسح مجلد الإضافات <code>wp-content/plugins/</code> وقراءة ترويسات الإضافات المفعلة فقط وتحميلها في الذاكرة لتكون جاهزة للاستجابة للأحداث.</li>
+    </ul>
+  </div>
+
+  <!-- Phase 2 -->
+  <div style="background:#f8fafc; border:1px solid #e2e8f0; border-right:5px solid #10b981; border-radius:12px; padding:20px; margin-bottom:20px;">
+    <h4 style="color:#047857; font-size:17px; margin-bottom:10px;">٢. تحميل الإضافات والأحداث المبكرة (Plugins & Early Hooks)</h4>
+    <p>تتم بالكامل داخل ملف <code>wp-settings.php</code>:</p>
+    <ul>
+      <li><strong>تحميل الـ Drop-ins و Must-Use Plugins:</strong> تحميل إضافات الاستخدام الإجباري الواقعة في مجلد (<code>wp-content/mu-plugins/</code>)، ثم إطلاق الأكشن <code>muplugins_loaded</code>.</li>
+      <li><strong>تحميل الإضافات المفعلة (Active Plugins):</strong> المسح التحليلي لروائس الإضافات المفعلة وتحميل ملفاتها الرئيسية، ثم إطلاق الأكشن المحوري <code>plugins_loaded</code> (المكان القياسي والبيئة الرسمية لبدء عمل وتنفيذ الإضافات).</li>
+    </ul>
+  </div>
+
+  <!-- Phase 3 -->
+  <div style="background:#f8fafc; border:1px solid #e2e8f0; border-right:5px solid #8b5cf6; border-radius:12px; padding:20px; margin-bottom:20px;">
+    <h4 style="color:#6d28d9; font-size:17px; margin-bottom:10px;">٣. تهيئة القالب والبيئة الرئيسية (Theme & Core Setup)</h4>
+    <ul>
+      <li><strong>تحميل وظائف النواة وقواعد الأمان:</strong> تحميل ملفات النواة المسؤولة عن الصلاحيات (<code>capabilities.php</code>)، إدارة المستخدمين، والتنقيح والفلترة (<code>formatting.php</code>)، بالإضافة لتضمين ملف <code>pluggable.php</code> (الذي يحتوي على الدوال القابلة للاستبدال وإعادة التعريف من الإضافات).</li>
+      <li><strong>تهيئة القالب (Theme Initialization):</strong>
+        <ul>
+          <li>إطلاق الأكشن <code>setup_theme</code>.</li>
+          <li>تحميل ملف <code>functions.php</code> الخاص بالقالب المفعل (والقالب الأب في حال استخدام Child Theme).</li>
+          <li>إطلاق الأكشن <code>after_setup_theme</code> (تنسيق وتجهيز ميزات القالب مثل <code>add_theme_support</code>).</li>
+        </ul>
+      </li>
+      <li><strong>توثيق المستخدم والمُتغيرات العامة:</strong>
+        <ul>
+          <li>بناء وتأسيس الكائنات العامة الكبرى في الذاكرة: <code>$wpdb</code> (كائن قاعدة البيانات)، <code>$wp_rewrite</code> (نظام الروابط الدائمة)، <code>$wp</code> (كائن النظام الرئيسي)، و <code>$wp_query</code> (كائن الاستعلام).</li>
+          <li>تحديد هوية المستخدم الحالي والتحقق من الجلسة والصلاحيات (Authentication Check).</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Phase 4 -->
+  <div style="background:#f8fafc; border:1px solid #e2e8f0; border-right:5px solid #f59e0b; border-radius:12px; padding:20px; margin-bottom:20px;">
+    <h4 style="color:#b45309; font-size:17px; margin-bottom:10px;">٤. تهيئة النظام واكتمال التحميل (Init & Loaded)</h4>
+    <ul>
+      <li><strong>إطلاق الأكشن <code>init</code>:</strong> النقطة الرئيسية والمعيارية لتعريف أنواع المنشورات المخصصة (CPTs)، التصنيفات المخصصة (Taxonomies)، ونقاط النهاية للمكفولين (Endpoints).</li>
+      <li><strong>إطلاق الأكشن <code>wp_loaded</code>:</strong> يعني نهاية تنفيذ ملف <code>wp-settings.php</code> بالكامل، واستكمال بناء وتجهيز بيئة ووردبريس في الذاكرة تماماً.</li>
+    </ul>
+  </div>
+
+  <!-- Phase 5 -->
+  <div style="background:#f8fafc; border:1px solid #e2e8f0; border-right:5px solid #ec4899; border-radius:12px; padding:20px; margin-bottom:20px;">
+    <h4 style="color:#be185d; font-size:17px; margin-bottom:10px;">٥. استعلام البيانات وبناء الطلب (Query & Routing)</h4>
+    <p>العودة لملف <code>wp-blog-header.php</code> لتنفيذ الخطوات التالية:</p>
+    <ul>
+      <li><strong>استدعاء الدالة <code>wp()</code>:</strong> تُنفّذ الدالة <code>$wp->main()</code> لفك تشفير الرابط المطلوب (URL Parsing & Routing).</li>
+      <li><strong>تجهيز الاستعلام الرئيسي (<code>$wp_query</code>):</strong> تنفيذ الاستعلام في قاعدة البيانات لاستخراج المنشورات أو الصفحات المطلوبة بناءً على الرابط، وتحديد معالم حالة الصفحة (مثال: <code>is_single()</code>, <code>is_page()</code>, <code>is_archive()</code>, <code>is_404()</code>).</li>
+    </ul>
+  </div>
+
+  <!-- Phase 6 -->
+  <div style="background:#f8fafc; border:1px solid #e2e8f0; border-right:5px solid #06b6d4; border-radius:12px; padding:20px; margin-bottom:20px;">
+    <h4 style="color:#0e7490; font-size:17px; margin-bottom:10px;">٦. شجرة القوالب وعرض المحتوى (Template Hierarchy & Output)</h4>
+    <ul>
+      <li><strong>استدعاء <code>template-loader.php</code>:</strong> يُستدعى بواسطة <code>wp-blog-header.php</code> لاستخدام التسلسل الهرمي للقوالب (Template Hierarchy).</li>
+      <li><strong>تحديد وتنفيذ ملف القالب (Template Matching):</strong> فحص شجرة الملفات داخل القالب لاختيار الملف المناسب للصفحة المطلوبة (مثل <code>single.php</code>, <code>archive.php</code>, <code>404.php</code> وصولاً إلى <code>index.php</code> كخيار أخير).</li>
+      <li><strong>إخراج الـ HTML النهائي:</strong> تنفيذ ملف القالب ودمج وسم الرأس <code>wp_head()</code> وتوسيم التذييل <code>wp_footer()</code> لإخراج استجابة الـ HTML الكاملة إلى متصفح الزائر.</li>
+    </ul>
+  </div>
+
+  <div class="tip-box">
+    <strong>💡 خلاصة ربط دورة الإقلاع للمذاكرة والامتحانات:</strong>
+    <p>تبدأ الإضافة عملها الفعلي عند <code>plugins_loaded</code>، ثم يتم تحميل القالب عند <code>setup_theme</code> و <code>after_setup_theme</code>، ثم تُسجل السجلات والتصنيفات عند <code>init</code>، وبعد اكتمال <code>wp_loaded</code> تنفذ النواة الاستعلام عبر <code>wp()</code> ويتم اختيار ملف العرض عبر <code>template-loader.php</code>.</p>
+  </div>
+
+
+  <h3 class="subsection-title">٥.٢ التعامل مع الكائن العام ($wpdb)</h3>
+  <p>يوفر ووردبريس كائناً عاماً مجهزاً يُدعى <code>$wpdb</code> لإجراء الاستعلامات المباشرة على قاعدة البيانات بأمان وكفاءة عالية دون الحاجة لفتح الاتصال بـ MySQL يدوياً.</p>
+
+  <div class="tip-box">
+    <strong>💡 استخدام البادئة الديناميكية $wpdb->prefix:</strong>
+    <p>يجب دائماً استخدام <code>$wpdb->prefix . 'table_name'</code> بدلاً من التسمية الصلبة <code>wp_users</code>، لأن المستخدم قد يغير بادئة الجداول في ملف <code>wp-config.php</code> لأسباب أمنية.</p>
+  </div>
+
+  <h2 class="section-title">💻 كود الدرس البرمجي (VS Code Dark Theme)</h2>
+  <p>استعلامات آمنة ومحمية من ثغرات SQL Injection باستخدام <code>$wpdb->prepare()</code>:</p>
+
+  
+  <div class="vscode-container">
+    <div class="vscode-header">
+      <div class="vscode-controls">
+        <span class="vscode-dot dot-red"></span>
+        <span class="vscode-dot dot-yellow"></span>
+        <span class="vscode-dot dot-green"></span>
+      </div>
+      <div class="vscode-file-tab">
+        📄 database-operations.php
+        <span class="vscode-lang">PHP</span>
+      </div>
+      <button class="copy-btn" onclick="copyCode(this)">
+        📋 نسخ الكود
+      </button>
+    </div>
+    <div class="vscode-code-area"><span class="token-comment">&lt;?php</span>
+<span class="token-comment">/**
+ * Plugin Name: Database Handler Plugin
+ * Description: كود مخصص لإجراء استعلامات آمنة ومحمية عبر الكائن $wpdb.
+ */</span>
+
+<span class="token-keyword">if</span> ( ! <span class="token-function">defined</span>( <span class="token-string">'ABSPATH'</span> ) ) {
+    <span class="token-keyword">exit</span>;
+}
+
+<span class="token-keyword">function</span> <span class="token-function">academic_fetch_active_users</span>() {
+    <span class="token-comment">// استدعاء الكائن العام $wpdb داخل نطاق الدالة</span>
+    <span class="token-keyword">global</span> <span class="token-variable">$wpdb</span>;
+
+    <span class="token-comment">// تعيين اسم الجدول بالبادئة الديناميكية</span>
+    <span class="token-variable">$table_name</span> = <span class="token-variable">$wpdb</span>->prefix . <span class="token-string">'users'</span>;
+
+    <span class="token-comment">// تجهيز الاستعلام وتحصين المتغيرات لمنع SQL Injection</span>
+    <span class="token-variable">$query</span> = <span class="token-variable">$wpdb</span>-><span class="token-function">prepare</span>(
+        <span class="token-string">"SELECT ID, user_login, user_email FROM {$table_name} WHERE user_status = %d ORDER BY ID DESC LIMIT %d"</span>,
+        0,
+        5
+    );
+
+    <span class="token-comment">// تنفيذ الاستعلام وجلب النتائج ككائنات</span>
+    <span class="token-variable">$results</span> = <span class="token-variable">$wpdb</span>-><span class="token-function">get_results</span>( <span class="token-variable">$query</span> );
+
+    <span class="token-keyword">return</span> <span class="token-variable">$results</span>;
+}
+</div>
+  </div>
+  
+
+  <h2 class="section-title">📊 شبكة ربط المفاهيم والمقارنات</h2>
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th>الدالة في $wpdb</th>
+        <th>الوظيفة والهدف البرمجي</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>$wpdb->get_results()</code></td>
+        <td>جلب عدة صفوف من النتائج على شكل مصفوفة كائنات (Array of Objects).</td>
+      </tr>
+      <tr>
+        <td><code>$wpdb->get_row()</code></td>
+        <td>جلب صف واحد فقط من النتائج.</td>
+      </tr>
+      <tr>
+        <td><code>$wpdb->prepare()</code></td>
+        <td><strong>دالة التجهيز والتأمين الإجبارية</strong> لمنع ثغرات SQL Injection عبر تحصين القيم.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="section-title">❓ أسئلة المراجعة واختبار الذات</h2>
+
+  <div class="qa-card">
+    <div class="qa-question">📌 س1 (اختيار من متعدد): ما المكون المسؤول عن مسح وقراءة الإضافات المفعلة أثناء الإقلاع؟</div>
+    <div class="qa-answer">✅ الإجابة النموذجية: <code>wp-settings.php</code>.</div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-question">📌 س2 (سؤال مقالي): ما هي الفائدة من استخدام $wpdb->prepare() عند كتابة استعلام SQL؟</div>
+    <div class="qa-answer">✅ الإجابة النموذجية: لتأمين الاستعلام وتطهير المتغيرات لمنع ثغرات حقن الاستعلامات (SQL Injection).</div>
+  </div>
+
+  <div class="cheatsheet-card">
+    <h3>⚡ قائمة الحفظ السريع ليلة الامتحان</h3>
+    <ul>
+      <li>ملف <code>wp-settings.php</code> هو المسئول عن تحميل الإضافات المفعلة أثناء الإقلاع.</li>
+      <li>استخدم دائماً <code>global $wpdb;</code> لجلب كائن قاعدة البيانات داخل الدوال.</li>
+      <li>استخدم <code>$wpdb->prefix</code> لضمان التوافق مع بادئة الجداول المتغيرة.</li>
+      <li>الدالة <code>$wpdb->prepare()</code> إجبارية لحماية الاستعلامات من SQL Injection.</li>
+    </ul>
+  </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <a href="4-WordPress-Hooks-Actions-and-Filters.html" class="bottom-nav-btn">➡️ الدرس الرابع: الخطاطيف Actions & Filters</a>
+      <a href="../index.html" class="bottom-nav-btn">🏠 العودة للفهرس</a>
+      <a href="6-Advanced-Topics-Admin-Menus-and-APIs.html" class="bottom-nav-btn">الدرس السادس: الموضوعات المتقدمة و REST API ⬅️</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleYtPanel() {
+      const panel = document.getElementById('ytCreatorPanel');
+      panel.classList.toggle('active');
+    }
+
+    function copyYtSnippet(btn) {
+      const textBlock = btn.parentElement.querySelector('.yt-text-content').innerText;
+      navigator.clipboard.writeText(textBlock).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = 'تم النسخ! ✅';
+        setTimeout(() => btn.innerText = orig, 2000);
+      });
+    }
+
+    function copyCode(btn) {
+      const container = btn.closest('.vscode-container');
+      const codeText = container.querySelector('.vscode-code-area').innerText;
+      
+      navigator.clipboard.writeText(codeText).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'تم النسخ! ✅';
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('فشل النسخ:', err);
+      });
+    }
+  </script>
+</body>
+</html>
