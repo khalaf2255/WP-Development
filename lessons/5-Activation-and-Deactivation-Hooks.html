@@ -27,7 +27,7 @@
     <header class="lesson-header">
       <span class="lesson-badge">الدرس 03 | قسم Plugin Basics</span>
       <h1 class="lesson-title">خطاطيف التفعيل والتعطيل (Activation & Deactivation Hooks)</h1>
-      <p class="lesson-subtitle">كيف تشغل الإجراءات عند تفعيل أو تعطيل الإضافة، وحل مشكلة أخطاء 404 الشهيرة مع Permalinks.</p>
+      <p class="lesson-subtitle">كيف تشغل الإجراءات عند تفعيل أو تعطيل الإضافة، إظهار إشعارات التفعيل Flash Notices، وحل مشكلة 404 مع Permalinks.</p>
     </header>
 
     <!-- Technical Content -->
@@ -117,14 +117,144 @@
       لا تقم أبداً بمسح الخيارات المخزنة في <code class="inline-code">wp_options</code> أو إسقاط الجداول في دالة التعطيل <code class="inline-code">register_deactivation_hook</code>. التعطيل مجرد إيقاف مؤقت، أما مسح البيانات فيتم فقط في ملف <code class="inline-code">uninstall.php</code>.
     </div>
 
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>4. عرض إشعار تفاعلي للمستخدم بعد التفعيل (Flash Notice Pattern)</h2>
+    <p>عند تفعيل الإضافة، لا يمكن طباعة HTML مباشرة في دالة التفعيل لأن ووردبريس يقوم بعمل إعادة توجيه (Redirect) فورية. الحل الاحترافي هو استخدام نمط الخيار الخاطف (Flash Option Pattern):</p>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">activation-flash-notice.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// 1. حفظ خيار مؤقت عند التفعيل وتسجيل سجل الأخطاء</span>
+<span class="fn">register_activation_hook</span>( <span class="var">__FILE__</span>, <span class="kw">function</span> () {
+    <span class="cm">// تسجيل رسالة في ملف سجلات الأخطاء (wp-content/debug.log)</span>
+    <span class="fn">error_log</span>( <span class="str">'تم تفعيل الإضافة بنجاح!'</span> );
+
+    <span class="cm">// إضافة خيار مؤقت في قاعدة البيانات للتعرف على التفعيل</span>
+    <span class="fn">add_option</span>( <span class="str">'my_plugin_just_activated'</span>, <span class="kw">true</span> );
+} );
+
+<span class="cm">// 2. عرض إشعار للمستخدم في لوحة التحكم بعد التفعيل مباشرة ومسح الخيار المؤقت</span>
+<span class="fn">add_action</span>( <span class="str">'admin_notices'</span>, <span class="kw">function</span> () {
+    <span class="kw">if</span> ( <span class="fn">get_option</span>( <span class="str">'my_plugin_just_activated'</span> ) ) {
+        <span class="fn">delete_option</span>( <span class="str">'my_plugin_just_activated'</span> );
+        <span class="kw">echo</span> <span class="str">'&lt;div class="notice notice-success is-dismissible"&gt;&lt;p&gt;تم تفعيل الإضافة بنجاح!&lt;/p&gt;&lt;/div&gt;'</span>;
+    }
+} );</code></pre>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>5. استخدام الأكشن admin_notices وطريقة الكتابة الصحيحة</h2>
+    <p>الـ Action المسمى <code class="inline-code">admin_notices</code> هو خطاف حدث (Hook) مجاني ورسمي يوفر لك مكاناً محكّماً لطباعة رسائل التنبيه والإشعارات في أعلى صفحات لوحة تحكم ووردبريس (<code class="inline-code">wp-admin</code>).</p>
+
+    <h3>💡 متى وأين يُستخدم؟</h3>
+    <p>تستخدم هذا الخطاف عندما تريد إظهار رسالة للمدير (Admin) في سيناريوهات مثل:</p>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>نجاح العمليات:</strong> "تم حفظ الإعدادات بنجاح".</li>
+      <li><strong>التنبيهات والتحذيرات:</strong> "تحذير: يجب عليك إدخال مفتاح الـ API لكي تعمل الإضافة".</li>
+      <li><strong>الأخطاء والطلبات القاتلة:</strong> "خطأ: الإصدار الحالي من PHP غير مدعوم".</li>
+    </ul>
+
+    <h3>🛠️ كيف تكتبه بالصيغة القياسية الصحيحة؟</h3>
+    <p>يوفر ووردبريس فئات CSS جاهزة لتنسيق شكل الإشعار، وتوضع الرسالة داخل عنصر <code class="inline-code">&lt;div class="notice ..."&gt;</code> بالطريقة التالية:</p>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">custom-admin-notice.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">/**
+ * إضافة إشعار مخصص في أعلى لوحة التحكم
+ */</span>
+<span class="fn">add_action</span>( <span class="str">'admin_notices'</span>, <span class="str">'my_custom_admin_notice'</span> );
+
+<span class="kw">function</span> <span class="fn">my_custom_admin_notice</span>() {
+    <span class="kw">?&gt;</span>
+    &lt;div class="notice notice-success is-dismissible"&gt;
+        &lt;p&gt;تم حفظ البيانات بنجاح!&lt;/p&gt;
+    &lt;/div&gt;
+    <span class="kw">&lt;?php</span>
+}</code></pre>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>6. كلاسات الإشعارات المعتمدة في لوحة تحكم ووردبريس (WP Admin Notice Classes)</h2>
+    <p>يوفر ووردبريس كلاسات CSS قياسية لتنسيق رسائل وإشعارات لوحة التحكم (<code class="inline-code">admin_notices</code>). يجب استخدام هذه الكلاسات لضمان التناسق البصري مع واجهة النظام:</p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>اسم الكلاس (CSS Class)</th>
+            <th>معاينة المظهر واللون</th>
+            <th>الوصف والاستخدام التقني</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline-code">notice</code></td>
+            <td><span style="background: #f1f5f9; color: #0f172a; padding: 4px 10px; border-radius: 4px; font-weight: 700;">كلاس أساسي</span></td>
+            <td>الكلاس الرئيسي الواجب توفره في جميع عناصر إشعارات لوحة التحكم لتحديد المسافات والحدود.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">notice-success</code></td>
+            <td><span style="background: #ecfdf5; color: #065f46; border-right: 4px solid #10b981; padding: 4px 10px; border-radius: 4px; font-weight: 700;">أخضر 🟢 (Success)</span></td>
+            <td>يُستخدم عند نجاح العمليات (مثل تفعيل إضافة، حفظ إعدادات، أو إرسال نموذج بنجاح).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">notice-error</code></td>
+            <td><span style="background: #fef2f2; color: #991b1b; border-right: 4px solid #ef4444; padding: 4px 10px; border-radius: 4px; font-weight: 700;">أحمر 🔴 (Error)</span></td>
+            <td>يُستخدم عند حدوث خطأ جسيم أو فشل عملية (مثل فشل الاتصال بالـ API أو عدم توفر متطلبات).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">notice-warning</code></td>
+            <td><span style="background: #fffbebf; color: #92400e; border-right: 4px solid #f59e0b; padding: 4px 10px; border-radius: 4px; font-weight: 700;">برتقالي/أصفر 🟠 (Warning)</span></td>
+            <td>يُستخدم للتحذيرات والتنبيهات الهامة التي تتطلب انتباه المستخدم دون أن تكون خطأً قاتلاً.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">notice-info</code></td>
+            <td><span style="background: #f0f9ff; color: #0c4a6e; border-right: 4px solid #0284c7; padding: 4px 10px; border-radius: 4px; font-weight: 700;">أزرق 🔵 (Info)</span></td>
+            <td>يُستخدم لعرض معلومات وإرشادات عامة للمستخدم (مثل وجود تحديث اختياري أو تعليمات الاستخدام).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">is-dismissible</code></td>
+            <td><span style="background: #f8fafc; color: #475569; border: 1px solid #cbd5e1; padding: 4px 10px; border-radius: 4px; font-weight: 700;">قابل للإغلاق ❌</span></td>
+            <td>يُضيف زر إغلاق تفاعلي (X) في الزاوية يسمح للمستخدم بإخفاء الإشعار من لوحة التحكم.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">inline</code></td>
+            <td><span style="background: #e2e8f0; color: #1e293b; padding: 4px 10px; border-radius: 4px; font-weight: 700;">مضمن (Inline)</span></td>
+            <td>يمنع الإشعار من العوم أعلى الصفحة ويجعله يظهر داخل حاوية أو نموذج محدد فقط.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <!-- Footer -->
     <footer class="lesson-footer">
       <div><strong>كورس تطوير إضافات ووردبريس الشامل</strong> - جميع الحقوق محفوظة</div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <a href="4-Header-Requirements-and-DocBlock.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'4-Header-Requirements-and-DocBlock.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+        <a href="6-Best-Practices-and-Naming-Collisions.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'6-Best-Practices-and-Naming-Collisions.html'}, '*'); }" class="nav-btn">الدرس التالي ⬅️</a>
+      </div>
     </footer>
 
   </div>
 
-  
   <script src="../main.js"></script>
 </body>
 </html>
