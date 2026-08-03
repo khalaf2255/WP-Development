@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suggesting Text for Site Privacy Policy | كورس تطوير إضافات ووردبريس الشامل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../main.css" />
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="top-nav">
+    <span class="top-nav-brand">كورس تطوير إضافات ووردبريس الشامل</span>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <a href="21-Privacy-Options-Hooks-and-Capabilities.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'21-Privacy-Options-Hooks-and-Capabilities.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+      <span class="nav-btn" style="opacity: 0.5; cursor: default;">الدرس التالي ⬅️</span>
+    </div>
+  </nav>
+
+  <div class="container">
+    
+    <!-- Lesson Header -->
+    <header class="lesson-header">
+      <span class="lesson-badge">الدرس 04 | قسم Privacy & Data Protection</span>
+      <h1 class="lesson-title">اقتراح نص لسياسة خصوصية الموقع (Suggesting Privacy Policy Text)</h1>
+      <p class="lesson-subtitle">استخدام wp_add_privacy_policy_content لإمداد مديري المواقع بإرشادات السياسة المعيارية واستثناء الإرشادات بفئة .privacy-policy-tutorial.</p>
+    </header>
+
+    <!-- Technical Content -->
+    
+    <h2>1. لماذا نقترح نصاً لسياسة الخصوصية؟ (Why Suggest Privacy Text?)</h2>
+    <p>كل إضافة تقوم بجمع، تخزين، أو نقل بيانات المستخدمين لأطراف خارجية يجب أن توفر نصاً مقترحاً لمدير الموقع. يتيح ووردبريس جمع هذا النص المقترح في صفحة دليل الخصوصية (<code class="inline-code">wp-admin/freemium privacy guide</code>) لكي يتمكن المسؤول من نسخه بضغطة زر إلى سياسة الموقع الرسمية.</p>
+
+    <p>ينبغي أن يجيب النص المقترح على الأسئلة الرئيسية التالية:</p>
+    <ul style="margin-right: 24px; margin-bottom: 20px; color: #334155;">
+      <li>ما هي البيانات الشخصية التي نجمعها ولماذا نجمعها؟ (التعليقات، النماذج، ملفات الكوكيز، المدمجات الخارجية).</li>
+      <li>مع من نشارك بياناتك؟ (خدمات الـ APIs الخارجية أو أدوات التحليل).</li>
+      <li>ما هي المدة التي نحتفظ فيها ببياناتك؟</li>
+      <li>ما هي الحقوق التي تمتلكها على بياناتك؟</li>
+      <li>كيف نحمي بياناتك وما هي إجراءات الحماية المتبعة؟</li>
+    </ul>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>2. التطبيق البرمجي عبر <code class="inline-code">wp_add_privacy_policy_content</code></h2>
+    <p>تُدعى الدالة الرسمية <code class="inline-code">wp_add_privacy_policy_content( $plugin_name, $policy_text )</code> حصرياً أثناء الحدث <code class="inline-code">admin_init</code> لضمان استدعائها في الوقت الصحيح بنظام ووردبريس:</p>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">suggest-privacy-policy.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">/**
+ * إضافة نص سياسة الخصوصية المقترح لإضافتك في صفحة إرشادات الخصوصية
+ */</span>
+<span class="kw">function</span> <span class="fn">wporg_add_privacy_policy_content</span>() {
+    <span class="kw">if</span> ( ! <span class="fn">function_exists</span>( <span class="str">'wp_add_privacy_policy_content'</span> ) ) {
+        <span class="kw">return</span>;
+    }
+
+    <span class="var">$content</span> = <span class="str">'&lt;p class="privacy-policy-tutorial"&gt;'</span> . <span class="fn">__</span>( <span class="str">'Some introductory content for the suggested text.'</span>, <span class="str">'text-domain'</span> ) . <span class="str">'&lt;/p&gt;'</span> .
+               <span class="str">'&lt;strong class="privacy-policy-tutorial"&gt;'</span> . <span class="fn">__</span>( <span class="str">'Suggested Text:'</span>, <span class="str">'text-domain'</span> ) . <span class="str">'&lt;/strong&gt; '</span> .
+               <span class="fn">sprintf</span>(
+                   <span class="fn">__</span>( <span class="str">'When you leave a comment on this site, we send your name, email address, IP address and comment text to example.com. Example.com does not retain your personal data. The example.com privacy policy is &lt;a href="%1$s" target="_blank"&gt;here&lt;/a&gt;.'</span>, <span class="str">'text-domain'</span> ),
+                   <span class="str">'https://example.com/privacy-policy'</span>
+               );
+
+    <span class="fn">wp_add_privacy_policy_content</span>( <span class="str">'Example Plugin'</span>, <span class="fn">wp_kses_post</span>( <span class="fn">wpautop</span>( <span class="var">$content</span>, <span class="kw">false</span> ) ) );
+}
+<span class="fn">add_action</span>( <span class="str">'admin_init'</span>, <span class="str">'wporg_add_privacy_policy_content'</span> );</code></pre>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>3. سر استخدام الفئة <code class="inline-code">.privacy-policy-tutorial</code></h2>
+    <p>تُعد الفئة المخصصة <code class="inline-code">privacy-policy-tutorial</code> ميزة ذكية جداً في ووردبريس:</p>
+
+    <div class="alert alert-info">
+      <strong>💡 فئة التنسيق الخاصة <code class="inline-code">.privacy-policy-tutorial</code>:</strong>
+      عند تطبيق الكلاس <code class="inline-code">privacy-policy-tutorial</code> على أي عنصر HTML (مثل فقرات الشرح أو العناوين الإرشادية للمطور)، يقوم ووردبريس أوتوماتيكياً **باستبعاد واستثناء** هذه النصوص الإرشادية عند اضطرار مدير الموقع للضغط على زر "نسخ النص إلى الحافظة" (Copy to Clipboard)، فيتم نسخ النص المخصص للسياسة فقط دون الشروح التعليمية!
+    </div>
+
+    <!-- Footer -->
+    <footer class="lesson-footer">
+      <div><strong>كورس تطوير إضافات ووردبريس الشامل</strong> - جميع الحقوق محفوظة</div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <a href="21-Privacy-Options-Hooks-and-Capabilities.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'21-Privacy-Options-Hooks-and-Capabilities.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+        <span class="nav-btn" style="opacity: 0.5; cursor: default;">الدرس التالي ⬅️</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../main.js"></script>
+</body>
+</html>

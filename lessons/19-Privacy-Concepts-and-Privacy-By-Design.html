@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Concepts & Privacy By Design | كورس تطوير إضافات ووردبريس الشامل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../main.css" />
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="top-nav">
+    <span class="top-nav-brand">كورس تطوير إضافات ووردبريس الشامل</span>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <a href="18-Advanced-Hooks-Topics-and-Debugging.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'18-Advanced-Hooks-Topics-and-Debugging.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+      <a href="20-Personal-Data-Eraser-and-Exporter.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'20-Personal-Data-Eraser-and-Exporter.html'}, '*'); }" class="nav-btn">الدرس التالي ⬅️</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    
+    <!-- Lesson Header -->
+    <header class="lesson-header">
+      <span class="lesson-badge">الدرس 01 | قسم Privacy & Data Protection</span>
+      <h1 class="lesson-title">مفاهيم الخصوصية والخصوصية بالتصميم (Privacy & Privacy By Design)</h1>
+      <p class="lesson-subtitle">المبادئ الدولية 11 لحماية البيانات (ISO 29100)، إطار عمل الخصوصية بالتصميم، وقائمة التدقيق الذاتي لإضافتك.</p>
+    </header>
+
+    <!-- Technical Content -->
+    
+    <h2>1. ما هي الخصوصية في ووردبريس؟ (What is Privacy?)</h2>
+    <p>إذا كنت تقوم بتطوير إضافة تتعامل مع البيانات الشخصية للمستخدمين والزوار — مثل الأسماء، البريد الإلكتروني، العناوين، معرّفات IP، أو أي بيانات تُستخدم للتعرف على هوية الشخص — فمن الواجب الحذر لحماية هذه البيانات واحترام خصوصية زوار ومستخدمي الموقع.</p>
+    
+    <p>منذ تحديث ووردبريس 4.9.6 وقبل انطلاق قانون حماية البيانات الأوروبي General Data Protection Regulation (GDPR)، أصبحت الخصوصية تركيزاً دائمياً في نواة ووردبريس Core. ورغم اختلاف القوانين والتشريعات حول العالم، هناك <strong>11 مبدأ أساسياً في المعيار الدولي (ISO 29100 Privacy Framework)</strong> يُشترط تطبيقها:</p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>المبدأ (ISO 29100 Principle)</th>
+            <th>الشرح والاستخدام التطبيقي في ووردبريس</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Consent and Choice (الموافقة والاختيار)</strong></td>
+            <td>إعطاء المستخدمين خيارات صريحة حول استخدام بياناتهم وتطلب موافقة واضحة ومسبقة (Opt-in).</td>
+          </tr>
+          <tr>
+            <td><strong>2. Purpose Legitimacy (شرعية وتحديد الهدف)</strong></td>
+            <td>جمع البيانات فقط للغرض المعلن عنه مسبقاً وبشكل شفاف دون استخدامها لأغراض أخرى.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Collection Limitation (الحد من جمع البيانات)</strong></td>
+            <td>جمع البيانات المطلوبة فقط لتشغيل الميزة، وتجنب نسخ البيانات أو دمجها مع إضافات أخرى.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Data Minimization (تقليل البيانات لأدنى حد)</strong></td>
+            <td>تقييد معالجة البيانات والحد من عدد الأشخاص الذين يمتلكون صلاحية الوصول إليها.</td>
+          </tr>
+          <tr>
+            <td><strong>5. Retention & Disclosure (تقييد الحفظ والإفصاح)</strong></td>
+            <td>حذف البيانات التي لم تعد هناك حاجة إليها فوراً من النشاط والأرشيف.</td>
+          </tr>
+          <tr>
+            <td><strong>6. Accuracy and Quality (دقة وجودة البيانات)</strong></td>
+            <td>ضمان أن البيانات التابعة للمستخدم صحيحة ومحدثة ولا تتسبب في أضرار في حال خطأها.</td>
+          </tr>
+          <tr>
+            <td><strong>7. Openness & Transparency (الشفافية والإفصاح)</strong></td>
+            <td>إعلام المستخدمين بكيفية جمع بياناتهم واستخدامها ومشاركتها مع أطراف خارجية.</td>
+          </tr>
+          <tr>
+            <td><strong>8. Individual Access (وصول الفرد لبياناته)</strong></td>
+            <td>منح المستخدمين وسيلة لتنزيل بياناتهم الشخصية أو طلب حذفها بالكامل.</td>
+          </tr>
+          <tr>
+            <td><strong>9. Accountability (المساءلة والتوثيق)</strong></td>
+            <td>توثيق استخدامات البيانات وحمايتها أثناء النقل والتشغيل ومنع ثغرات الاختراق.</td>
+          </tr>
+          <tr>
+            <td><strong>10. Information Security (أمان المعلومات)</strong></td>
+            <td>حماية البيانات الفنيّة عبر وسائط تشفير وتقنيات أمنية معتمدة.</td>
+          </tr>
+          <tr>
+            <td><strong>11. Privacy Compliance (الامتثال التشريعي)</strong></td>
+            <td>التأكد من التوافق مع القوانين المحلية والدولية للمكان الذي تُعالج فيه البيانات.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>2. إطار عمل الخصوصية بالتصميم (Privacy By Design Framework)</h2>
+    <p>تتمحور فكرة الخصوصية بالتصميم حول أن الخصوصية ليست مجرد ميزة إضافية (Add-on)، بل هي **عنصر أساسي في أصل هيكلة الكود**:</p>
+
+    <ul style="margin-right: 24px; margin-bottom: 20px; color: #334155;">
+      <li><strong>استباقية وليست تفاعلية (Proactive, Not Reactive):</strong> تتوقع مشكلات الخصوصية وقلق المستخدم قبل حدوثه وتمنعه مسبقاً.</li>
+      <li><strong>الخصوصية كإعداد افتراضي (Privacy as Default):</strong> لا يجب على المستخدم اتخاذ خطوات معقدة لتأمين خصوصيته، والموافقة لا تُفترض تلقائياً.</li>
+      <li><strong>مدمجة في التصميم (Built into Design):</strong> الوظائف البرمجية تُبنى منذ اللحظة الأولى لحماية البيانات.</li>
+      <li><strong>معادلة إيجابية (Positive Sum):</strong> لا يوجد تنازل أو مقايضة بين الأمان والخصوصية أو الأداء والخصوصية.</li>
+      <li><strong>حماية دورة الحياة الكاملة (End-to-End Protection):</strong> حماية البيانات من وقت جمعها وحتى حذفها النهائي والتخلص منها.</li>
+      <li><strong>شفافة وقابلة للتحقق (Transparent & Verifiable):</strong> المعايير المستخدمة مفتوحة وموثقة ويمكن التحقق منها بشكل مستقل.</li>
+      <li><strong>تتمحور حول المستخدم (User-Centric):</strong> منح المستخدمين التحكم الكامل والتنبيهات المباشرة والتفصيلية.</li>
+    </ul>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>3. أسئلة التدقيق الذاتي لإضافتك (Food for Thought for Your Plugin)</h2>
+    <p>لكي تضمن جاهزية إضافتك للتوافق مع متطلبات الخصوصية، ينبغي مراجعة هذه الأسئلة الفاحصة قبل إطلاق الإضافة:</p>
+
+    <div class="alert alert-info">
+      <strong>📋 قائمة مراجعة الخصوصية لإضافتك (Privacy Checklist):</strong>
+      <ol style="margin-right: 20px; margin-top: 8px; color: #1e293b;">
+        <li>هل تشارك الإضافة بيانات مع أطراف خارجية (External APIs / Servers)؟ وما هي السياسة المتبعة؟</li>
+        <li>هل تجمع الإضافة بيانات شخصية؟ وأين تُخزن (Options, Meta, Custom Tables, Files)؟</li>
+        <li>هل تضمن الإضافة مكتبات SDKs خارجية؟ وماذا تفعل هذه المكتبات بالبيانات؟</li>
+        <li>هل تجمع بيانات قياس عن بُعد (Telemetry Data) مباشرة أو غير مباشرة؟ (مثل تحميل صورة من سيرفر خارجي عند التثبيت).</li>
+        <li>هل تُدرج ملفات JS أو Tracking Pixels أو iFrames من أطراف خارجية؟</li>
+        <li>هل تُخزن بيانات في متصفح الزائر (Cookies / LocalStorage)؟</li>
+        <li>هل توفر الإضافة <strong>Personal Data Exporter</strong> و <strong>Personal Data Eraser</strong>؟</li>
+        <li>هل تمنع الإضافة تسجيل البيانات الشخصية داخل ملفات سجل الأخطاء Debug Logs بواسطة <code class="inline-code">wp_privacy_anonymize_data</code>؟</li>
+        <li>ما هي الصلاحية (Capability) المطلوبة لرؤية البيانات الشخصية في <code class="inline-code">wp-admin</code>؟</li>
+        <li>ما هي البيانات المعروضة في واجهة الموقع (Front-end) أو الـ REST API؟ وهل تقتصر على الأدوار المناسبة؟</li>
+        <li>هل تنظف الإضافة بياناتها بالكامل عند الحذف النهائي (Uninstall) أو عند حذف المستخدم؟</li>
+      </ol>
+    </div>
+
+    <!-- Footer -->
+    <footer class="lesson-footer">
+      <div><strong>كورس تطوير إضافات ووردبريس الشامل</strong> - جميع الحقوق محفوظة</div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <a href="18-Advanced-Hooks-Topics-and-Debugging.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'18-Advanced-Hooks-Topics-and-Debugging.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+        <a href="20-Personal-Data-Eraser-and-Exporter.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'20-Personal-Data-Eraser-and-Exporter.html'}, '*'); }" class="nav-btn">الدرس التالي ⬅️</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../main.js"></script>
+</body>
+</html>

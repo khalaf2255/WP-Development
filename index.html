@@ -368,22 +368,72 @@
           </div>
         </div>
 
-        <!-- Section 6: Additional Tutorials -->
-        <div class="section-group" id="section-additional">
+        <!-- Section 6: Privacy & Data Protection -->
+        <div class="section-group" id="section-privacy">
           <div class="section-header" onclick="toggleSection(this)">
             <div class="section-title">
-              <span class="section-icon">💡</span>
-              <span>6. Additional Tutorials</span>
+              <span class="section-icon">🔒</span>
+              <span>6. Privacy & Data Protection</span>
             </div>
             <div class="section-meta">
-              <span class="section-count">قريباً</span>
+              <span class="section-count">4 دروس</span>
               <span class="section-arrow">▼</span>
             </div>
           </div>
           <div class="section-content">
-            <div style="padding: 12px; text-align: center; color: var(--text-muted); font-size: 13px; font-weight: 500;">
-              ⏳ لا توجد دروس حالياً في هذا القسم. سيتم إضافة الشروحات الإضافية لاحقاً.
+            
+            <div class="lesson-item" data-id="19" data-path="lessons/19-Privacy-Concepts-and-Privacy-By-Design.html" data-keywords="privacy gdpr ISO 29100 privacy by design consent collection limitation checklist" onclick="loadLesson(this, 'lessons/19-Privacy-Concepts-and-Privacy-By-Design.html', 19)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 01</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Privacy Concepts & Privacy By Design</div>
+              <div class="lesson-item-desc">مفاهيم الخصوصية، مبادئ ISO 29100، إطار عمل Privacy by Design، والتدقيق الذاتي.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">ISO 29100</span>
+                <span class="topic-badge">Privacy by Design</span>
+              </div>
             </div>
+
+            <div class="lesson-item" data-id="20" data-path="lessons/20-Personal-Data-Eraser-and-Exporter.html" data-keywords="eraser exporter wp_privacy_personal_data_erasers wp_privacy_personal_data_exporters ajax loop pagination" onclick="loadLesson(this, 'lessons/20-Personal-Data-Eraser-and-Exporter.html', 20)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 02</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Personal Data Eraser & Exporter</div>
+              <div class="lesson-item-desc">إضافة ممحاة البيانات الشخصية ومصدّر البيانات بأسلوب Pagination عبر الفلاتر.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">Data Eraser</span>
+                <span class="topic-badge">Data Exporter</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="21" data-path="lessons/21-Privacy-Options-Hooks-and-Capabilities.html" data-keywords="privacy options hooks capabilities erase_others_personal_data export_others_personal_data manage_privacy_options" onclick="loadLesson(this, 'lessons/21-Privacy-Options-Hooks-and-Capabilities.html', 21)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 03</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Privacy Options, Hooks & Capabilities</div>
+              <div class="lesson-item-desc">المرجع الشامل لجميع خيارات وخطاطيف وصلاحيات الخصوصية الإدارية الثلاث.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">Privacy API</span>
+                <span class="topic-badge">Capabilities</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="22" data-path="lessons/22-Suggesting-Text-for-Site-Privacy-Policy.html" data-keywords="privacy policy text wp_add_privacy_policy_content admin_init privacy-policy-tutorial clipboard" onclick="loadLesson(this, 'lessons/22-Suggesting-Text-for-Site-Privacy-Policy.html', 22)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 04</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Suggesting Text for Site Privacy Policy</div>
+              <div class="lesson-item-desc">اقتراح نص لسياسة الخصوصية عبر wp_add_privacy_policy_content وفئة tutorial.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">Policy Text</span>
+                <span class="topic-badge">Tutorial Class</span>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -416,7 +466,7 @@
       }
 
       // 3. Activate saved lesson or default to Lesson 1
-      if (savedLessonId && savedLessonId >= 1 && savedLessonId <= 20) {
+      if (savedLessonId && savedLessonId >= 1 && savedLessonId <= 30) {
         const targetItem = document.querySelector(`.lesson-item[data-id="${savedLessonId}"]`);
         if (targetItem) {
           const path = targetItem.getAttribute('data-path');

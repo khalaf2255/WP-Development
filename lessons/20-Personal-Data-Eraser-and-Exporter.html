@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Data Eraser & Exporter | كورس تطوير إضافات ووردبريس الشامل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../main.css" />
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="top-nav">
+    <span class="top-nav-brand">كورس تطوير إضافات ووردبريس الشامل</span>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <a href="19-Privacy-Concepts-and-Privacy-By-Design.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'19-Privacy-Concepts-and-Privacy-By-Design.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+      <a href="21-Privacy-Options-Hooks-and-Capabilities.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'21-Privacy-Options-Hooks-and-Capabilities.html'}, '*'); }" class="nav-btn">الدرس التالي ⬅️</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    
+    <!-- Lesson Header -->
+    <header class="lesson-header">
+      <span class="lesson-badge">الدرس 02 | قسم Privacy & Data Protection</span>
+      <h1 class="lesson-title">ممحاة ومصدّر البيانات الشخصية (Data Eraser & Exporter)</h1>
+      <p class="lesson-subtitle">تسجيل دوال مسح وتصديير البيانات الشخصية بأسلوب Dials/Pagination عبر الخطاطيف الرسمية.</p>
+    </header>
+
+    <!-- Technical Content -->
+    
+    <h2>1. إضافة ممحاة البيانات الشخصية (Adding Personal Data Eraser)</h2>
+    <p>منذ إصدار ووردبريس 4.9.6، تم تقديم أداة <strong>Personal Data Eraser</strong> لحذف أو تجهيل البيانات الشخصية لمستخدم معين بناءً على البريد الإلكتروني. تعتمد الآلية على نظام الدُفعات (AJAX Loops with Pagination) لمنع حدوث انتهاء وقت السيرفر (Timeouts) عبر البرامتر <code class="inline-code">$page</code>.</p>
+
+    <h3>مثال عملي: حذف بيانات الموقع الجغرافي المسجلة في التعليقات عبر <code class="inline-code">wp_privacy_personal_data_erasers</code></h3>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">privacy-data-eraser.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">/**
+ * 1. دالة حذف بيانات الإحداثيات الشخصية المستهدفة عبر البريد الإلكتروني
+ *
+ * @param string $email_address البريد الإلكتروني المطلوب حذف بياناته
+ * @param int    $page          رقم الصفحة لمنع حدوث Timeout
+ * @return array
+ */</span>
+<span class="kw">function</span> <span class="fn">wporg_remove_location_meta_from_comments_for_email</span>( <span class="var">$email_address</span>, <span class="var">$page</span> = 1 ) {
+    <span class="var">$number</span> = 500; <span class="cm">// تحديد عدد 500 تعليق في المرة الواحدة لتفادي تجميد الخادم</span>
+    <span class="var">$page</span>   = (int) <span class="var">$page</span>;
+
+    <span class="var">$comments</span> = <span class="fn">get_comments</span>( <span class="kw">array</span>(
+        <span class="str">'author_email'</span> => <span class="var">$email_address</span>,
+        <span class="str">'number'</span>       => <span class="var">$number</span>,
+        <span class="str">'paged'</span>        => <span class="var">$page</span>,
+        <span class="str">'order_by'</span>     => <span class="str">'comment_ID'</span>,
+        <span class="str">'order'</span>        => <span class="str">'ASC'</span>,
+    ) );
+
+    <span class="var">$items_removed</span> = <span class="kw">false</span>;
+
+    <span class="kw">foreach</span> ( (array) <span class="var">$comments</span> <span class="kw">as</span> <span class="var">$comment</span> ) {
+        <span class="var">$latitude</span>  = <span class="fn">get_comment_meta</span>( <span class="var">$comment</span>-><span class="var">comment_ID</span>, <span class="str">'latitude'</span>, <span class="kw">true</span> );
+        <span class="var">$longitude</span> = <span class="fn">get_comment_meta</span>( <span class="var">$comment</span>-><span class="var">comment_ID</span>, <span class="str">'longitude'</span>, <span class="kw">true</span> );
+
+        <span class="kw">if</span> ( ! <span class="fn">empty</span>( <span class="var">$latitude</span> ) ) {
+            <span class="fn">delete_comment_meta</span>( <span class="var">$comment</span>-><span class="var">comment_ID</span>, <span class="str">'latitude'</span> );
+            <span class="var">$items_removed</span> = <span class="kw">true</span>;
+        }
+
+        <span class="kw">if</span> ( ! <span class="fn">empty</span>( <span class="var">$longitude</span> ) ) {
+            <span class="fn">delete_comment_meta</span>( <span class="var">$comment</span>-><span class="var">comment_ID</span>, <span class="str">'longitude'</span> );
+            <span class="var">$items_removed</span> = <span class="kw">true</span>;
+        }
+    }
+
+    <span class="cm">// إعلام النظام بما إذا كانت هناك صفحات تعليقات أخرى متبقية</span>
+    <span class="var">$done</span> = <span class="fn">count</span>( <span class="var">$comments</span> ) &lt; <span class="var">$number</span>;
+
+    <span class="kw">return</span> <span class="kw">array</span>(
+        <span class="str">'items_removed'</span>  => <span class="var">$items_removed</span>,
+        <span class="str">'items_retained'</span> => <span class="kw">false</span>,
+        <span class="str">'messages'</span>       => <span class="kw">array</span>(),
+        <span class="str">'done'</span>           => <span class="var">$done</span>,
+    );
+}
+
+<span class="cm">/**
+ * 2. تسجيل دالة الممحاة عبر الفلتر wp_privacy_personal_data_erasers
+ */</span>
+<span class="kw">function</span> <span class="fn">wporg_register_privacy_erasers</span>( <span class="var">$erasers</span> ) {
+    <span class="var">$erasers</span>[<span class="str">'my-plugin-slug'</span>] = <span class="kw">array</span>(
+        <span class="str">'eraser_friendly_name'</span> => <span class="fn">__</span>( <span class="str">'Comment Location Plugin'</span>, <span class="str">'text-domain'</span> ),
+        <span class="str">'callback'</span>             => <span class="str">'wporg_remove_location_meta_from_comments_for_email'</span>,
+    );
+    <span class="kw">return</span> <span class="var">$erasers</span>;
+}
+<span class="fn">add_filter</span>( <span class="str">'wp_privacy_personal_data_erasers'</span>, <span class="str">'wporg_register_privacy_erasers'</span> );</code></pre>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>2. إضافة مصدّر البيانات الشخصية (Adding Personal Data Exporter)</h2>
+    <p>يتيح مصدّر البيانات للمستخدم تنزيل تقرير شامل بكل بياناته الشخصية المسجلة داخل إضافتك. يتم تسجيل المصدّر عبر الفلتر <code class="inline-code">wp_privacy_personal_data_exporters</code>:</p>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">privacy-data-exporter.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">/**
+ * 1. دالة تجميع وتصدير بيانات إحداثيات التعليقات
+ */</span>
+<span class="kw">function</span> <span class="fn">wporg_export_location_meta_from_comments_for_email</span>( <span class="var">$email_address</span>, <span class="var">$page</span> = 1 ) {
+    <span class="var">$number</span>       = 500;
+    <span class="var">$page</span>         = (int) <span class="var">$page</span>;
+    <span class="var">$export_items</span> = <span class="kw">array</span>();
+
+    <span class="var">$comments</span> = <span class="fn">get_comments</span>( <span class="kw">array</span>(
+        <span class="str">'author_email'</span> => <span class="var">$email_address</span>,
+        <span class="str">'number'</span>       => <span class="var">$number</span>,
+        <span class="str">'paged'</span>        => <span class="var">$page</span>,
+        <span class="str">'order_by'</span>     => <span class="str">'comment_ID'</span>,
+        <span class="str">'order'</span>        => <span class="str">'ASC'</span>,
+    ) );
+
+    <span class="kw">foreach</span> ( (array) <span class="var">$comments</span> <span class="kw">as</span> <span class="var">$comment</span> ) {
+        <span class="var">$latitude</span>  = <span class="fn">get_comment_meta</span>( <span class="var">$comment</span>-><span class="var">comment_ID</span>, <span class="str">'latitude'</span>, <span class="kw">true</span> );
+        <span class="var">$longitude</span> = <span class="fn">get_comment_meta</span>( <span class="var">$comment</span>-><span class="var">comment_ID</span>, <span class="str">'longitude'</span>, <span class="kw">true</span> );
+
+        <span class="kw">if</span> ( ! <span class="fn">empty</span>( <span class="var">$latitude</span> ) || ! <span class="fn">empty</span>( <span class="var">$longitude</span> ) ) {
+            <span class="var">$data</span> = <span class="kw">array</span>();
+            <span class="kw">if</span> ( ! <span class="fn">empty</span>( <span class="var">$latitude</span> ) ) {
+                <span class="var">$data</span>[] = <span class="kw">array</span>( <span class="str">'name'</span> => <span class="fn">__</span>( <span class="str">'Latitude'</span>, <span class="str">'text-domain'</span> ), <span class="str">'value'</span> => <span class="var">$latitude</span> );
+            }
+            <span class="kw">if</span> ( ! <span class="fn">empty</span>( <span class="var">$longitude</span> ) ) {
+                <span class="var">$data</span>[] = <span class="kw">array</span>( <span class="str">'name'</span> => <span class="fn">__</span>( <span class="str">'Longitude'</span>, <span class="str">'text-domain'</span> ), <span class="str">'value'</span> => <span class="var">$longitude</span> );
+            }
+
+            <span class="var">$export_items</span>[] = <span class="kw">array</span>(
+                <span class="str">'group_id'</span>    => <span class="str">'comment-location'</span>,
+                <span class="str">'group_label'</span> => <span class="fn">__</span>( <span class="str">'Comment Locations'</span>, <span class="str">'text-domain'</span> ),
+                <span class="str">'item_id'</span>     => <span class="str">"comment-location-{$comment-&gt;comment_ID}"</span>,
+                <span class="str">'data'</span>        => <span class="var">$data</span>,
+            );
+        }
+    }
+
+    <span class="var">$done</span> = <span class="fn">count</span>( <span class="var">$comments</span> ) &lt; <span class="var">$number</span>;
+
+    <span class="kw">return</span> <span class="kw">array</span>(
+        <span class="str">'data'</span> => <span class="var">$export_items</span>,
+        <span class="str">'done'</span> => <span class="var">$done</span>,
+    );
+}
+
+<span class="cm">/**
+ * 2. تسجيل المصدّر عبر الفلتر wp_privacy_personal_data_exporters
+ */</span>
+<span class="kw">function</span> <span class="fn">wporg_register_privacy_exporters</span>( <span class="var">$exporters</span> ) {
+    <span class="var">$exporters</span>[<span class="str">'my-plugin-slug'</span>] = <span class="kw">array</span>(
+        <span class="str">'exporter_friendly_name'</span> => <span class="fn">__</span>( <span class="str">'Comment Location Plugin'</span>, <span class="str">'text-domain'</span> ),
+        <span class="str">'callback'</span>               => <span class="str">'wporg_export_location_meta_from_comments_for_email'</span>,
+    );
+    <span class="kw">return</span> <span class="var">$exporters</span>;
+}
+<span class="fn">add_filter</span>( <span class="str">'wp_privacy_personal_data_exporters'</span>, <span class="str">'wporg_register_privacy_exporters'</span> );</code></pre>
+    </div>
+
+    <!-- Footer -->
+    <footer class="lesson-footer">
+      <div><strong>كورس تطوير إضافات ووردبريس الشامل</strong> - جميع الحقوق محفوظة</div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <a href="19-Privacy-Concepts-and-Privacy-By-Design.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'19-Privacy-Concepts-and-Privacy-By-Design.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+        <a href="21-Privacy-Options-Hooks-and-Capabilities.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'21-Privacy-Options-Hooks-and-Capabilities.html'}, '*'); }" class="nav-btn">الدرس التالي ⬅️</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../main.js"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Options, Hooks & Capabilities | كورس تطوير إضافات ووردبريس الشامل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../main.css" />
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="top-nav">
+    <span class="top-nav-brand">كورس تطوير إضافات ووردبريس الشامل</span>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <a href="20-Personal-Data-Eraser-and-Exporter.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'20-Personal-Data-Eraser-and-Exporter.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+      <a href="22-Suggesting-Text-for-Site-Privacy-Policy.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'22-Suggesting-Text-for-Site-Privacy-Policy.html'}, '*'); }" class="nav-btn">الدرس التالي ⬅️</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    
+    <!-- Lesson Header -->
+    <header class="lesson-header">
+      <span class="lesson-badge">الدرس 03 | قسم Privacy & Data Protection</span>
+      <h1 class="lesson-title">خيارات وخطاطيف وصلاحيات الخصوصية (Options, Hooks & Capabilities)</h1>
+      <p class="lesson-subtitle">المرجع الشامل لجميع الأفعال، الفلاتر، خيارات النظام، والصلاحيات الإدارية المتعلقة بالخصوصية.</p>
+    </header>
+
+    <!-- Technical Content -->
+    
+    <h2>1. مرجع خيارات وخطاطيف الخصوصية (Privacy API Reference)</h2>
+    <p>توفر نواة ووردبريس مجموعة واسعة من الخيارات والخطاطيف (Actions & Filters) للتحكم الدقيق في طلبات الخصوصية، ورسائل البريد الإلكتروني، وتصدير ومسح الملفات:</p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>النوع (Type)</th>
+            <th>اسم الخطاف / الخيار / الصلاحية</th>
+            <th>الوصف والاستخدام التقني</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Option</strong></td>
+            <td><code class="inline-code">wp_page_for_privacy_policy</code></td>
+            <td>يحتوي على ID صفحة سياسة الخصوصية المعينة للموقع.</td>
+          </tr>
+          <tr>
+            <td><strong>Action</strong></td>
+            <td><code class="inline-code">user_request_action_confirmed</code></td>
+            <td>يُطلق فور تأكيد المستخدم لطلب التصدير أو الحذف.</td>
+          </tr>
+          <tr>
+            <td><strong>Action</strong></td>
+            <td><code class="inline-code">wp_privacy_delete_old_export_files</code></td>
+            <td>حدث مجدول أوتوماتيكياً لتنظيف ومسح ملفات التصدير القديمة من السيرفر.</td>
+          </tr>
+          <tr>
+            <td><strong>Action</strong></td>
+            <td><code class="inline-code">wp_privacy_personal_data_erased</code></td>
+            <td>يُطلق بعد اكتمال الصفحة الأخيرة من آخر عملية مسح بيانات.</td>
+          </tr>
+          <tr>
+            <td><strong>Filter</strong></td>
+            <td><code class="inline-code">privacy_policy_url</code></td>
+            <td>لتعديل وفلترة رابط URL لصفحة سياسة الخصوصية برمجياً.</td>
+          </tr>
+          <tr>
+            <td><strong>Filter</strong></td>
+            <td><code class="inline-code">the_privacy_policy_link</code></td>
+            <td>لتعديل كود الـ HTML الخاص برابط صفحة الخصوصية المعروض في الفوتر.</td>
+          </tr>
+          <tr>
+            <td><strong>Filter</strong></td>
+            <td><code class="inline-code">wp_privacy_personal_data_erasers</code></td>
+            <td>لتسجيل دوال ممحاة البيانات الشخصية التابعة للإضافات.</td>
+          </tr>
+          <tr>
+            <td><strong>Filter</strong></td>
+            <td><code class="inline-code">wp_privacy_personal_data_exporters</code></td>
+            <td>لتسجيل دوال تصدير البيانات الشخصية التابعة للإضافات.</td>
+          </tr>
+          <tr>
+            <td><strong>Filter</strong></td>
+            <td><code class="inline-code">wp_privacy_anonymize_data</code></td>
+            <td>لتصفية وتجهيل البيانات المسجلة لتجريدها من الهوية.</td>
+          </tr>
+          <tr>
+            <td><strong>Filter</strong></td>
+            <td><code class="inline-code">wp_privacy_export_expiration</code></td>
+            <td>التحكم في الفترة الزمنية المسموحة للملفات قبل مسحها (الافتراضي 3 أيام).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>2. الصلاحيات الإدارية الخاصة بالخصوصية (Privacy Capabilities)</h2>
+    <p>يتم التحكم في أجهزة وأدوات الخصوصية داخل لوحة التحكم عبر 3 صلاحيات رئيسية قياسية (Capabilities). يمتلكها مدير الموقع (Administrator) افتراضياً:</p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>الصلاحية (Capability Name)</th>
+            <th>القائمة والواجهة المرتبطة في لوحة التحكم</th>
+            <th>الهدف الأمني</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline-code">erase_others_personal_data</code></td>
+            <td>تتحكم في ظهور قائمة الفرعية <strong>مسح البيانات الشخصية (Erase Personal Data)</strong> تحت قسم أدوات (Tools).</td>
+            <td>تمنح الإذن بحذف وتجهيل بيانات المستخدمين والزوار.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">export_others_personal_data</code></td>
+            <td>تتحكم في ظهور القائمة الفرعية <strong>تصدير البيانات الشخصية (Export Personal Data)</strong> تحت قسم أدوات (Tools).</td>
+            <td>تمنح الإذن بتوليد وتصدير ملفات البيانات الشخصية.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">manage_privacy_options</code></td>
+            <td>تتحكم في ظهور القائمة الفرعية <strong>الخصوصية (Privacy)</strong> تحت قسم الإعدادات (Settings).</td>
+            <td>تمنح الإذن بتعيين وإنشاء صفحة سياسة الخصوصية للموقع.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">check-privacy-capability.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// فحص صلاحية إدارة الخصوصية قبل إتاحة زر خاص في الإضافة</span>
+<span class="kw">if</span> ( <span class="fn">current_user_can</span>( <span class="str">'manage_privacy_options'</span> ) ) {
+    <span class="cm">// عرض خيارات إضافية خاصة بالامتثال لسياسة الخصوصية</span>
+}</code></pre>
+    </div>
+
+    <!-- Footer -->
+    <footer class="lesson-footer">
+      <div><strong>كورس تطوير إضافات ووردبريس الشامل</strong> - جميع الحقوق محفوظة</div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <a href="20-Personal-Data-Eraser-and-Exporter.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'20-Personal-Data-Eraser-and-Exporter.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+        <a href="22-Suggesting-Text-for-Site-Privacy-Policy.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'22-Suggesting-Text-for-Site-Privacy-Policy.html'}, '*'); }" class="nav-btn">الدرس التالي ⬅️</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="../main.js"></script>
+</body>
+</html>
