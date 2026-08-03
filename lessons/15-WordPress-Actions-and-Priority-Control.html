@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plugin Handbook Overview | كورس تطوير إضافات ووردبريس الشامل</title>
+  <title>WordPress Actions & Priority Control | كورس تطوير إضافات ووردبريس الشامل</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,6 @@
       --primary: #0284c7;
       --primary-dark: #0369a1;
       --primary-light: #e0f2fe;
-      
       --accent: #10b981;
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -102,7 +101,7 @@
       margin-bottom: 12px;
     }
     .lesson-title {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 900;
       color: #0f172a;
       line-height: 1.3;
@@ -146,45 +145,6 @@
       background: #f0f9ff;
       border-right: 4px solid #0284c7;
       color: #0c4a6e;
-    }
-    .alert-success {
-      background: #ecfdf5;
-      border-right: 4px solid #10b981;
-      color: #065f46;
-    }
-
-    /* Grid Roadmap Cards */
-    .roadmap-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      margin: 24px 0;
-    }
-    .roadmap-card {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      transition: all 0.2s ease;
-    }
-    .roadmap-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);
-    }
-    .roadmap-card-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      font-size: 16px;
-      color: #0f172a;
-      margin-bottom: 8px;
-    }
-    .roadmap-card-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
     }
 
     /* Code Block */
@@ -230,6 +190,7 @@
     .fn { color: #dcdcaa; }
     .str { color: #ce9178; }
     .cm { color: #6a9955; font-style: italic; }
+    .var { color: #9cdcfe; }
 
     /* Footer Note */
     .lesson-footer {
@@ -257,50 +218,19 @@
     
     <!-- Lesson Header -->
     <header class="lesson-header">
-      <span class="lesson-badge">الدرس 01 | قسم Plugin Handbook</span>
-      <h1 class="lesson-title">مقدمة وخريطة طريق دليل تطوير الإضافات (Plugin Handbook)</h1>
-      <p class="lesson-subtitle">تفكيك المعمارية الهيكلية للنظام، والقاعدة الذهبية في حماية النواة Core.</p>
+      <span class="lesson-badge">الدرس 02 | قسم Hooks</span>
+      <h1 class="lesson-title">أفعال ووردبريس والتحكم بالأولويات (Actions & Priority)</h1>
+      <p class="lesson-subtitle">كيفية إضافة الأفعال بـ add_action، إحكام ترتيب التنفيذ عبر الأولوية (Priority)، وتمرير المعاملات المتقدمة.</p>
     </header>
 
     <!-- Technical Content -->
     
-    <h2>1. المعمارية الهيكلية لدليل الإضافات (Plugin Developer Handbook)</h2>
-    <p>دليل تطوير الإضافات الرسمي هو المرجع الأساسي لتطوير برمجيات ووردبريس. بناءً على الخريطة الرسمية، لا تعمل الإضافة في ووردبريس كبرنامج منفصل، بل كـ <strong>توسعة ديناميكية (Dynamic Extension)</strong> ترتبط بالمنظومة عبر 4 ركائز معمارية رئيسية:</p>
-
-    <div class="roadmap-grid">
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🔗 1. نظام الخطاطيف (Hooks System)</div>
-        <div class="roadmap-card-desc">العصب المركزي المكون من <code class="inline-code">Actions</code> و <code class="inline-code">Filters</code>، ويتيح لك ضخ أكوادك أو تعديل البيانات أثناء تحميل الصفحة.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🗄️ 2. إدارة البيانات والكيانات (Entities)</div>
-        <div class="roadmap-card-desc">التعامل مع قاعدة البيانات من خلال Custom Post Types, Taxonomies, Metadata, والحقول المخصصة.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🎨 3. الواجهة والتحكم (Admin UX)</div>
-        <div class="roadmap-card-desc">دمج لوحات التحكم والإعدادات داخل الـ Dashboard عبر Administration Menus و Settings API.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">⚙️ 4. الخلفية والمهام (Integrations & Cron)</div>
-        <div class="roadmap-card-desc">الاتصال بالخدمات الخارجية عبر HTTP API، وتنفيذ المهمات المجدولة خلفياً عبر WP-Cron.</div>
-      </div>
-    </div>
-
-    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
-
-    <h2>2. القاعدة الذهبية: حماية النواة (Don't Touch WordPress Core)</h2>
-    <p>القاعدة الأولى والأهم في عالم ووردبريس هي: <strong>لا تقم أبداً بتعديل أي ملف من ملفات نواة ووردبريس (WordPress Core)!</strong></p>
-
-    <div class="alert alert-info">
-      <strong>📌 العلة التقنية (Technical Rationale):</strong>
-      عند تحديث ووردبريس إلى إصدار جديد، يتم استبدال جميع ملفات النواة تلقائياً. أي تعديل مباشر في ملفات النواة سيتم مسحه فوراً، فضلاً عن التسبب في ثغرات أمنية وأخطاء برمجية غير متوقعة. البديل الآمن دائماً هو استخدام نظام الـ <strong>Hooks</strong>.
-    </div>
-
-    <h2>3. نمط الهيكل الأساسي للإضافة (Core Blueprint)</h2>
-    <p>هذا كود مبسط يوضح كيف يتم تجميع مكونات الإضافة والتسجيل في نظام الـ Hooks دون المساس بالنواة:</p>
+    <h2>1. طريقة إضافة فعل (Adding an Action)</h2>
+    <p>تتضمن عملية إضافة فعل خطوتين أساسيتين:</p>
+    <ol style="margin-right: 24px; margin-bottom: 24px; color: #334155;">
+      <li><strong>إنشاء دالة Callback:</strong> دالة PHP عادية مسبوقة ببادئة تنفذ الإجراء المطلوب عند استدعائها.</li>
+      <li><strong>ربط الدالة بالفعل (Hooking):</strong> استخدام الدالة القياسية <code class="inline-code">add_action()</code> لربط الدالة باسم الفعل بالنظام.</li>
+    </ol>
 
     <div class="vscode-window">
       <div class="vscode-header">
@@ -309,28 +239,69 @@
           <div class="vscode-dot dot-yellow"></div>
           <div class="vscode-dot dot-green"></div>
         </div>
-        <div class="vscode-filename">my-first-plugin.php</div>
+        <div class="vscode-filename">basic-action.php</div>
       </div>
       <pre><code><span class="kw">&lt;?php</span>
-<span class="cm">/**
- * Plugin Name: Core Architecture Demo
- * Description: نموذج هيكلي موحد لتنفيذ إضافة ووردبريس قياسية.
- * Version: 1.0.0
- */</span>
-
-<span class="cm">// 1. حماية الملف من الوصول المباشر</span>
-<span class="kw">if</span> ( ! <span class="fn">defined</span>( <span class="str">'ABSPATH'</span> ) ) {
-    <span class="kw">exit</span>;
+<span class="kw">function</span> <span class="fn">wporg_callback</span>() {
+    <span class="cm">// تنفيذ إجراء معين (مثل كتابة سجل أو إضافة خيار)</span>
 }
+<span class="fn">add_action</span>( <span class="str">'init'</span>, <span class="str">'wporg_callback'</span> );</code></pre>
+    </div>
 
-<span class="cm">// 2. التسجيل في نظام الـ Hooks (إصدار Custom Post Type)</span>
-<span class="fn">add_action</span>( <span class="str">'init'</span>, <span class="str">'my_custom_post_type_init'</span> );
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
 
-<span class="kw">function</span> <span class="fn">my_custom_post_type_init</span>() {
-    <span class="fn">register_post_type</span>( <span class="str">'book'</span>, <span class="kw">array</span>(
-        <span class="str">'public'</span> => <span class="kw">true</span>,
-        <span class="str">'label'</span>  => <span class="str">'Books'</span>,
-    ) );
+    <h2>2. نظام الأولويات (Priority Control)</h2>
+    <p>يمكن ربط العديد من الدوال بنفس الفعل (مثل الـ <code class="inline-code">init</code> الذي يتم استخدامه بكثرة). يحدد ووردبريس ترتيب تنفيذ الدوال المرتبطة بناءً على **الأولوية (Priority)** المعطاة كالبرامتر الثالث في <code class="inline-code">add_action()</code>:</p>
+
+    <ul>
+      <li>الأولوية الافتراضية هي <strong>10</strong> عند عدم تحديد قيمة.</li>
+      <li>القيم الأصغر (مثل <strong>9</strong>) تنفذ <strong>أولاً قبل</strong> القيمة الافتراضية.</li>
+      <li>القيم الأكبر (مثل <strong>11</strong>) تنفذ <strong>لاحقاً بعد</strong> القيمة الافتراضية.</li>
+      <li>إذا تساوت الأولوية لعدة دوال، يتم تنفيذها بحسب ترتيب تسجيلها الكودي.</li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">priority-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="fn">add_action</span>( <span class="str">'init'</span>, <span class="str">'wporg_callback_run_me_late'</span>, 11 );
+<span class="fn">add_action</span>( <span class="str">'init'</span>, <span class="str">'wporg_callback_run_me_normal'</span> );     <span class="cm">// افتراضي 10</span>
+<span class="fn">add_action</span>( <span class="str">'init'</span>, <span class="str">'wporg_callback_run_me_early'</span>, 9 );
+<span class="fn">add_action</span>( <span class="str">'init'</span>, <span class="str">'wporg_callback_run_me_later'</span>, 11 );
+
+<span class="cm">// ترتيب التنفيذ الفعلي في ووردبريس سيكون:</span>
+<span class="cm">// 1. wporg_callback_run_me_early (أولوية 9)</span>
+<span class="cm">// 2. wporg_callback_run_me_normal (أولوية 10)</span>
+<span class="cm">// 3. wporg_callback_run_me_late (أولوية 11 - سجلت أولاً)</span>
+<span class="cm">// 4. wporg_callback_run_me_later (أولوية 11 - سجلت ثانياً)</span></code></pre>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>3. عدد المعاملات المستقبلة (Accepted Arguments)</h2>
+    <p>في بعض الأحيان يرسل الفعل بيانات إضافية للدالة. على سبيل المثال، عند حفظ المقال، يُطلق ووردبريس الفعل <code class="inline-code">save_post</code> ممرراً برامترين: ID المقال وكائن المقال نفسه (<code class="inline-code">$post</code>). لاستقبال كلا البرامترين، يجب تحديد العدد **2** كبرامتر رابع في <code class="inline-code">add_action()</code>:</p>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">accepted-args.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// تحدد القيمة 2 كـ accepted_args لاستقبال $post_id و $post</span>
+<span class="fn">add_action</span>( <span class="str">'save_post'</span>, <span class="str">'wporg_custom'</span>, 10, 2 );
+
+<span class="kw">function</span> <span class="fn">wporg_custom</span>( <span class="var">$post_id</span>, <span class="var">$post</span> ) {
+    <span class="cm">// يمكنك الآن استخدام $post_id و كائن $post</span>
 }</code></pre>
     </div>
 
@@ -341,5 +312,6 @@
     </footer>
 
   </div>
+
 </body>
 </html>

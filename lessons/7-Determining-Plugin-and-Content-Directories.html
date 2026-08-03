@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plugin Handbook Overview | كورس تطوير إضافات ووردبريس الشامل</title>
+  <title>Determining Plugin & Content Directories | كورس تطوير إضافات ووردبريس الشامل</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,6 @@
       --primary: #0284c7;
       --primary-dark: #0369a1;
       --primary-light: #e0f2fe;
-      
       --accent: #10b981;
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -102,7 +101,7 @@
       margin-bottom: 12px;
     }
     .lesson-title {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 900;
       color: #0f172a;
       line-height: 1.3;
@@ -142,50 +141,43 @@
       font-size: 15px;
       line-height: 1.7;
     }
+    .alert-danger {
+      background: #fef2f2;
+      border-right: 4px solid #ef4444;
+      color: #991b1b;
+    }
     .alert-info {
       background: #f0f9ff;
       border-right: 4px solid #0284c7;
       color: #0c4a6e;
     }
-    .alert-success {
-      background: #ecfdf5;
-      border-right: 4px solid #10b981;
-      color: #065f46;
-    }
 
-    /* Grid Roadmap Cards */
-    .roadmap-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
+    /* Tables */
+    .table-wrapper {
+      overflow-x: auto;
       margin: 24px 0;
-    }
-    .roadmap-card {
-      background: #f8fafc;
-      border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
-      transition: all 0.2s ease;
+      border: 1px solid var(--border);
     }
-    .roadmap-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+      font-size: 14.5px;
     }
-    .roadmap-card-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      font-size: 16px;
+    th {
+      background: #f1f5f9;
       color: #0f172a;
-      margin-bottom: 8px;
+      padding: 14px 18px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
     }
-    .roadmap-card-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      color: #334155;
     }
+    tr:nth-child(even) { background: #f8fafc; }
 
     /* Code Block */
     .vscode-window {
@@ -230,6 +222,7 @@
     .fn { color: #dcdcaa; }
     .str { color: #ce9178; }
     .cm { color: #6a9955; font-style: italic; }
+    .var { color: #9cdcfe; }
 
     /* Footer Note */
     .lesson-footer {
@@ -257,82 +250,68 @@
     
     <!-- Lesson Header -->
     <header class="lesson-header">
-      <span class="lesson-badge">الدرس 01 | قسم Plugin Handbook</span>
-      <h1 class="lesson-title">مقدمة وخريطة طريق دليل تطوير الإضافات (Plugin Handbook)</h1>
-      <p class="lesson-subtitle">تفكيك المعمارية الهيكلية للنظام، والقاعدة الذهبية في حماية النواة Core.</p>
+      <span class="lesson-badge">الدرس 05 | قسم Plugin Basics</span>
+      <h1 class="lesson-title">تحديد مسارات الإضافة والمحتوى (Determining Directories)</h1>
+      <p class="lesson-subtitle">لماذا نبتعد عن المسارات الصلبة؟ حل Symlinks مع __FILE__، والتفرقة بين Client URL و Server Path.</p>
     </header>
 
     <!-- Technical Content -->
     
-    <h2>1. المعمارية الهيكلية لدليل الإضافات (Plugin Developer Handbook)</h2>
-    <p>دليل تطوير الإضافات الرسمي هو المرجع الأساسي لتطوير برمجيات ووردبريس. بناءً على الخريطة الرسمية، لا تعمل الإضافة في ووردبريس كبرنامج منفصل، بل كـ <strong>توسعة ديناميكية (Dynamic Extension)</strong> ترتبط بالمنظومة عبر 4 ركائز معمارية رئيسية:</p>
+    <h2>1. العلة التقنية لمنع المسارات الصلبة (Why Avoid Hardcoded Paths?)</h2>
+    <p>يتيح ووردبريس للمستخدمين والشركات تغيير اسم ومكان مجلد <code class="inline-code">wp-content</code> لأسباب أمنية وتنظيمية. علاوة على ذلك، فإن الثابت السحري في PHP <code class="inline-code">__FILE__</code> يترجم الـ Symlinks تلقائياً. لذلك، فإن استخدام مسارات صلبة يتسبب في انكسار الإضافة تماماً.</p>
 
-    <div class="roadmap-grid">
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🔗 1. نظام الخطاطيف (Hooks System)</div>
-        <div class="roadmap-card-desc">العصب المركزي المكون من <code class="inline-code">Actions</code> و <code class="inline-code">Filters</code>، ويتيح لك ضخ أكوادك أو تعديل البيانات أثناء تحميل الصفحة.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🗄️ 2. إدارة البيانات والكيانات (Entities)</div>
-        <div class="roadmap-card-desc">التعامل مع قاعدة البيانات من خلال Custom Post Types, Taxonomies, Metadata, والحقول المخصصة.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🎨 3. الواجهة والتحكم (Admin UX)</div>
-        <div class="roadmap-card-desc">دمج لوحات التحكم والإعدادات داخل الـ Dashboard عبر Administration Menus و Settings API.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">⚙️ 4. الخلفية والمهام (Integrations & Cron)</div>
-        <div class="roadmap-card-desc">الاتصال بالخدمات الخارجية عبر HTTP API، وتنفيذ المهمات المجدولة خلفياً عبر WP-Cron.</div>
-      </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>الدالة</th>
+            <th>نوع المخرج</th>
+            <th>القيمة المرجعة النموذجية</th>
+            <th>الاستخدام الرئيسي</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline-code">plugins_url('js/script.js', __FILE__)</code></td>
+            <td>URL كامل للمتصفح</td>
+            <td><code class="inline-code">https://site.com/wp-content/plugins/my-plugin/js/script.js</code></td>
+            <td>تحميل السكريبتات بـ <code class="inline-code">wp_enqueue_script</code></td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">plugin_dir_url(__FILE__)</code></td>
+            <td>URL مجلد الإضافة</td>
+            <td><code class="inline-code">https://site.com/wp-content/plugins/my-plugin/</code></td>
+            <td>عنوان الويب المباشر لمجلد الإضافة</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">plugin_dir_path(__FILE__)</code></td>
+            <td>Server Path للسيرفر</td>
+            <td><code class="inline-code">/var/www/html/wp-content/plugins/my-plugin/</code></td>
+            <td>تضمين الملفات بـ <code class="inline-code">require_once</code></td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">plugin_basename(__FILE__)</code></td>
+            <td>Relative Path نسبي</td>
+            <td><code class="inline-code">my-plugin/my-plugin.php</code></td>
+            <td>التعرف على الإضافة في الـ Hooks والشبكات</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
 
-    <h2>2. القاعدة الذهبية: حماية النواة (Don't Touch WordPress Core)</h2>
-    <p>القاعدة الأولى والأهم في عالم ووردبريس هي: <strong>لا تقم أبداً بتعديل أي ملف من ملفات نواة ووردبريس (WordPress Core)!</strong></p>
+    <h2>2. دوال مسارات ووردبريس الشاملة (WordPress Core Directory Functions)</h2>
+    <p>بالإضافة لدوال الإضافات، يوفر ووردبريس دوال مسارات عامة للوصول لكافة أجزاء النظام:</p>
 
-    <div class="alert alert-info">
-      <strong>📌 العلة التقنية (Technical Rationale):</strong>
-      عند تحديث ووردبريس إلى إصدار جديد، يتم استبدال جميع ملفات النواة تلقائياً. أي تعديل مباشر في ملفات النواة سيتم مسحه فوراً، فضلاً عن التسبب في ثغرات أمنية وأخطاء برمجية غير متوقعة. البديل الآمن دائماً هو استخدام نظام الـ <strong>Hooks</strong>.
-    </div>
-
-    <h2>3. نمط الهيكل الأساسي للإضافة (Core Blueprint)</h2>
-    <p>هذا كود مبسط يوضح كيف يتم تجميع مكونات الإضافة والتسجيل في نظام الـ Hooks دون المساس بالنواة:</p>
-
-    <div class="vscode-window">
-      <div class="vscode-header">
-        <div class="vscode-dots">
-          <div class="vscode-dot dot-red"></div>
-          <div class="vscode-dot dot-yellow"></div>
-          <div class="vscode-dot dot-green"></div>
-        </div>
-        <div class="vscode-filename">my-first-plugin.php</div>
-      </div>
-      <pre><code><span class="kw">&lt;?php</span>
-<span class="cm">/**
- * Plugin Name: Core Architecture Demo
- * Description: نموذج هيكلي موحد لتنفيذ إضافة ووردبريس قياسية.
- * Version: 1.0.0
- */</span>
-
-<span class="cm">// 1. حماية الملف من الوصول المباشر</span>
-<span class="kw">if</span> ( ! <span class="fn">defined</span>( <span class="str">'ABSPATH'</span> ) ) {
-    <span class="kw">exit</span>;
-}
-
-<span class="cm">// 2. التسجيل في نظام الـ Hooks (إصدار Custom Post Type)</span>
-<span class="fn">add_action</span>( <span class="str">'init'</span>, <span class="str">'my_custom_post_type_init'</span> );
-
-<span class="kw">function</span> <span class="fn">my_custom_post_type_init</span>() {
-    <span class="fn">register_post_type</span>( <span class="str">'book'</span>, <span class="kw">array</span>(
-        <span class="str">'public'</span> => <span class="kw">true</span>,
-        <span class="str">'label'</span>  => <span class="str">'Books'</span>,
-    ) );
-}</code></pre>
-    </div>
+    <ul>
+      <li><code class="inline-code">home_url()</code>: عنوان الصفحة الرئيسية للموقع Web Front-end.</li>
+      <li><code class="inline-code">site_url()</code>: عنوان مجلد ووردبريس الأساسي الذي يحتوي على ملفات النواة.</li>
+      <li><code class="inline-code">admin_url()</code>: عنوان لوحة التحكم <code class="inline-code">/wp-admin/</code>.</li>
+      <li><code class="inline-code">includes_url()</code>: عنوان مجلد تضمين النواة <code class="inline-code">/wp-includes/</code>.</li>
+      <li><code class="inline-code">content_url()</code>: عنوان مجلد المحتوى <code class="inline-code">/wp-content/</code>.</li>
+      <li><code class="inline-code">wp_upload_dir()</code>: يعيد Array تفصيلي بمسارات وعناوين مجلد المرفقات والرفوعات.</li>
+    </ul>
 
     <!-- Footer -->
     <footer class="lesson-footer">
@@ -341,5 +320,6 @@
     </footer>
 
   </div>
+
 </body>
 </html>

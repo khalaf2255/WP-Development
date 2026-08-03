@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
@@ -12,7 +12,7 @@
       --primary: #0284c7;
       --primary-dark: #0369a1;
       --primary-light: #e0f2fe;
-      --youtube-red: #ff0000;
+      
       --accent: #10b981;
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -56,7 +56,7 @@
       text-decoration: none;
     }
     .top-nav-brand span {
-      background: var(--youtube-red);
+      background: var(--primary);
       color: #ffffff;
       padding: 4px 10px;
       border-radius: 8px;
@@ -109,12 +109,7 @@
       margin-bottom: 12px;
     }
 
-    /* YouTube Creator Panel Toggle Button */
-    .yt-toggle-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #1e293b, #0f172a);
-      color: #ffffff;
-      border: 2px solid #334155;
+    px solid #334155;
       padding: 16px 24px;
       border-radius: 16px;
       font-size: 16px;
@@ -127,13 +122,11 @@
       transition: all 0.3s;
       font-family: 'Tajawal', sans-serif;
     }
-    .yt-toggle-btn:hover {
-      border-color: var(--youtube-red);
+      border-color: var(--primary);
       background: #0f172a;
       box-shadow: 0 8px 25px rgba(255, 0, 0, 0.15);
     }
-    .yt-badge {
-      background: var(--youtube-red);
+      background: var(--primary);
       color: #ffffff;
       padding: 4px 12px;
       border-radius: 8px;
@@ -141,7 +134,6 @@
     }
 
     /* Creator Box Content */
-    .yt-creator-box {
       display: none;
       background: #fff5f5;
       border: 2px solid #fca5a5;
@@ -150,7 +142,6 @@
       margin-bottom: 36px;
       box-shadow: 0 8px 20px rgba(239, 68, 68, 0.08);
     }
-    .yt-creator-box.active { display: block; }
     .yt-box-title {
       color: #991b1b;
       font-size: 20px;
@@ -445,226 +436,3 @@
       <h1 class="lesson-title">الدرس الثالث: أمان الإضافات وحماية ABSPATH</h1>
     </div>
 
-    <!-- YouTube Presenter Panel Toggle -->
-    <button class="yt-toggle-btn" onclick="toggleYtPanel()">
-      <span>🎬 دليل التسجيل وصانع المحتوى لليوتيوب (YouTube Creator Guide)</span>
-      <span class="yt-badge">اضغط للعرض / الإخفاء 🔻</span>
-    </button>
-
-    <div class="yt-creator-box" id="ytCreatorPanel">
-      <div class="yt-box-title">🎥 أدوات ودليل صانع المحتوى لتسجيل هذا الدرس على يوتيوب</div>
-      
-      <div class="yt-section-card">
-        <h4>🎯 خطة الخطاب وافتتاحية الفيديو (Hook):</h4>
-        <p>"عارف إن أي هكر يقدر يفتح ملف الإضافة بتاعتك مباشرة من المتصفح ويكشف مسارات السيرفر لو ما حطيتش السطر السحري ده؟ في الدرس ده هنشرح أمان الإضافات وحماية ABSPATH وتأمين المدخلات والمخرجات!"</p>
-      </div>
-
-      <div class="yt-section-card">
-        <h4>🗣️ نقاط الشرح أثناء التسجيل:</h4>
-        <ol>
-          <li>تنسيق محاكاة لفتح رابط الملف مباشرة وإظهار الخطأ بدون السطر الأمني.</li>
-          <li>كتابة <code>if (!defined('ABSPATH')) exit;</code> واختبار النتيجة على المتصفح.</li>
-          <li>توضيح الفرق بين Sanitization للمدخلات و Escaping للمخرجات وكتابة الكود أمثلة حية على الشاشة.</li>
-        </ol>
-      </div>
-
-      <div class="yt-section-card">
-        <h4>📝 جاهز للنسخ: عنوان المقطع والوصف (YouTube Metadata):</h4>
-        <div class="yt-copy-text">
-          <button class="yt-copy-btn" onclick="copyYtSnippet(this)">نسخ النص 📋</button>
-          <div class="yt-text-content">
-📌 عنوان الفيديو المقترح:
-كورس تطوير إضافات ووردبريس #3 - حماية الإضافة من الاختراق وحظر Access ABSPATH Direct
-
-📌 وصف الفيديو (Description):
-تعلم أفضل الممارسات الأمنية لتأمين إضافات ووردبريس ضد الثغرات الشهيرة (XSS - Direct Access - CSRF).
-المحاور:
-- حماية ABSPATH وحظر الوصول المباشر للملفات.
-- التعقيم Sanitization ودالة sanitize_text_field.
-- الهروب Escaping ودالة esc_html لمنع XSS.
-- التحقق من النونس Nonces والصلاحيات.
-
-#أمان_ووردبريس #WordPressSecurity #ABSPATH #XSS #PHP
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  <h2 class="section-title">📘 التلخيص المترابط للموضوعات</h2>
-
-  <h3 class="subsection-title">٣.١ الحماية من الوصول المباشر للملفات (Direct Access Protection & ABSPATH)</h3>
-  <p>عند فتح أي ملف PHP داخل مجلد الإضافات مباشرة عبر رابط المتصفح (مثال: <code>https://example.com/wp-content/plugins/my-plugin/process.php</code>)، يشتعل الكود خارج بيئة ووردبريس المعرفة، مما يؤدي لإظهار مسارات السيرفر المباشرة (Path Disclosure Vulnerability) أو إتاحة ثغرات برمجية خطيرة.</p>
-
-  <div class="warning-box">
-    <strong>🚨 آلية فحص الثابت ABSPATH:</strong>
-    <p>يتم تعريف الثابت <code>ABSPATH</code> أول مرة داخل ملف <code>wp-config.php</code> عند إقلاع ووردبريس. فإذا حاول أي شخص فتح ملف الإضافة مباشرة من المتصفح بدون المرور ببيئة ووردبريس، لن يكون الثابت معرّفاً، ويتم إنهاء التنفيذ فوراً عبر الصياغة التالية:</p>
-    <code>if ( ! defined( 'ABSPATH' ) ) exit;</code>
-  </div>
-
-  <h3 class="subsection-title">٣.٢ الأركان الأربعة لأمان الإضافة البرمجية</h3>
-  <ol>
-    <li><strong>حظر الوصول المباشر (Direct Access Check):</strong> التثبت من معرف <code>ABSPATH</code> في السطور الأولى لكل ملف PHP.</li>
-    <li><strong>تعقيم المدخلات (Input Sanitization):</strong> تصفية وتطوير كافة البيانات الواردة من المستخدم قبل معالجتها أو حفظها في قاعدة البيانات عبر دوال مثل <code>sanitize_text_field()</code> و <code>sanitize_email()</code>.</li>
-    <li><strong>هروب المخرجات (Output Escaping):</strong> معالجة البيانات النصية قبل طباعتها بالمتصفح لمنع ثغرات الـ Cross-Site Scripting (XSS) باستخدام <code>esc_html()</code> و <code>esc_attr()</code> و <code>esc_url()</code>.</li>
-    <li><strong>الرموز الأمنية والصلاحيات (Nonces & Capabilities):</strong> التحقق من شرعية الطلب عبر <code>wp_verify_nonce()</code> وفحص صلاحية المستخدم عبر <code>current_user_can('manage_options')</code>.</li>
-  </ol>
-
-  <h2 class="section-title">💻 كود الدرس البرمجي</h2>
-  <p>نموذج إضافة أمنية معتمدة تطبق كافة ممارسات الحماية البرمجية الموصى بها:</p>
-
-  
-  <div class="vscode-container">
-    <div class="vscode-header">
-      <div class="vscode-controls">
-        <span class="vscode-dot dot-red"></span>
-        <span class="vscode-dot dot-yellow"></span>
-        <span class="vscode-dot dot-green"></span>
-      </div>
-      <div class="vscode-file-tab">
-        📄 secure-plugin-example.php
-        <span class="vscode-lang">PHP</span>
-      </div>
-      <button class="copy-btn" onclick="copyCode(this)">
-        📋 نسخ الكود
-      </button>
-    </div>
-    <div class="vscode-code-area"><span class="token-comment">&lt;?php</span>
-<span class="token-comment">/**
- * Plugin Name: Secure Form Processor
- * Description: نموذج إضافة برمجية تُطبق أرقى معايير الأمان والتعقيم والهروب.
- */</span>
-
-<span class="token-comment">// 1. منع الوصول المباشر للملف لأسباب أمنية</span>
-<span class="token-keyword">if</span> ( ! <span class="token-function">defined</span>( <span class="token-string">'ABSPATH'</span> ) ) {
-    <span class="token-keyword">exit</span>; <span class="token-comment">// Exit if accessed directly</span>
-}
-
-<span class="token-comment">// 2. دالة معالجة نموذج إدخال ببيئة آمنة</span>
-<span class="token-keyword">function</span> <span class="token-function">process_academic_user_form</span>() {
-    <span class="token-comment">// فحص صلاحيات المستخدم الحالي</span>
-    <span class="token-keyword">if</span> ( ! <span class="token-function">current_user_can</span>( <span class="token-string">'edit_posts'</span> ) ) {
-        <span class="token-function">wp_die</span>( <span class="token-string">'عفواً، لا تملك الصلاحية الكافية لتنفيذ هذا الإجراء.'</span> );
-    }
-
-    <span class="token-comment">// فحص الرمز الأمني Nonce للحماية من هجمات CSRF</span>
-    <span class="token-keyword">if</span> ( ! <span class="token-function">isset</span>( <span class="token-variable">$_POST</span>[<span class="token-string">'academic_nonce'</span>] ) || ! <span class="token-function">wp_verify_nonce</span>( <span class="token-variable">$_POST</span>[<span class="token-string">'academic_nonce'</span>], <span class="token-string">'save_form_action'</span> ) ) {
-        <span class="token-function">wp_die</span>( <span class="token-string">'فحص رمز الأمان فشل (Invalid Nonce).'</span> );
-    }
-
-    <span class="token-comment">// تعقيم المدخلات قادمة من النموذج</span>
-    <span class="token-variable">$user_name</span>  = <span class="token-function">sanitize_text_field</span>( <span class="token-variable">$_POST</span>[<span class="token-string">'user_name'</span>] );
-    <span class="token-variable">$user_email</span> = <span class="token-function">sanitize_email</span>( <span class="token-variable">$_POST</span>[<span class="token-string">'user_email'</span>] );
-
-    <span class="token-comment">// هروب المخرجات لمنع ثغرات XSS قبل الطباعة في المتصفح</span>
-    <span class="token-keyword">echo</span> <span class="token-string">'&lt;div class="notice notice-info"&gt;'</span>;
-    <span class="token-keyword">echo</span> <span class="token-string">'أهلاً بك '</span> . <span class="token-function">esc_html</span>( <span class="token-variable">$user_name</span> ) . <span class="token-string">' ('</span> . <span class="token-function">esc_html</span>( <span class="token-variable">$user_email</span> ) . <span class="token-string">')تم حفظ بياناتك بأمان.'</span>;
-    <span class="token-keyword">echo</span> <span class="token-string">'&lt;/div&gt;'</span>;
-}
-</div>
-  </div>
-  
-
-  <h2 class="section-title">📊 شبكة ربط المفاهيم والمقارنات</h2>
-  <table class="custom-table">
-    <thead>
-      <tr>
-        <th>التقنية الأمنية</th>
-        <th>الوظيفة والهدف البرمجي</th>
-        <th>الدالة المعيارية في ووردبريس</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Direct Access Check</strong></td>
-        <td>منع فتح الملف بشكل مباشر من المتصفح خارج بيئة ووردبريس.</td>
-        <td><code>if (!defined('ABSPATH')) exit;</code></td>
-      </tr>
-      <tr>
-        <td><strong>Input Sanitization</strong></td>
-        <td>تنظيف البيانات القادمة من المستخدم وحذف الرموز الخبيثة.</td>
-        <td><code>sanitize_text_field() / sanitize_email()</code></td>
-      </tr>
-      <tr>
-        <td><strong>Output Escaping</strong></td>
-        <td>تأمين وحماية البيانات قبل طباعتها لتفادي ثغرات XSS.</td>
-        <td><code>esc_html() / esc_attr() / esc_url()</code></td>
-      </tr>
-      <tr>
-        <td><strong>Nonces Verification</strong></td>
-        <td>الحماية من طلبات التزوير عبر الموقع (CSRF Protection).</td>
-        <td><code>wp_verify_nonce()</code></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h2 class="section-title">❓ أسئلة المراجعة واختبار الذات</h2>
-
-  <div class="qa-card">
-    <div class="qa-question">📌 س1 (اختيار من متعدد): ما الهدف الأساسي من فحص وتنظيف مدخلات المستخدم (Sanitization)؟</div>
-    <div class="qa-answer">✅ الإجابة النموذجية: تعزيز أمان الإضافة وحمايتها من الثغرات والبيانات الخبيثة والقضاء على ثغرات إدخال الأكواد.</div>
-  </div>
-
-  <div class="qa-card">
-    <div class="qa-question">📌 س2 (اختيار من متعدد): ما هي الممارسة الأمنية الواجب اتباعها قبل عرض المخرجات النصية في الإضافة؟</div>
-    <div class="qa-answer">✅ الإجابة النموذجية: استخدام دوال الهروب (Escaping) مثل <code>esc_html()</code> لمنع هجمات XSS.</div>
-  </div>
-
-  <div class="qa-card">
-    <div class="qa-question">📌 س3 (سؤال مقالي): ما أهمية السطر البرمجي if ( ! defined( 'ABSPATH' ) ) exit; في ملفات الإضافة؟</div>
-    <div class="qa-answer">✅ الإجابة النموذجية: يمنع الوصول والاستدعاء المباشر للملف عبر المتصفح خارج بيئة ووردبريس لتجنب كشف مسارات السيرفر السرية (Path Disclosure) أو تشغيل أكواد دون إعداد البيئة والأمان.</div>
-  </div>
-
-  <div class="cheatsheet-card">
-    <h3>⚡ قائمة الحفظ السريع ليلة الامتحان</h3>
-    <ul>
-      <li>ضرورة وضع جملة الحماية <code>if (!defined('ABSPATH')) exit;</code> في بداية كل ملف PHP.</li>
-      <li>فحص <code>ABSPATH</code> يمنع ثغرة الوصول المباشر (Direct Access) للملف عبر المتصفح.</li>
-      <li>يجب تنظيف المدخلات (Sanitizing) وهروب المخرجات (Escaping) لحماية الإضافة أمنياً.</li>
-      <li>التحقق من الصلاحيات (Capabilities) والـ Nonces يحمي الإضافة من التزوير CSRF والاستخدام غير المصرح به.</li>
-    </ul>
-  </div>
-
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-      <a href="2-Header-Requirements-and-Structure.html" class="bottom-nav-btn">➡️ الدرس الثاني: الترويسة والبنية الهيكلية</a>
-      <a href="../index.html" class="bottom-nav-btn">🏠 العودة للفهرس</a>
-      <a href="4-WordPress-Hooks-Actions-and-Filters.html" class="bottom-nav-btn">الدرس الرابع: الخطاطيف Actions & Filters ⬅️</a>
-    </div>
-  </div>
-
-  <script>
-    function toggleYtPanel() {
-      const panel = document.getElementById('ytCreatorPanel');
-      panel.classList.toggle('active');
-    }
-
-    function copyYtSnippet(btn) {
-      const textBlock = btn.parentElement.querySelector('.yt-text-content').innerText;
-      navigator.clipboard.writeText(textBlock).then(() => {
-        const orig = btn.innerText;
-        btn.innerText = 'تم النسخ! ✅';
-        setTimeout(() => btn.innerText = orig, 2000);
-      });
-    }
-
-    function copyCode(btn) {
-      const container = btn.closest('.vscode-container');
-      const codeText = container.querySelector('.vscode-code-area').innerText;
-      
-      navigator.clipboard.writeText(codeText).then(() => {
-        const originalText = btn.innerHTML;
-        btn.innerHTML = 'تم النسخ! ✅';
-        btn.classList.add('copied');
-        
-        setTimeout(() => {
-          btn.innerHTML = originalText;
-          btn.classList.remove('copied');
-        }, 2000);
-      }).catch(err => {
-        console.error('فشل النسخ:', err);
-      });
-    }
-  </script>
-</body>
-</html>

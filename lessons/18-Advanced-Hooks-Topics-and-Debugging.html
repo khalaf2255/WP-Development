@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plugin Handbook Overview | كورس تطوير إضافات ووردبريس الشامل</title>
+  <title>Advanced Hooks Topics & Debugging | كورس تطوير إضافات ووردبريس الشامل</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,6 @@
       --primary: #0284c7;
       --primary-dark: #0369a1;
       --primary-light: #e0f2fe;
-      
       --accent: #10b981;
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -102,7 +101,7 @@
       margin-bottom: 12px;
     }
     .lesson-title {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 900;
       color: #0f172a;
       line-height: 1.3;
@@ -142,49 +141,15 @@
       font-size: 15px;
       line-height: 1.7;
     }
+    .alert-danger {
+      background: #fef2f2;
+      border-right: 4px solid #ef4444;
+      color: #991b1b;
+    }
     .alert-info {
       background: #f0f9ff;
       border-right: 4px solid #0284c7;
       color: #0c4a6e;
-    }
-    .alert-success {
-      background: #ecfdf5;
-      border-right: 4px solid #10b981;
-      color: #065f46;
-    }
-
-    /* Grid Roadmap Cards */
-    .roadmap-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      margin: 24px 0;
-    }
-    .roadmap-card {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      transition: all 0.2s ease;
-    }
-    .roadmap-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);
-    }
-    .roadmap-card-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      font-size: 16px;
-      color: #0f172a;
-      margin-bottom: 8px;
-    }
-    .roadmap-card-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
     }
 
     /* Code Block */
@@ -230,6 +195,7 @@
     .fn { color: #dcdcaa; }
     .str { color: #ce9178; }
     .cm { color: #6a9955; font-style: italic; }
+    .var { color: #9cdcfe; }
 
     /* Footer Note */
     .lesson-footer {
@@ -257,50 +223,25 @@
     
     <!-- Lesson Header -->
     <header class="lesson-header">
-      <span class="lesson-badge">الدرس 01 | قسم Plugin Handbook</span>
-      <h1 class="lesson-title">مقدمة وخريطة طريق دليل تطوير الإضافات (Plugin Handbook)</h1>
-      <p class="lesson-subtitle">تفكيك المعمارية الهيكلية للنظام، والقاعدة الذهبية في حماية النواة Core.</p>
+      <span class="lesson-badge">الدرس 05 | قسم Hooks</span>
+      <h1 class="lesson-title">موضوعات متقدمة وفحص وإلغاء الخطاطيف (Advanced Hooks & Debugging)</h1>
+      <p class="lesson-subtitle">إزالة الأفعال والمرشحات بـ remove_action، فحص الفلتر الحالي بـ current_filter، والتتبع بـ all hook.</p>
     </header>
 
     <!-- Technical Content -->
     
-    <h2>1. المعمارية الهيكلية لدليل الإضافات (Plugin Developer Handbook)</h2>
-    <p>دليل تطوير الإضافات الرسمي هو المرجع الأساسي لتطوير برمجيات ووردبريس. بناءً على الخريطة الرسمية، لا تعمل الإضافة في ووردبريس كبرنامج منفصل، بل كـ <strong>توسعة ديناميكية (Dynamic Extension)</strong> ترتبط بالمنظومة عبر 4 ركائز معمارية رئيسية:</p>
+    <h2>1. إزالة الأفعال والمرشحات (Removing Actions & Filters)</h2>
+    <p>في كثير من الأحيان، تحتاج إضافتك لإلغاء وإزالة دالة مسجلة سلفاً بواسطة القالب أو إضافة أخرى لتسريع الموقع أو تعطيل مزية غير مرغوبة.</p>
 
-    <div class="roadmap-grid">
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🔗 1. نظام الخطاطيف (Hooks System)</div>
-        <div class="roadmap-card-desc">العصب المركزي المكون من <code class="inline-code">Actions</code> و <code class="inline-code">Filters</code>، ويتيح لك ضخ أكوادك أو تعديل البيانات أثناء تحميل الصفحة.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🗄️ 2. إدارة البيانات والكيانات (Entities)</div>
-        <div class="roadmap-card-desc">التعامل مع قاعدة البيانات من خلال Custom Post Types, Taxonomies, Metadata, والحقول المخصصة.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🎨 3. الواجهة والتحكم (Admin UX)</div>
-        <div class="roadmap-card-desc">دمج لوحات التحكم والإعدادات داخل الـ Dashboard عبر Administration Menus و Settings API.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">⚙️ 4. الخلفية والمهام (Integrations & Cron)</div>
-        <div class="roadmap-card-desc">الاتصال بالخدمات الخارجية عبر HTTP API، وتنفيذ المهمات المجدولة خلفياً عبر WP-Cron.</div>
-      </div>
+    <div class="alert alert-danger">
+      <strong>🚨 الشروط المعمارية الصارمة لنجاح الإزالة (remove_action / remove_filter):</strong>
+      <ol style="margin-right: 18px; margin-top: 8px;">
+        <li>يجب أن تتطابق البرامترات (أهمها اسم الدالة و <strong>الأولوية Priority</strong>) تماماً مع ما تم التمرير به في <code class="inline-code">add_action</code>.</li>
+        <li>يجب أن يتم استدعاء امر الإزالة <strong>بعد</strong> تسجيل الدالة الأصلية في التسلسل الزمني (Execution Order).</li>
+      </ol>
     </div>
 
-    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
-
-    <h2>2. القاعدة الذهبية: حماية النواة (Don't Touch WordPress Core)</h2>
-    <p>القاعدة الأولى والأهم في عالم ووردبريس هي: <strong>لا تقم أبداً بتعديل أي ملف من ملفات نواة ووردبريس (WordPress Core)!</strong></p>
-
-    <div class="alert alert-info">
-      <strong>📌 العلة التقنية (Technical Rationale):</strong>
-      عند تحديث ووردبريس إلى إصدار جديد، يتم استبدال جميع ملفات النواة تلقائياً. أي تعديل مباشر في ملفات النواة سيتم مسحه فوراً، فضلاً عن التسبب في ثغرات أمنية وأخطاء برمجية غير متوقعة. البديل الآمن دائماً هو استخدام نظام الـ <strong>Hooks</strong>.
-    </div>
-
-    <h2>3. نمط الهيكل الأساسي للإضافة (Core Blueprint)</h2>
-    <p>هذا كود مبسط يوضح كيف يتم تجميع مكونات الإضافة والتسجيل في نظام الـ Hooks دون المساس بالنواة:</p>
+    <h3>تطبيق عملي: تعطيل Slider غير مرغوب في القالب</h3>
 
     <div class="vscode-window">
       <div class="vscode-header">
@@ -309,29 +250,46 @@
           <div class="vscode-dot dot-yellow"></div>
           <div class="vscode-dot dot-green"></div>
         </div>
-        <div class="vscode-filename">my-first-plugin.php</div>
+        <div class="vscode-filename">remove-action-example.php</div>
       </div>
       <pre><code><span class="kw">&lt;?php</span>
-<span class="cm">/**
- * Plugin Name: Core Architecture Demo
- * Description: نموذج هيكلي موحد لتنفيذ إضافة ووردبريس قياسية.
- * Version: 1.0.0
- */</span>
+<span class="cm">// الكود المسجل سلفاً في القالب:</span>
+<span class="cm">// add_action( 'template_redirect', 'wporg_setup_slider', 9 );</span>
 
-<span class="cm">// 1. حماية الملف من الوصول المباشر</span>
-<span class="kw">if</span> ( ! <span class="fn">defined</span>( <span class="str">'ABSPATH'</span> ) ) {
-    <span class="kw">exit</span>;
+<span class="cm">// نلغي الفعل في هوك لاحق مثل after_setup_theme وبنفس الأولوية 9</span>
+<span class="kw">function</span> <span class="fn">wporg_disable_slider</span>() {
+    <span class="fn">remove_action</span>( <span class="str">'template_redirect'</span>, <span class="str">'wporg_setup_slider'</span>, 9 );
 }
+<span class="fn">add_action</span>( <span class="str">'after_setup_theme'</span>, <span class="str">'wporg_disable_slider'</span> );</code></pre>
+    </div>
 
-<span class="cm">// 2. التسجيل في نظام الـ Hooks (إصدار Custom Post Type)</span>
-<span class="fn">add_action</span>( <span class="str">'init'</span>, <span class="str">'my_custom_post_type_init'</span> );
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
 
-<span class="kw">function</span> <span class="fn">my_custom_post_type_init</span>() {
-    <span class="fn">register_post_type</span>( <span class="str">'book'</span>, <span class="kw">array</span>(
-        <span class="str">'public'</span> => <span class="kw">true</span>,
-        <span class="str">'label'</span>  => <span class="str">'Books'</span>,
-    ) );
-}</code></pre>
+    <h2>2. الدوال التشخيصية والمتقدمة (Advanced Helper Functions)</h2>
+
+    <ul>
+      <li><code class="inline-code">current_action()</code> / <code class="inline-code">current_filter()</code>: تعيد اسم الخطاف الحالي المفعل، مما يتيح لك تشغيل الدالة على عدة هوكات والتصرف بشرط اسم الهوك.</li>
+      <li><code class="inline-code">did_action( 'save_post' )</code>: تعيد عدد المرات التي تم فيها تنفيذ هذا الفعل خلال دورة الصفحة الحالية (لتجنب التكرار).</li>
+      <li><code class="inline-code">remove_all_actions( 'hook_name' )</code>: إزالة جميع الدوال المرتبطة بهوك معين دفعة واحدة.</li>
+    </ul>
+
+    <h3>التتبع والـ Debugging باستخدام الهوك السحري <code class="inline-code">'all'</code></h3>
+    <p>عند ربط دالة بالهوك المخصص <code class="inline-code">'all'</code>، فإنها تُستدعى وتعمل مع <strong>كل فعل ومرشح</strong> يتم إطلاقه في ووردبريس، وهو أمر مفيد جداً لمعرفة ترتيب الأحداث وتتبع الأعطال:</p>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">debug-all-hook.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="kw">function</span> <span class="fn">wporg_debug_hooks</span>() {
+    <span class="kw">echo</span> <span class="str">'&lt;p&gt;Current Hook: '</span> . <span class="fn">current_action</span>() . <span class="str">'&lt;/p&gt;'</span>;
+}
+<span class="fn">add_action</span>( <span class="str">'all'</span>, <span class="str">'wporg_debug_hooks'</span> );</code></pre>
     </div>
 
     <!-- Footer -->
@@ -341,5 +299,6 @@
     </footer>
 
   </div>
+
 </body>
 </html>

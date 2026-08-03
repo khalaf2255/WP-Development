@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
@@ -12,7 +12,7 @@
       --primary: #0284c7;
       --primary-dark: #0369a1;
       --primary-light: #e0f2fe;
-      --youtube-red: #ff0000;
+      
       --accent: #10b981;
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -56,7 +56,7 @@
       text-decoration: none;
     }
     .top-nav-brand span {
-      background: var(--youtube-red);
+      background: var(--primary);
       color: #ffffff;
       padding: 4px 10px;
       border-radius: 8px;
@@ -109,12 +109,7 @@
       margin-bottom: 12px;
     }
 
-    /* YouTube Creator Panel Toggle Button */
-    .yt-toggle-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #1e293b, #0f172a);
-      color: #ffffff;
-      border: 2px solid #334155;
+    px solid #334155;
       padding: 16px 24px;
       border-radius: 16px;
       font-size: 16px;
@@ -127,13 +122,11 @@
       transition: all 0.3s;
       font-family: 'Tajawal', sans-serif;
     }
-    .yt-toggle-btn:hover {
-      border-color: var(--youtube-red);
+      border-color: var(--primary);
       background: #0f172a;
       box-shadow: 0 8px 25px rgba(255, 0, 0, 0.15);
     }
-    .yt-badge {
-      background: var(--youtube-red);
+      background: var(--primary);
       color: #ffffff;
       padding: 4px 12px;
       border-radius: 8px;
@@ -141,7 +134,6 @@
     }
 
     /* Creator Box Content */
-    .yt-creator-box {
       display: none;
       background: #fff5f5;
       border: 2px solid #fca5a5;
@@ -150,7 +142,6 @@
       margin-bottom: 36px;
       box-shadow: 0 8px 20px rgba(239, 68, 68, 0.08);
     }
-    .yt-creator-box.active { display: block; }
     .yt-box-title {
       color: #991b1b;
       font-size: 20px;
@@ -445,206 +436,3 @@
       <h1 class="lesson-title">الدرس الرابع: الخطاطيف والربط (WordPress Hooks: Actions & Filters)</h1>
     </div>
 
-    <!-- YouTube Presenter Panel Toggle -->
-    <button class="yt-toggle-btn" onclick="toggleYtPanel()">
-      <span>🎬 دليل التسجيل وصانع المحتوى لليوتيوب (YouTube Creator Guide)</span>
-      <span class="yt-badge">اضغط للعرض / الإخفاء 🔻</span>
-    </button>
-
-    <div class="yt-creator-box" id="ytCreatorPanel">
-      <div class="yt-box-title">🎥 أدوات ودليل صانع المحتوى لتسجيل هذا الدرس على يوتيوب</div>
-      
-      <div class="yt-section-card">
-        <h4>🎯 خطة الخطاب وافتتاحية الفيديو (Hook):</h4>
-        <p>"المفهوم ده هو المحرك الرئيسي لكل ووردبريس! يعني إيه Hooks؟ وإيه الفرق الجوهري بين Actions و Filters اللي أوجع دماغ معظم المطورين؟ الفيديو ده هيبسطها لك للأبد!"</p>
-      </div>
-
-      <div class="yt-section-card">
-        <h4>🗣️ نقاط الشرح أثناء التسجيل:</h4>
-        <ol>
-          <li>استخدام تشبيه الخطاف الصنارة اللي بتعلق فيه كودك في أحداث ووردبريس.</li>
-          <li>تطبيق عملي لأول الأكشن: إضافة كود في <code>wp_head</code> أو <code>wp_footer</code>.</li>
-          <li>تطبيق عملي لأول فلتر: تعديل محتوى المقال <code>the_content</code> والتأكيد على أهمية كلمة <code>return</code>.</li>
-        </ol>
-      </div>
-
-      <div class="yt-section-card">
-        <h4>📝 جاهز للنسخ: عنوان المقطع والوصف (YouTube Metadata):</h4>
-        <div class="yt-copy-text">
-          <button class="yt-copy-btn" onclick="copyYtSnippet(this)">نسخ النص 📋</button>
-          <div class="yt-text-content">
-📌 عنوان الفيديو المقترح:
-كورس تطوير إضافات ووردبريس #4 - فهم الخطاطيف الـ Hooks والفرق بين Actions و Filters
-
-📌 وصف الفيديو (Description):
-شرح مبسط وعملي لأهم معمارية في تطوير ووردبريس: الـ Hooks!
-ستتعلم:
-- ما هي الـ Hooks وكيف تتيح حقن الكود؟
-- الدالة add_action وكيف تطلق الأفعال.
-- الدالة add_filter وكيف تعدل البيانات مع إرجاع return.
-
-#WordPressHooks #add_action #add_filter #ووردبريس #تطوير_ويب
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  <h2 class="section-title">📘 التلخيص المترابط للموضوعات</h2>
-
-  <h3 class="subsection-title">٤.١ نظام الخطاطيف (WordPress Hooks Architecture)</h3>
-  <p>الخطاطيف (Hooks) هي نقاط اتصال برمجية توفرها نواة ووردبريس لتسمح للإضافات بحقن أرقام ودوال مخصصة لتمكين التوسعة والتعديل دون مساس بالنواة (WordPress Core). تُعتبر الخطاطيف الحل التقني والتطبيقي المباشر لتنفيذ القاعدة الذهبية.</p>
-
-  <h3 class="subsection-title">٤.٢ الفرق الجوهري بين الإجراءات (Actions) والمرشحات (Filters)</h3>
-  <p>تنقسم الخطاطيف في ووردبريس إلى نوعين أساسيين محوريين:</p>
-
-  <ul>
-    <li><strong>الإجراءات (Actions - <code>add_action</code>):</strong> تُستخدم لتنفيذ أفعال أو أحداث برمجية إضافية عند وصول دورة حياة النظام لنقطة زمنية محددة (مثل إرسال بريد إلكتروني عند تسجيل مستخدم، أو طباعة كود في <code>wp_footer</code>). <em>الإجراء لا يتطلب إرجاع قيمة عبر <code>return</code>.</em></li>
-    <li><strong>المرشحات (Filters - <code>add_filter</code>):</strong> تُستخدم لاعتراض وتعديل البيانات قبل معالجتها أو عرضها على المتصفح (مثل تعديل عنوان المقال أو تصفية المحتوى). <em>المرشح يستقبل متغيراً ويجب إرجاعه معدلاً بـ <code>return</code> إجبارياً.</em></li>
-  </ul>
-
-  <div class="warning-box">
-    <strong>⚠️ تنبيه امتحاني وبرمجي هام:</strong>
-    <p>الفلاتر (Filters) تتطلب دائماً إرجاع القيمة المعدلة باستخدام كلمة <code>return</code> داخل الدالة، بينما الإجراءات (Actions) تقوم بتنفيذ مهمة ولا ترجع قيماً بالضرورة.</p>
-  </div>
-
-  <h2 class="section-title">💻 كود الدرس البرمجي</h2>
-  <p>مثال برمجي متكامل يوضح التطبيق العملي للـ Actions والـ Filters جنبًا إلى جنب:</p>
-
-  
-  <div class="vscode-container">
-    <div class="vscode-header">
-      <div class="vscode-controls">
-        <span class="vscode-dot dot-red"></span>
-        <span class="vscode-dot dot-yellow"></span>
-        <span class="vscode-dot dot-green"></span>
-      </div>
-      <div class="vscode-file-tab">
-        📄 hooks-master-demo.php
-        <span class="vscode-lang">PHP</span>
-      </div>
-      <button class="copy-btn" onclick="copyCode(this)">
-        📋 نسخ الكود
-      </button>
-    </div>
-    <div class="vscode-code-area"><span class="token-comment">&lt;?php</span>
-<span class="token-comment">/**
- * Plugin Name: Master Hooks Demonstration
- * Description: كود تطبيقي شامل لشرح الفرق بين Action Hooks و Filter Hooks.
- */</span>
-
-<span class="token-keyword">if</span> ( ! <span class="token-function">defined</span>( <span class="token-string">'ABSPATH'</span> ) ) {
-    <span class="token-keyword">exit</span>;
-}
-
-<span class="token-comment">// 1. تطبيق Action Hook: تنفيذ حدث طباعة توقيع في نهاية الصفحة</span>
-<span class="token-keyword">function</span> <span class="token-function">academic_add_footer_notice</span>() {
-    <span class="token-keyword">echo</span> <span class="token-string">'&lt;div style="text-align:center; padding:10px; background:#e0f2fe;"&gt;'</span>;
-    <span class="token-keyword">echo</span> <span class="token-string">'تم تشغيل هذا الحدث عبر add_action في خطاف wp_footer'</span>;
-    <span class="token-keyword">echo</span> <span class="token-string">'&lt;/div&gt;'</span>;
-}
-<span class="token-function">add_action</span>( <span class="token-string">'wp_footer'</span>, <span class="token-string">'academic_add_footer_notice'</span>, 10 );
-
-<span class="token-comment">// 2. تطبيق Filter Hook: تعديل وعمل إرجاع لعنوان المقال</span>
-<span class="token-keyword">function</span> <span class="token-function">academic_modify_post_title</span>( <span class="token-variable">$title</span> ) {
-    <span class="token-comment">// تعديل القيمة وإرجاعها بـ return</span>
-    <span class="token-keyword">return</span> <span class="token-string">'مهم: '</span> . <span class="token-variable">$title</span>;
-}
-<span class="token-function">add_filter</span>( <span class="token-string">'the_title'</span>, <span class="token-string">'academic_modify_post_title'</span> );
-</div>
-  </div>
-  
-
-  <h2 class="section-title">📊 شبكة ربط المفاهيم والمقارنات</h2>
-  <table class="custom-table">
-    <thead>
-      <tr>
-        <th>وجه المقارنة</th>
-        <th>الإجراءات (Actions)</th>
-        <th>المرشحات (Filters)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>الدالة المستدعاة للربط</strong></td>
-        <td><code>add_action( 'tag', 'callback' )</code></td>
-        <td><code>add_filter( 'tag', 'callback' )</code></td>
-      </tr>
-      <tr>
-        <td><strong>القيمة المرجعة (Return)</strong></td>
-        <td>لا ترجع قيماً بل تنفذ أثراً جانبياً.</td>
-        <td><strong>إجبارية</strong> ويجب إرجاع القيمة بـ <code>return</code>.</td>
-      </tr>
-      <tr>
-        <td><strong>الاستخدام الرئيسي</strong></td>
-        <td>إضافة سلوكيات أو طباعة أكواد عند حدث معين.</td>
-        <td>تعديل وتصفية البيانات القائمة قبل العرض.</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h2 class="section-title">❓ أسئلة المراجعة واختبار الذات</h2>
-
-  <div class="qa-card">
-    <div class="qa-question">📌 س1 (اختيار من متعدد): ما الفارق الرئيسي بين الإجراءات (Actions) والفلاتر (Filters)؟</div>
-    <div class="qa-answer">✅ الإجابة النموذجية: الإجراء ينفذ حدثاً، بينما الفلتر يستقبل قيمة ويعيد تعديلها عبر return.</div>
-  </div>
-
-  <div class="qa-card">
-    <div class="qa-question">📌 س2 (سؤال مقالي): وضّح الفرق الجوهري بين الأفعال (Actions) والفلاتر (Filters) في نظام ووردبريس.</div>
-    <div class="qa-answer">✅ الإجابة النموذجية: تُستخدم الأفعال لتنفيذ كود أو حدث برمجي عند نقطة زمنية معينة دون الحاجة لإرجاع قيمة، بينما تُستخدم الفلاتر لتعديل بيانات أو محتوى وإرجاعه بـ return لاستكمال معالجة الصفحة.</div>
-  </div>
-
-  <div class="cheatsheet-card">
-    <h3>⚡ قائمة الحفظ السريع ليلة الامتحان</h3>
-    <ul>
-      <li>الخطاطيف (Hooks) هي نقاط اتصال برمجية تسمح بالتوسعة دون تعديل Core.</li>
-      <li>الإجراءات (Actions) تُستخدم لتنفيذ أحداث برمجية جديدة (<code>add_action</code>).</li>
-      <li>الفلاتر (Filters) تُستخدم لتعديل البيانات وتتطلب دائمًا استخدام <code>return</code> (<code>add_filter</code>).</li>
-      <li>الجمع بين Ajax و Hooks يمنح المستخدم تجربة تفاعلية سريعة وديناميكية.</li>
-    </ul>
-  </div>
-
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-      <a href="3-Plugin-Security-and-Protection.html" class="bottom-nav-btn">➡️ الدرس الثالث: أمان وحماية ABSPATH</a>
-      <a href="../index.html" class="bottom-nav-btn">🏠 العودة للفهرس</a>
-      <a href="5-WordPress-Bootstrapping-and-Database-wpdb.html" class="bottom-nav-btn">الدرس الخامس: دورة الإقلاع وقاعدة البيانات ⬅️</a>
-    </div>
-  </div>
-
-  <script>
-    function toggleYtPanel() {
-      const panel = document.getElementById('ytCreatorPanel');
-      panel.classList.toggle('active');
-    }
-
-    function copyYtSnippet(btn) {
-      const textBlock = btn.parentElement.querySelector('.yt-text-content').innerText;
-      navigator.clipboard.writeText(textBlock).then(() => {
-        const orig = btn.innerText;
-        btn.innerText = 'تم النسخ! ✅';
-        setTimeout(() => btn.innerText = orig, 2000);
-      });
-    }
-
-    function copyCode(btn) {
-      const container = btn.closest('.vscode-container');
-      const codeText = container.querySelector('.vscode-code-area').innerText;
-      
-      navigator.clipboard.writeText(codeText).then(() => {
-        const originalText = btn.innerHTML;
-        btn.innerHTML = 'تم النسخ! ✅';
-        btn.classList.add('copied');
-        
-        setTimeout(() => {
-          btn.innerHTML = originalText;
-          btn.classList.remove('copied');
-        }, 2000);
-      }).catch(err => {
-        console.error('فشل النسخ:', err);
-      });
-    }
-  </script>
-</body>
-</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
@@ -12,7 +12,7 @@
       --primary: #0284c7;
       --primary-dark: #0369a1;
       --primary-light: #e0f2fe;
-      --youtube-red: #ff0000;
+      
       --accent: #10b981;
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -56,7 +56,7 @@
       text-decoration: none;
     }
     .top-nav-brand span {
-      background: var(--youtube-red);
+      background: var(--primary);
       color: #ffffff;
       padding: 4px 10px;
       border-radius: 8px;
@@ -109,12 +109,7 @@
       margin-bottom: 12px;
     }
 
-    /* YouTube Creator Panel Toggle Button */
-    .yt-toggle-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #1e293b, #0f172a);
-      color: #ffffff;
-      border: 2px solid #334155;
+    px solid #334155;
       padding: 16px 24px;
       border-radius: 16px;
       font-size: 16px;
@@ -127,13 +122,11 @@
       transition: all 0.3s;
       font-family: 'Tajawal', sans-serif;
     }
-    .yt-toggle-btn:hover {
-      border-color: var(--youtube-red);
+      border-color: var(--primary);
       background: #0f172a;
       box-shadow: 0 8px 25px rgba(255, 0, 0, 0.15);
     }
-    .yt-badge {
-      background: var(--youtube-red);
+      background: var(--primary);
       color: #ffffff;
       padding: 4px 12px;
       border-radius: 8px;
@@ -141,7 +134,6 @@
     }
 
     /* Creator Box Content */
-    .yt-creator-box {
       display: none;
       background: #fff5f5;
       border: 2px solid #fca5a5;
@@ -150,7 +142,6 @@
       margin-bottom: 36px;
       box-shadow: 0 8px 20px rgba(239, 68, 68, 0.08);
     }
-    .yt-creator-box.active { display: block; }
     .yt-box-title {
       color: #991b1b;
       font-size: 20px;
@@ -444,332 +435,3 @@
       <h1 class="lesson-title">الدرس الثاني: متطلبات ترويسة الإضافة (Plugin Header Requirements) والحقول الـ 14</h1>
     </div>
 
-    <!-- YouTube Presenter Panel Toggle -->
-    <button class="yt-toggle-btn" onclick="toggleYtPanel()">
-      <span>🎬 دليل التسجيل وصانع المحتوى لليوتيوب (YouTube Creator Guide)</span>
-      <span class="yt-badge">اضغط للعرض / الإخفاء 🔻</span>
-    </button>
-
-    <div class="yt-creator-box" id="ytCreatorPanel">
-      <div class="yt-box-title">🎥 أدوات ودليل صانع المحتوى لتسجيل هذا الدرس على يوتيوب</div>
-      
-      <div class="yt-section-card">
-        <h4>🎯 خطة الخطاب وافتتاحية الفيديو (Hook):</h4>
-        <p>"إزاي ووردبريس بيعرف إن الملف ده هو إضافة ويقرأ اسمها وإصدارها؟ وإيه الحقل الإجباري الوحيد من بين 14 حقل أمني وبحثي؟ وفي الدرس ده هنفصّل ترويسة الإضافة (Plugin Header) وتحديثات ووردبريس 6.5 الجديدة مثل حقل Requires Plugins!"</p>
-      </div>
-
-      <div class="yt-section-card">
-        <h4>🗣️ نقاط الشرح أثناء التسجيل:</h4>
-        <ol>
-          <li>شرح حقل Plugin Name الإجباري والتعليق البرمجي الأول.</li>
-          <li>استعراض الحقول الـ 14 كاملة وخاصة الحقول الحديثة: <code>Update URI</code> و <code>Requires Plugins</code>.</li>
-          <li>توضيح طريقة مقارنة الإصدارات باستخدام دالة PHP الفعالة <code>version_compare()</code> وتفادي خطأ 1.02 مقابل 1.1.</li>
-          <li>كتابة الترويسة القياسية والمتقدمة مع PHPDoc على VS Code واختبار تفعيل الإضافة في Dashboard.</li>
-        </ol>
-      </div>
-
-      <div class="yt-section-card">
-        <h4>📝 جاهز للنسخ: عنوان المقطع والوصف (YouTube Metadata):</h4>
-        <div class="yt-copy-text">
-          <button class="yt-copy-btn" onclick="copyYtSnippet(this)">نسخ النص 📋</button>
-          <div class="yt-text-content">
-📌 عنوان الفيديو المقترح:
-كورس تطوير إضافات ووردبريس #2 - الترويسة الرسمية Plugin Header وشرح الحقول الـ 14 كاملة
-
-📌 وصف الفيديو (Description):
-الشرح التفصيلي لمتطلبات ترويسة الإضافة (Plugin Header Requirements) وفق الدليل الرسمي لمطوري ووردبريس.
-المحاور:
-- الحقل الإجباري الوحيد Plugin Name.
-- شرح جميع حقول الترويسة 14 حقل بما فيها Update URI و Requires Plugins (WordPress 6.5).
-- مقارنة رقم الإصدار بدالة version_compare().
-- نماذج كود جاهزة للنسخ بنمط VS Code و PHPDoc.
-
-#ووردبريس #WordPressPlugin #HeaderRequirements #PHP #تعلم_البرمجة
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <h2 class="section-title">📘 الشرح التفصيلي لمتطلبات ترويسة الإضافة (Header Requirements)</h2>
-
-    <p>يحتوي ملف PHP الرئيسي للإضافة في بدايته على تعليق توثيقي مخصص يُعرف بـ <strong>Plugin Header Comment</strong>. يخبر هذا التعليق نظام ووردبريس بأن الملف عبارة عن إضافة قابلة للتفعيل ويُزود النظام بالمعلومات اللازمة لعرضها في لوحة التحكم.</p>
-
-    <h3 class="subsection-title">٢.١ الحقل الإجباري الأدنى (Minimum Fields)</h3>
-    <p>في حده الأدنى المطلق، يجب أن يحتوي التعليق التوثيقي على حقل <code>Plugin Name</code> فقط ليتعرف ووردبريس عليه كإضافة قابلة للتفعيل:</p>
-
-    <div style="background:#1e293b; color:#38bdf8; padding:14px 20px; border-radius:10px; font-family:'Fira Code', monospace; margin:16px 0; direction:ltr; text-align:left;">
-      /*<br>
-      &nbsp;* Plugin Name: YOUR PLUGIN NAME<br>
-      &nbsp;*/
-    </div>
-
-    <h3 class="subsection-title">٢.٢ حقول الترويسة الـ 14 المتاحة (Header Fields)</h3>
-    <p>يوفر ووردبريس 14 حقلاً رسمياً معتمداً لتوثيق الإضافة وتحديد متطلبات تشغيلها وأمانها التحديثي والاعتماديات:</p>
-
-    <table class="custom-table">
-      <thead>
-        <tr>
-          <th>اسم الحقل (Header Field)</th>
-          <th>الوصف والتأثير البرمجي</th>
-          <th>ملاحظات ودواعي الاستخدام</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><code>Plugin Name:</code></td>
-          <td><strong>اسم الإضافة (إجباري - Required).</strong> يُعرض في قائمة الإضافات في لوحة التحكم Admin.</td>
-          <td>الحقل الوحيد الإجباري إطلاقاً.</td>
-        </tr>
-        <tr>
-          <td><code>Plugin URI:</code></td>
-          <td>رابط الصفحة الرئيسية الخاصة بالإضافة (مثال: على موقعك الشخصي).</td>
-          <td><strong>ملاحظة:</strong> لا يُسمح بإدراج رابط WordPress.org هنا، بل رابطك المستقل.</td>
-        </tr>
-        <tr>
-          <td><code>Description:</code></td>
-          <td>وصف مختصر للإضافة وما تقدمه من وظائف وميزات.</td>
-          <td>يُفضل ألا يتجاوز الوصف <strong>140 حرفاً</strong> ليكون ممتازاً في العرض.</td>
-        </tr>
-        <tr>
-          <td><code>Version:</code></td>
-          <td>رقم الإصدار الحالي للإضافة (مثال: <code>1.0</code> أو <code>1.0.3</code>).</td>
-          <td>يُستخدم لمتابعة ومقارنة التحديثات.</td>
-        </tr>
-        <tr>
-          <td><code>Requires at least:</code></td>
-          <td>أدنى إصدار مطلوب من نظام ووردبريس لعمل الإضافة.</td>
-          <td>مثال: <code>5.2</code> أو <code>6.0</code>.</td>
-        </tr>
-        <tr>
-          <td><code>Requires PHP:</code></td>
-          <td>أدنى إصدار مطلوب من لغة البرمجة PHP.</td>
-          <td>مثال: <code>7.4</code> أو <code>8.1</code> لحماية النظام من الأخطاء.</td>
-        </tr>
-        <tr>
-          <td><code>Author:</code></td>
-          <td>اسم مبرمجة الإضافة أو فريق المطورين (يمكن فصل الأسماء بفواصل).</td>
-          <td>يظهر بجوار الإضافة كحق حقوق المطور.</td>
-        </tr>
-        <tr>
-          <td><code>Author URI:</code></td>
-          <td>رابط موقع المطور أو حسابه الرسمي على WordPress.org.</td>
-          <td>رابط الملف الشخصي للمؤلف.</td>
-        </tr>
-        <tr>
-          <td><code>License:</code></td>
-          <td>الاسم المختصر (Slug) لرخصة البرمجية (مثل <code>GPLv2</code> أو <code>GPL-2.0-or-later</code>).</td>
-          <td>يجب أن تتوافق الإضافة مع رخصة GNU General Public License.</td>
-        </tr>
-        <tr>
-          <td><code>License URI:</code></td>
-          <td>رابط النص الكامل للرخصة (مثل <code>https://www.gnu.org/licenses/gpl-2.0.html</code>).</td>
-          <td>توثيق الرخصة القانونية.</td>
-        </tr>
-        <tr>
-          <td><code>Text Domain:</code></td>
-          <td>نطاق النصوص الخاص بالترجمة والتدويل (gettext domain).</td>
-          <td>ضروري جداً لتوفير ترجمات الإضافة لعدة لغات (i18n).</td>
-        </tr>
-        <tr>
-          <td><code>Domain Path:</code></td>
-          <td>مسار مجلد الترجمات داخل الإضافة (مثل <code>/languages</code>).</td>
-          <td>يحدد لووردبريس مسار ملفات <code>.mo</code> و <code>.po</code>.</td>
-        </tr>
-        <tr>
-          <td><code>Network:</code></td>
-          <td>تحديد ما إذا كانت الإضافة تُفعل على مستوى الشبكة بالكامل فقط (Multisite).</td>
-          <td>تأخذ قيمة <code>true</code> فقط، وتُترك فارغة إذا لم تكن مطلوبة.</td>
-        </tr>
-        <tr>
-          <td><code>Update URI:</code></td>
-          <td>رابط تحديث الإضافة الخاص لمنع استبدالها برمجياً عن طريق الخطأ بمحدثات من مستودع WordPress.org ذات الاسم المشابه.</td>
-          <td>تمت إضافته رسمياً في ووردبريس 5.8 لحماية الإضافات الخاصة المخصصة.</td>
-        </tr>
-        <tr>
-          <td><code>Requires Plugins:</code></td>
-          <td><strong>اعتماديات الإضافات (ميزة WordPress 6.5 الجديدة).</strong> قائمة بأسماء الإضافات المطلوبة لتشغيل هذه الإضافة (فواصل بين slugs الإضافات).</td>
-          <td>مثال: <code>woocommerce, my-dependency-plugin</code>. يحظر تثبيت الإضافة إلا بتوفر الاعتماديات!</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3 class="subsection-title">٢.٣ ملاحظة هامة: مقارنة أرقام الإصدارات عبر version_compare()</h3>
-    <div class="warning-box">
-      <strong>⚠️ كيف يتعامل ووردبريس مع أرقام الإصدارات؟</strong>
-      <p>يستخدم ووردبريس دالة PHP القياسية <code>version_compare()</code> للمقارنة بين أرقام إصدارات الإضافة القديمة والحديثة. لذلك قبل إطلاق إصدار جديد، يجب التأكد من أن الدالة تعتبر الرقم الجديد أصلح وأكبر من القديم.</p>
-      <p><em>مثال توضيحي:</em> الرقم <code>1.02</code> يُعتبر برمجياً في PHP <strong>أكبر</strong> من الرقم <code>1.1</code> (لأن 2 أكبر من 1 بعد الفاصلة). فلذلك يجب مراعاة نمط الترقيم المعياري مثل Semantic Versioning (<code>1.0.2</code> بدلاً من <code>1.02</code>).</p>
-    </div>
-
-    <h2 class="section-title">💻 كود الدرس البرمجي</h2>
-    
-    <p><strong>١. كود الترويسة القياسي الشامل (مع اعتماديات WordPress 6.5 و Update URI):</strong></p>
-    
-  <div class="vscode-container">
-    <div class="vscode-header">
-      <div class="vscode-controls">
-        <span class="vscode-dot dot-red"></span>
-        <span class="vscode-dot dot-yellow"></span>
-        <span class="vscode-dot dot-green"></span>
-      </div>
-      <div class="vscode-file-tab">
-        📄 standard-plugin-header.php
-        <span class="vscode-lang">PHP</span>
-      </div>
-      <button class="copy-btn" onclick="copyCode(this)">
-        📋 نسخ الكود
-      </button>
-    </div>
-    <div class="vscode-code-area"><span class="token-comment">&lt;?php</span>
-<span class="token-comment">/**
- * Plugin Name:       My Basics Plugin
- * Plugin URI:        https://example.com/plugins/the-basics/
- * Description:       إضافة شاملة تُطبق جميع حقول الترويسة المعيارية المعتمدة رسمياً.
- * Version:           1.10.3
- * Requires at least: 5.2
- * Requires PHP:      7.2
- * Author:            John Smith
- * Author URI:        https://author.example.com/
- * License:           GPL v2 or later
- * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Update URI:        https://example.com/my-plugin/
- * Text Domain:       my-basics-plugin
- * Domain Path:       /languages
- * Requires Plugins:  woocommerce, my-custom-dependency
- */</span>
-
-<span class="token-comment">// منع الوصول المباشر للملف لأسباب أمنية</span>
-<span class="token-keyword">if</span> ( ! <span class="token-function">defined</span>( <span class="token-string">'ABSPATH'</span> ) ) {
-    <span class="token-keyword">exit</span>;
-}
-
-<span class="token-comment">// بداية كود الإضافة</span>
-<span class="token-keyword">function</span> <span class="token-function">mbp_init_plugin</span>() {
-    <span class="token-comment">// تشغيل وظائف الإضافة</span>
-}
-<span class="token-function">add_action</span>( <span class="token-string">'plugins_loaded'</span>, <span class="token-string">'mbp_init_plugin'</span> );
-</div>
-  </div>
-  
-
-    <p><strong>٢. كود الترويسة المتقدم المدمج مع توثيق PHPDoc (@wordpress-plugin):</strong></p>
-    
-  <div class="vscode-container">
-    <div class="vscode-header">
-      <div class="vscode-controls">
-        <span class="vscode-dot dot-red"></span>
-        <span class="vscode-dot dot-yellow"></span>
-        <span class="vscode-dot dot-green"></span>
-      </div>
-      <div class="vscode-file-tab">
-        📄 advanced-phpdoc-header.php
-        <span class="vscode-lang">PHP</span>
-      </div>
-      <button class="copy-btn" onclick="copyCode(this)">
-        📋 نسخ الكود
-      </button>
-    </div>
-    <div class="vscode-code-area"><span class="token-comment">&lt;?php</span>
-<span class="token-comment">/**
- * Main Plugin File
- *
- * @package           PluginPackage
- * @author            Your Name
- * @copyright         2026 Your Name or Company Name
- * @license           GPL-2.0-or-later
- *
- * @wordpress-plugin
- * Plugin Name:       Advanced PHPDoc Plugin
- * Plugin URI:        https://example.com/plugin-name
- * Description:       نموذج ترويسة مدمج يجمع بين توثيق PHPDoc للبرمجة وترووسية ووردبريس.
- * Version:           1.0.0
- * Requires at least: 5.2
- * Requires PHP:      7.2
- * Author:            Your Name
- * Author URI:        https://example.com
- * Text Domain:       plugin-slug
- * Domain Path:       /languages
- * License:           GPL v2 or later
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Update URI:        https://example.com/my-plugin/
- * Requires Plugins:  my-plugin, yet-another-plugin
- */</span>
-
-<span class="token-keyword">if</span> ( ! <span class="token-function">defined</span>( <span class="token-string">'ABSPATH'</span> ) ) {
-    <span class="token-keyword">exit</span>;
-}
-</div>
-  </div>
-  
-
-    <h2 class="section-title">❓ أسئلة المراجعة واختبار الذات</h2>
-
-    <div class="qa-card">
-      <div class="qa-question">📌 س1 (اختيار من متعدد): ما هو الحقل الإجباري الوحيد داخل تعليق ترويسة الإضافة (Plugin Header)؟</div>
-      <div class="qa-answer">✅ الإجابة النموذجية: <code>Plugin Name:</code> هو الحقل الإجباري الوحيد إطلاقاً ليتعرف ووردبريس على الإضافة.</div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-question">📌 س2 (اختيار من متعدد): ما هي الميزة الجديدة التي تم إدخالها في ووردبريس 6.5 لتحديد الإضافات المطلوبة لتشغيل إضافتك؟</div>
-      <div class="qa-answer">✅ الإجابة النموذجية: حقل <code>Requires Plugins:</code> لتحديد قائمة بأسماء slugs الإضافات التي تعتمد عليها إضافتك.</div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-question">📌 س3 (سؤال مقالي): كيف تقارن دالة version_compare() أرقام الإصدارات، وما الذي يجب تجنبه؟</div>
-      <div class="qa-answer">✅ الإجابة النموذجية: تُستخدم دالة <code>version_compare()</code> في PHP لمقارنة أرقام الإصدارات. يجب تجنب الترقيم مثل 1.02 لأن الدالة تعتبر 1.02 أكبر من 1.1، ويجب استخدام الترقيم المعياري المكون من نقاط مثل 1.0.2.</div>
-    </div>
-
-    <div class="cheatsheet-card">
-      <h3>⚡ قائمة الحفظ السريع ليلة الامتحان</h3>
-      <ul>
-        <li><code>Plugin Name:</code> هو الحقل الإجباري الوحيد داخل ترويسة الإضافة.</li>
-        <li>الحقل <code>Update URI:</code> يمنع التحديثات العشوائية والاستبدال من مستودع WordPress.org.</li>
-        <li>الحقل <code>Requires Plugins:</code> (ووردبريس 6.5) يمنع تفعيل الإضافة إلا بتوفر الإضافات المعتمد عليها.</li>
-        <li>تستخدم ووردبريس دالة PHP <code>version_compare()</code> للمقارنة البرمجية بين الإصدارات.</li>
-        <li>يُفضل ألا يتجاوز الوصف في حقل <code>Description:</code> 140 حرفاً.</li>
-      </ul>
-    </div>
-
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-      <a href="1-Plugin-Basics-and-Introduction.html" class="bottom-nav-btn">➡️ الدرس الأول: المقدمة والقاعدة الذهبية</a>
-      <a href="../index.html" class="bottom-nav-btn">🏠 العودة للفهرس</a>
-      <a href="3-Activation-and-Deactivation-Hooks.html" class="bottom-nav-btn">الدرس الثالث: خطاطيف التفعيل والتعطيل ⬅️</a>
-    </div>
-  </div>
-
-  <script>
-    function toggleYtPanel() {
-      const panel = document.getElementById('ytCreatorPanel');
-      panel.classList.toggle('active');
-    }
-
-    function copyYtSnippet(btn) {
-      const textBlock = btn.parentElement.querySelector('.yt-text-content').innerText;
-      navigator.clipboard.writeText(textBlock).then(() => {
-        const orig = btn.innerText;
-        btn.innerText = 'تم النسخ! ✅';
-        setTimeout(() => btn.innerText = orig, 2000);
-      });
-    }
-
-    function copyCode(btn) {
-      const container = btn.closest('.vscode-container');
-      const codeText = container.querySelector('.vscode-code-area').innerText;
-      
-      navigator.clipboard.writeText(codeText).then(() => {
-        const originalText = btn.innerHTML;
-        btn.innerHTML = 'تم النسخ! ✅';
-        btn.classList.add('copied');
-        
-        setTimeout(() => {
-          btn.innerHTML = originalText;
-          btn.classList.remove('copied');
-        }, 2000);
-      }).catch(err => {
-        console.error('فشل النسخ:', err);
-      });
-    }
-  </script>
-</body>
-</html>

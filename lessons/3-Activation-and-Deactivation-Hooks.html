@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
@@ -12,7 +12,7 @@
       --primary: #0284c7;
       --primary-dark: #0369a1;
       --primary-light: #e0f2fe;
-      --youtube-red: #ff0000;
+      
       --accent: #10b981;
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -56,7 +56,7 @@
       text-decoration: none;
     }
     .top-nav-brand span {
-      background: var(--youtube-red);
+      background: var(--primary);
       color: #ffffff;
       padding: 4px 10px;
       border-radius: 8px;
@@ -109,12 +109,7 @@
       margin-bottom: 12px;
     }
 
-    /* YouTube Creator Panel Toggle Button */
-    .yt-toggle-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #1e293b, #0f172a);
-      color: #ffffff;
-      border: 2px solid #334155;
+    px solid #334155;
       padding: 16px 24px;
       border-radius: 16px;
       font-size: 16px;
@@ -127,13 +122,11 @@
       transition: all 0.3s;
       font-family: 'Tajawal', sans-serif;
     }
-    .yt-toggle-btn:hover {
-      border-color: var(--youtube-red);
+      border-color: var(--primary);
       background: #0f172a;
       box-shadow: 0 8px 25px rgba(255, 0, 0, 0.15);
     }
-    .yt-badge {
-      background: var(--youtube-red);
+      background: var(--primary);
       color: #ffffff;
       padding: 4px 12px;
       border-radius: 8px;
@@ -141,7 +134,6 @@
     }
 
     /* Creator Box Content */
-    .yt-creator-box {
       display: none;
       background: #fff5f5;
       border: 2px solid #fca5a5;
@@ -150,7 +142,6 @@
       margin-bottom: 36px;
       box-shadow: 0 8px 20px rgba(239, 68, 68, 0.08);
     }
-    .yt-creator-box.active { display: block; }
     .yt-box-title {
       color: #991b1b;
       font-size: 20px;
@@ -444,274 +435,3 @@
       <h1 class="lesson-title">الدرس الثالث: خطاطيف التفعيل والتعطيل (Activation & Deactivation Hooks)</h1>
     </div>
 
-    <!-- YouTube Presenter Panel Toggle -->
-    <button class="yt-toggle-btn" onclick="toggleYtPanel()">
-      <span>🎬 دليل التسجيل وصانع المحتوى لليوتيوب (YouTube Creator Guide)</span>
-      <span class="yt-badge">اضغط للعرض / الإخفاء 🔻</span>
-    </button>
-
-    <div class="yt-creator-box" id="ytCreatorPanel">
-      <div class="yt-box-title">🎥 أدوات ودليل صانع المحتوى لتسجيل هذا الدرس على يوتيوب</div>
-      
-      <div class="yt-section-card">
-        <h4>🎯 خطة الخطاب وافتتاحية الفيديو (Hook):</h4>
-        <p>"إيه اللي بيحصل في الكواليس أول ما تدوس زرار 'تفعيل' (Activate) أو 'تعطيل' (Deactivate) على أي إضافة؟ وإزاي بتمنع أخطاء 404 الشهيرة في الروابط؟ الدرس ده هنشرح فيه خطاطيف التفعيل والتعطيل!"</p>
-      </div>
-
-      <div class="yt-section-card">
-        <h4>🗣️ نقاط الشرح أثناء التسجيل:</h4>
-        <ol>
-          <li>شرح الفرق بين <code>register_activation_hook()</code> و <code>register_deactivation_hook()</code>.</li>
-          <li>التنبه للفرق بين التعطيل (Deactivation) والحذف النهائي (Uninstall).</li>
-          <li>تطبيق عملي: تسجيل Custom Post Type وتحديث الروابط الدائمة بـ <code>flush_rewrite_rules()</code> لتجنب 404 لايف أمام المتابعين.</li>
-        </ol>
-      </div>
-
-      <div class="yt-section-card">
-        <h4>📝 جاهز للنسخ: عنوان المقطع والوصف (YouTube Metadata):</h4>
-        <div class="yt-copy-text">
-          <button class="yt-copy-btn" onclick="copyYtSnippet(this)">نسخ النص 📋</button>
-          <div class="yt-text-content">
-📌 عنوان الفيديو المقترح:
-كورس تطوير إضافات ووردبريس #3 - خطاطيف التفعيل والتعطيل (Activation & Deactivation Hooks)
-
-📌 وصف الفيديو (Description):
-شرح خطاطيف التفعيل والتعطيل في ووردبريس (Activation & Deactivation Hooks) وفق الدليل الرسمي.
-المحاور:
-- استخدام register_activation_hook لتهيئة الجداول والروابط الدائمة.
-- استخدام register_deactivation_hook لتنظيف الملفات المؤقتة والكاش.
-- الفرق بين التعطيل والحذف النهائي (Uninstall Hook).
-- حل مشكلة أخطاء 404 عبر flush_rewrite_rules().
-
-#ووردبريس #WordPressPlugin #ActivationHook #PHP #تطوير_ويب
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <h2 class="section-title">📘 الشرح التفصيلي لخطاطيف التفعيل والتعطيل</h2>
-
-    <p>تُوفر خطاطيف التفعيل (Activation Hooks) والتعطيل (Deactivation Hooks) وسيلة برمجية موثوقة لتنفيذ روتين وإجراءات مخصصة فور قيام المستخدم بتفعيل الإضافة أو تعطيلها من لوحة التحكم Admin.</p>
-
-    <h3 class="subsection-title">٣.١ خطاف التفعيل (Activation Hook)</h3>
-    <p>عند تفعيل الإضافة، تقوم الإضافة بتشغيل روتين أولي لتجهيز البيئة وقاعدة البيانات. تشمل استخداماته الرئيسية:</p>
-    <ul>
-      <li><strong>إعادة تحديث الروابط الدائمة (Refresh Rewrite Rules):</strong> لمنع أخطاء 404 عند تسجيل نوع مقال مخصص (Custom Post Type).</li>
-      <li><strong>إنشاء جداول مخصصة في قاعدة البيانات (Custom Database Tables):</strong> إنشاء جداول جديدة عبر <code>$wpdb</code>.</li>
-      <li><strong>تعيين الخيارات والقيّم الافتراضية (Default Options):</strong> إضافة الإعدادات الأولية للإضافة عبر <code>add_option()</code>.</li>
-    </ul>
-
-    <div class="info-box">
-      <strong>📌 الدالة المعيارية للتفعيل:</strong><br>
-      <code>register_activation_hook( __FILE__, 'pluginprefix_function_to_run' );</code>
-    </div>
-
-    <h3 class="subsection-title">٣.٢ خطاف التعطيل (Deactivation Hook)</h3>
-    <p>عند تعطيل الإضافة، تقوم الإضافة بتشغيل روتين لتنظيف البيانات المؤقتة والملفات غير الضرورية. تشمل استخداماته الرئيسية:</p>
-    <ul>
-      <li>تنظيف الملفات المؤقتة والذاكرة المخبأة (Cache & Temp Files).</li>
-      <li>إزالة قواعد الروابط الدائمة الخاصة بالإضافة عبر <code>flush_rewrite_rules()</code>.</li>
-      <li>إلغاء المهام المجدولة الموقوتة (Clear Scheduled Cron Tasks).</li>
-    </ul>
-
-    <div class="info-box">
-      <strong>📌 الدالة المعيارية للتعطيل:</strong><br>
-      <code>register_deactivation_hook( __FILE__, 'pluginprefix_function_to_run' );</code>
-    </div>
-
-    <div class="warning-box">
-      <strong>⚠️ التمييز المهم بين خطاف التعطيل (Deactivation) وخطاف الحذف النهائي (Uninstall):</strong>
-      <p>يُخطئ البعض بين خطاف التعطيل والـ Uninstall Hook. <strong>خطاف التعطيل لا يجوز مطلقاً أن يحذف بيانات المستخدم أو الجداول</strong>، لأن المستخدم قد يعطل الإضافة مؤقتاً. بينما يُستخدم خطاف الحذف النهائي (أو ملف <code>uninstall.php</code>) لحذف كافة البيانات الخيارات والجداول نهائياً عند قيام المستخدم بالنقر على "حذف الإضافة".</p>
-    </div>
-
-    <h3 class="subsection-title">٣.٣ شرح معامل الدالة الأول: الثابت __FILE__</h3>
-    <p>يشير المعامل الأول في الدالتين <code>register_activation_hook()</code> و <code>register_deactivation_hook()</code> إلى المسار الرئيسي لملف الإضافة الأصلي (الذي يحتوي على ترويسة الإضافة Plugin Header). عادة تُكتب الدالتان في الملف الرئيسي مباشرة باستخدام الثابت <code>__FILE__</code>. ولكن إذا وُضعت الدوال في ملف فرعي داخل مجلد الإضافة، يجب تعديل المعامل ليشر بدقة للملف الرئيسي.</p>
-
-    <h2 class="section-title">💻 كود الدرس البرمجي</h2>
-
-    <p><strong>١. مثال تطبيقي عملي: حل مشكلة أخطاء 404 عند تسجيل Custom Post Type وإعادة تعيين الروابط الدائمة عند التفعيل:</strong></p>
-    
-  <div class="vscode-container">
-    <div class="vscode-header">
-      <div class="vscode-controls">
-        <span class="vscode-dot dot-red"></span>
-        <span class="vscode-dot dot-yellow"></span>
-        <span class="vscode-dot dot-green"></span>
-      </div>
-      <div class="vscode-file-tab">
-        📄 activation-example.php
-        <span class="vscode-lang">PHP</span>
-      </div>
-      <button class="copy-btn" onclick="copyCode(this)">
-        📋 نسخ الكود
-      </button>
-    </div>
-    <div class="vscode-code-area"><span class="token-comment">&lt;?php</span>
-<span class="token-comment">/**
- * Plugin Name: Custom Book Manager
- * Description: إضافة لتسجيل نوع مقالات الكتب وإعادة تهيئة الروابط الدائمة عند التفعيل.
- */</span>
-
-<span class="token-keyword">if</span> ( ! <span class="token-function">defined</span>( <span class="token-string">'ABSPATH'</span> ) ) {
-    <span class="token-keyword">exit</span>;
-}
-
-<span class="token-comment">/**
- * 1. دالة تسجيل نوع المقالات المخصص "book"
- */</span>
-<span class="token-keyword">function</span> <span class="token-function">pluginprefix_setup_post_type</span>() {
-    <span class="token-function">register_post_type</span>( <span class="token-string">'book'</span>, array(
-        <span class="token-string">'public'</span>      =&gt; <span class="token-keyword">true</span>,
-        <span class="token-string">'label'</span>       =&gt; <span class="token-string">'الكتب'</span>,
-        <span class="token-string">'has_archive'</span> =&gt; <span class="token-keyword">true</span>,
-    ) );
-}
-<span class="token-function">add_action</span>( <span class="token-string">'init'</span>, <span class="token-function">'pluginprefix_setup_post_type'</span> );
-
-<span class="token-comment">/**
- * 2. دالة التفعيل: تسجيل CPT ثم إعادة تنظيف الروابط لتفادي خطأ 404
- */</span>
-<span class="token-keyword">function</span> <span class="token-function">pluginprefix_activate</span>() {
-    <span class="token-comment">// تسجيل CPT أولاً في الذاكرة</span>
-    <span class="token-function">pluginprefix_setup_post_type</span>();
-    
-    <span class="token-comment">// إعادة بناء وقراءة الروابط الدائمة في قاعدة البيانات</span>
-    <span class="token-function">flush_rewrite_rules</span>();
-}
-<span class="token-function">register_activation_hook</span>( <span class="token-variable">__FILE__</span>, <span class="token-string">'pluginprefix_activate'</span> );
-</div>
-  </div>
-  
-
-    <p><strong>٢. كود التراجع وإلغاء التهيئة عند التعطيل (Deactivation Hook):</strong></p>
-    
-  <div class="vscode-container">
-    <div class="vscode-header">
-      <div class="vscode-controls">
-        <span class="vscode-dot dot-red"></span>
-        <span class="vscode-dot dot-yellow"></span>
-        <span class="vscode-dot dot-green"></span>
-      </div>
-      <div class="vscode-file-tab">
-        📄 deactivation-example.php
-        <span class="vscode-lang">PHP</span>
-      </div>
-      <button class="copy-btn" onclick="copyCode(this)">
-        📋 نسخ الكود
-      </button>
-    </div>
-    <div class="vscode-code-area"><span class="token-comment">&lt;?php</span>
-<span class="token-comment">/**
- * 3. دالة التعطيل: إزالة قواعد الروابط الخاصة بالنوع ومسح الذاكرة
- */</span>
-<span class="token-keyword">function</span> <span class="token-function">pluginprefix_deactivate</span>() {
-    <span class="token-comment">// إلغاء تسجيل نوع المقالات من الذاكرة</span>
-    <span class="token-function">unregister_post_type</span>( <span class="token-string">'book'</span> );
-
-    <span class="token-comment">// تنظيف وإعادة بناء قواعد الروابط الدائمة لحذف قواعد الإضافة</span>
-    <span class="token-function">flush_rewrite_rules</span>();
-}
-<span class="token-function">register_deactivation_hook</span>( <span class="token-variable">__FILE__</span>, <span class="token-string">'pluginprefix_deactivate'</span> );
-</div>
-  </div>
-  
-
-    <h2 class="section-title">📊 شبكة ربط المفاهيم والمقارنات</h2>
-    <table class="custom-table">
-      <thead>
-        <tr>
-          <th>نوع الخطاف (Hook)</th>
-          <th>الدالة المعيارية</th>
-          <th>الاستخدام الموصى به</th>
-          <th>هل يحذف البيانات نهائياً؟</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Activation Hook</strong></td>
-          <td><code>register_activation_hook()</code></td>
-          <td>إنشاء الجداول، ضبط الخيارات الافتراضية، و <code>flush_rewrite_rules()</code>.</td>
-          <td>لا (يُنشئ ويهيئ فقط)</td>
-        </tr>
-        <tr>
-          <td><strong>Deactivation Hook</strong></td>
-          <td><code>register_deactivation_hook()</code></td>
-          <td>تنظيف الملفات المؤقتة، الكاش، وإلغاء الروابط والمهام المجدولة.</td>
-          <td><strong>لا إطلاقاً</strong> (لا يحذف الخيارات أو الجداول)</td>
-        </tr>
-        <tr>
-          <td><strong>Uninstall Hook</strong></td>
-          <td><code>uninstall.php</code> أو <code>register_uninstall_hook()</code></td>
-          <td>حذف خيارات الإضافة والجداول المخصصة نهائياً من قاعدة البيانات.</td>
-          <td><strong>نعم</strong> (حذف دائم عند إزالة الإضافة)</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2 class="section-title">❓ أسئلة المراجعة واختبار الذات</h2>
-
-    <div class="qa-card">
-      <div class="qa-question">📌 س1 (اختيار من متعدد): ما الغرض الرئيسي من تشغيل flush_rewrite_rules() في خطاف التفعيل؟</div>
-      <div class="qa-answer">✅ الإجابة النموذجية: التخلص من أخطاء 404 وإعادة بناء قواعد الروابط الدائمة عند تسجيل Custom Post Type جديد.</div>
-    </div>
-
-    <div class="qa-card">
-      <div class="qa-question">📌 س2 (سؤال مقالي): ما الفرق الجوهري بين خطاف التعطيل (Deactivation) وخطاف الحذف (Uninstall)؟</div>
-      <div class="qa-answer">✅ الإجابة النموذجية: خطاف التعطيل ينظف الذاكرة المؤقتة والروابط فقط دون مساس ببيانات المستخدم وجداول الإضافة، بينما خطاف الحذف يمسح الخيارات والجداول نهائياً من قاعدة البيانات عند مسح الإضافة.</div>
-    </div>
-
-    <div class="cheatsheet-card">
-      <h3>⚡ قائمة الحفظ السريع ليلة الامتحان</h3>
-      <ul>
-        <li><code>register_activation_hook()</code> تُنفذ كود التهيئة عند تفعيل الإضافة.</li>
-        <li><code>register_deactivation_hook()</code> تُنفذ كود التنظيف المؤقت عند تعطيل الإضافة.</li>
-        <li>المعامل الأول هو <code>__FILE__</code> ليشير لملف الإضافة الرئيسي صاحب الترويسة.</li>
-        <li>استخدم <code>flush_rewrite_rules()</code> لتفادي أخطاء 404 عند تفعيل نوع مقال جديد.</li>
-        <li>لا تحذف خيارات أو جداول المستخدم في خطاف التعطيل بل في خطاف الحذف (Uninstall).</li>
-      </ul>
-    </div>
-
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-      <a href="2-Header-Requirements-and-Structure.html" class="bottom-nav-btn">➡️ الدرس الثاني: متطلبات ترويسة الإضافة</a>
-      <a href="../index.html" class="bottom-nav-btn">🏠 العودة للفهرس</a>
-      <a href="4-Plugin-Security-and-Protection.html" class="bottom-nav-btn">الدرس الرابع: أمان وحماية الإضافات ⬅️</a>
-    </div>
-  </div>
-
-  <script>
-    function toggleYtPanel() {
-      const panel = document.getElementById('ytCreatorPanel');
-      panel.classList.toggle('active');
-    }
-
-    function copyYtSnippet(btn) {
-      const textBlock = btn.parentElement.querySelector('.yt-text-content').innerText;
-      navigator.clipboard.writeText(textBlock).then(() => {
-        const orig = btn.innerText;
-        btn.innerText = 'تم النسخ! ✅';
-        setTimeout(() => btn.innerText = orig, 2000);
-      });
-    }
-
-    function copyCode(btn) {
-      const container = btn.closest('.vscode-container');
-      const codeText = container.querySelector('.vscode-code-area').innerText;
-      
-      navigator.clipboard.writeText(codeText).then(() => {
-        const originalText = btn.innerHTML;
-        btn.innerHTML = 'تم النسخ! ✅';
-        btn.classList.add('copied');
-        
-        setTimeout(() => {
-          btn.innerHTML = originalText;
-          btn.classList.remove('copied');
-        }, 2000);
-      }).catch(err => {
-        console.error('فشل النسخ:', err);
-      });
-    }
-  </script>
-</body>
-</html>

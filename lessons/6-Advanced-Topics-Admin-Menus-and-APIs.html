@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
@@ -12,7 +12,7 @@
       --primary: #0284c7;
       --primary-dark: #0369a1;
       --primary-light: #e0f2fe;
-      --youtube-red: #ff0000;
+      
       --accent: #10b981;
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -56,7 +56,7 @@
       text-decoration: none;
     }
     .top-nav-brand span {
-      background: var(--youtube-red);
+      background: var(--primary);
       color: #ffffff;
       padding: 4px 10px;
       border-radius: 8px;
@@ -109,12 +109,7 @@
       margin-bottom: 12px;
     }
 
-    /* YouTube Creator Panel Toggle Button */
-    .yt-toggle-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #1e293b, #0f172a);
-      color: #ffffff;
-      border: 2px solid #334155;
+    px solid #334155;
       padding: 16px 24px;
       border-radius: 16px;
       font-size: 16px;
@@ -127,13 +122,11 @@
       transition: all 0.3s;
       font-family: 'Tajawal', sans-serif;
     }
-    .yt-toggle-btn:hover {
-      border-color: var(--youtube-red);
+      border-color: var(--primary);
       background: #0f172a;
       box-shadow: 0 8px 25px rgba(255, 0, 0, 0.15);
     }
-    .yt-badge {
-      background: var(--youtube-red);
+      background: var(--primary);
       color: #ffffff;
       padding: 4px 12px;
       border-radius: 8px;
@@ -141,7 +134,6 @@
     }
 
     /* Creator Box Content */
-    .yt-creator-box {
       display: none;
       background: #fff5f5;
       border: 2px solid #fca5a5;
@@ -150,7 +142,6 @@
       margin-bottom: 36px;
       box-shadow: 0 8px 20px rgba(239, 68, 68, 0.08);
     }
-    .yt-creator-box.active { display: block; }
     .yt-box-title {
       color: #991b1b;
       font-size: 20px;
@@ -445,192 +436,3 @@
       <h1 class="lesson-title">الدرس السادس: الموضوعات المتقدمة وواجهات البرمجة والنشر</h1>
     </div>
 
-    <!-- YouTube Presenter Panel Toggle -->
-    <button class="yt-toggle-btn" onclick="toggleYtPanel()">
-      <span>🎬 دليل التسجيل وصانع المحتوى لليوتيوب (YouTube Creator Guide)</span>
-      <span class="yt-badge">اضغط للعرض / الإخفاء 🔻</span>
-    </button>
-
-    <div class="yt-creator-box" id="ytCreatorPanel">
-      <div class="yt-box-title">🎥 أدوات ودليل صانع المحتوى لتسجيل هذا الدرس على يوتيوب</div>
-      
-      <div class="yt-section-card">
-        <h4>🎯 خطة الخطاب وافتتاحية الفيديو (Hook):</h4>
-        <p>"عايز الإضافة بتاعتك يكون ليها صفحة إعدادات كاملة في Dashboard، وتعمل Shortcodes تستخدم في أي مكان بالصفحات؟ في الفيديو الأخير من الكورس هنعمل تحفتنا البرمجية الأخيرة ونرفعها!"</p>
-      </div>
-
-      <div class="yt-section-card">
-        <h4>🗣️ نقاط الشرح أثناء التسجيل:</h4>
-        <ol>
-          <li>كتابة <code>add_menu_page()</code> واستعراض ظهور الصفحة في Dashboard.</li>
-          <li>إنشاء shortcode تفاعلي عبر <code>add_shortcode()</code> وتجربته في مكاتب المقالات.</li>
-          <li>نصائح تجهيز الإضافة ومراجعة معايير النشر الرسمية على WordPress.org.</li>
-        </ol>
-      </div>
-
-      <div class="yt-section-card">
-        <h4>📝 جاهز للنسخ: عنوان المقطع والوصف (YouTube Metadata):</h4>
-        <div class="yt-copy-text">
-          <button class="yt-copy-btn" onclick="copyYtSnippet(this)">نسخ النص 📋</button>
-          <div class="yt-text-content">
-📌 عنوان الفيديو المقترح:
-كورس تطوير إضافات ووردبريس #6 - إنشاء صفحات التحكم Admin Pages والـ Shortcodes
-
-📌 وصف الفيديو (Description):
-الدرس الأخير والمتقدم في كورس تطوير إضافات ووردبريس الشامل!
-ستتعلم:
-- إضافة صفحة خيارات مخصصة في Dashboard بـ add_menu_page.
-- تسجيل الرموز القصيرة Shortcodes عبر add_shortcode.
-- نصائح النشر والمساهمة في دليل الإضافات الرسمي.
-
-#Shortcodes #AdminMenu #ووردبريس #WordPressPlugin #ختام_الكورس
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  <h2 class="section-title">📘 التلخيص المترابط للموضوعات</h2>
-
-  <h3 class="subsection-title">٦.١ قوائم الإدارة (Administration Menus & Settings API)</h3>
-  <p>تسمح ووردبريس للمطورين بإنشاء لوحات تحكم مخصصة لإضافاتهم باستخدام الدالة <code>add_menu_page()</code> أو <code>add_submenu_page()</code> مرجعية بخطاف الإدارة <code>admin_menu</code>.</p>
-
-  <h3 class="subsection-title">٦.٢ الرموز القصيرة (Shortcodes API)</h3>
-  <p>الرمز القصير (Shortcode) هو كود مختصر محاط بأقواس مربعة مثل <code>[my_custom_shortcode]</code> يتيح للمستخدم إدراج عناصر تفاعلية ومحتوى ديناميكي معقد داخل المقالات والصفحات، وتتم إدارته عبر الدالة <code>add_shortcode()</code>.</p>
-
-  <h3 class="subsection-title">٦.٣ أنواع المنشورات المخصصة والتصنيفات (Custom Post Types & Taxonomies)</h3>
-  <p>تسمح الإضافات المتقدمة بتوسيع ووردبريس من منصة مدونات إلى نظام إدارة محتوى شامل (CMS) عبر تعريف أنواع منشورات مخصصة (Custom Post Types - CPTs) مثل "المنتجات" أو "العقارات"، وتنظيمها بتصنيفات مخصصة (Custom Taxonomies).</p>
-
-  <h3 class="subsection-title">٦.٤ النشر في مستودع ووردبريس الرسمي (WordPress.org Directory)</h3>
-  <p>عند اكتمال الإضافة وتجربتها وفق الدليل الرسمي (Plugin Developer Handbook)، يتم تحضيرها للنشر:</p>
-  <ol>
-    <li>مراجعة الشفرة والتأكد من عدم وجود أخطاء أو ثغرات.</li>
-    <li>إنشاء ملف <code>readme.txt</code> القياسي الذي يحتوي على الوصف والتثبيت وسجل التعديلات (Changelog).</li>
-    <li>رفع الملفات للمستودع الرسمي عبر نظام التحكم بالنسخ SVN.</li>
-  </ol>
-
-  <h2 class="section-title">💻 كود الدرس البرمجي</h2>
-  <p>كود برمجي متكامل يجمع بين إضافة صفحة في لوحة التحكم وتدشين Shortcode تفاعلي:</p>
-
-  
-  <div class="vscode-container">
-    <div class="vscode-header">
-      <div class="vscode-controls">
-        <span class="vscode-dot dot-red"></span>
-        <span class="vscode-dot dot-yellow"></span>
-        <span class="vscode-dot dot-green"></span>
-      </div>
-      <div class="vscode-file-tab">
-        📄 advanced-plugin-showcase.php
-        <span class="vscode-lang">PHP</span>
-      </div>
-      <button class="copy-btn" onclick="copyCode(this)">
-        📋 نسخ الكود
-      </button>
-    </div>
-    <div class="vscode-code-area"><span class="token-comment">&lt;?php</span>
-<span class="token-comment">/**
- * Plugin Name: Advanced Plugin Showcase
- * Description: إضافة متقدمة توضح بناء صفحة إعدادات في لوحة التحكم ورمز قصير Shortcode.
- */</span>
-
-<span class="token-keyword">if</span> ( ! <span class="token-function">defined</span>( <span class="token-string">'ABSPATH'</span> ) ) {
-    <span class="token-keyword">exit</span>;
-}
-
-<span class="token-comment">// 1. تسجيل صفحة خيارات في لوحة تحكم الأدمن</span>
-<span class="token-keyword">function</span> <span class="token-function">academic_register_admin_page</span>() {
-    <span class="token-function">add_menu_page</span>(
-        <span class="token-string">'إعدادات الإضافة'</span>,
-        <span class="token-string">'الإضافة المخصصة'</span>,
-        <span class="token-string">'manage_options'</span>,
-        <span class="token-string">'academic-settings'</span>,
-        <span class="token-string">'academic_render_admin_ui'</span>,
-        <span class="token-string">'dashicons-admin-generic'</span>,
-        25
-    );
-}
-<span class="token-function">add_action</span>( <span class="token-string">'admin_menu'</span>, <span class="token-function">academic_register_admin_page</span> );
-
-<span class="token-keyword">function</span> <span class="token-function">academic_render_admin_ui</span>() {
-    <span class="token-keyword">echo</span> <span class="token-string">'&lt;div class="wrap"&gt;&lt;h1&gt;لوحة تحكم الإضافة التعليمية&lt;/h1&gt;&lt;p&gt;مرحباً بك في صفحة الإعدادات المخصصة.&lt;/p&gt;&lt;/div&gt;'</span>;
-}
-
-<span class="token-comment">// 2. تسجيل رمز قصير [academic_banner title="أهلاً"]</span>
-<span class="token-keyword">function</span> <span class="token-function">academic_banner_shortcode</span>( <span class="token-variable">$atts</span> ) {
-    <span class="token-variable">$atts</span> = <span class="token-function">shortcode_atts</span>( array(
-        <span class="token-string">'title'</span> =&gt; <span class="token-string">'مرحباً بك في موقعنا!'</span>,
-    ), <span class="token-variable">$atts</span>, <span class="token-string">'academic_banner'</span> );
-
-    <span class="token-keyword">return</span> <span class="token-string">'&lt;div class="banner-box" style="background:#e0f2fe; padding:15px; border-radius:8px;"&gt;'</span> . <span class="token-function">esc_html</span>( <span class="token-variable">$atts</span>[<span class="token-string">'title'</span>] ) . <span class="token-string">'&lt;/div&gt;'</span>;
-}
-<span class="token-function">add_shortcode</span>( <span class="token-string">'academic_banner'</span>, <span class="token-function">academic_banner_shortcode</span> );
-</div>
-  </div>
-  
-
-  <h2 class="section-title">❓ أسئلة المراجعة واختبار الذات</h2>
-
-  <div class="qa-card">
-    <div class="qa-question">📌 س1 (اختيار من متعدد): أين توجد وثائق التطوير الرسمية الخاصة بالإضافات لووردبريس؟</div>
-    <div class="qa-answer">✅ الإجابة النموذجية: دليل مطوري الإضافات (Plugin Developer Handbook).</div>
-  </div>
-
-  <div class="qa-card">
-    <div class="qa-question">📌 س2 (اختيار من متعدد): ما الأداة التي تستخدمها لإضافة محتوى ديناميكي داخل المقالات بأقواس مربعة [example]؟</div>
-    <div class="qa-answer">✅ الإجابة النموذجية: الرموز القصيرة (Shortcodes).</div>
-  </div>
-
-  <div class="cheatsheet-card">
-    <h3>⚡ قائمة الحفظ السريع ليلة الامتحان</h3>
-    <ul>
-      <li>تُستخدم الدالة <code>add_menu_page()</code> لإنشاء صفحات خيارات في لوحة التحكم.</li>
-      <li>الرموز القصيرة (Shortcodes) تُسجل عبر <code>add_shortcode()</code> لإدراج محتوى ديناميكي.</li>
-      <li>أنواع المنشورات المخصصة (CPTs) تُحظر النظام من مجرد مدونة إلى CMS متكامل.</li>
-      <li>ملف <code>readme.txt</code> ضروري لنشر الإضافة في مستودع WordPress.org الرسمي.</li>
-    </ul>
-  </div>
-
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-      <a href="5-WordPress-Bootstrapping-and-Database-wpdb.html" class="bottom-nav-btn">➡️ الدرس الخامس: دورة الإقلاع وقاعدة البيانات</a>
-      <a href="../index.html" class="bottom-nav-btn">🏠 العودة للفهرس</a>
-      <div></div>
-    </div>
-  </div>
-
-  <script>
-    function toggleYtPanel() {
-      const panel = document.getElementById('ytCreatorPanel');
-      panel.classList.toggle('active');
-    }
-
-    function copyYtSnippet(btn) {
-      const textBlock = btn.parentElement.querySelector('.yt-text-content').innerText;
-      navigator.clipboard.writeText(textBlock).then(() => {
-        const orig = btn.innerText;
-        btn.innerText = 'تم النسخ! ✅';
-        setTimeout(() => btn.innerText = orig, 2000);
-      });
-    }
-
-    function copyCode(btn) {
-      const container = btn.closest('.vscode-container');
-      const codeText = container.querySelector('.vscode-code-area').innerText;
-      
-      navigator.clipboard.writeText(codeText).then(() => {
-        const originalText = btn.innerHTML;
-        btn.innerHTML = 'تم النسخ! ✅';
-        btn.classList.add('copied');
-        
-        setTimeout(() => {
-          btn.innerHTML = originalText;
-          btn.classList.remove('copied');
-        }, 2000);
-      }).catch(err => {
-        console.error('فشل النسخ:', err);
-      });
-    }
-  </script>
-</body>
-</html>

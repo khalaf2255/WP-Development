@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plugin Handbook Overview | كورس تطوير إضافات ووردبريس الشامل</title>
+  <title>Software License & Uninstall Methods | كورس تطوير إضافات ووردبريس الشامل</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,6 @@
       --primary: #0284c7;
       --primary-dark: #0369a1;
       --primary-light: #e0f2fe;
-      
       --accent: #10b981;
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -102,7 +101,7 @@
       margin-bottom: 12px;
     }
     .lesson-title {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 900;
       color: #0f172a;
       line-height: 1.3;
@@ -142,50 +141,43 @@
       font-size: 15px;
       line-height: 1.7;
     }
+    .alert-danger {
+      background: #fef2f2;
+      border-right: 4px solid #ef4444;
+      color: #991b1b;
+    }
     .alert-info {
       background: #f0f9ff;
       border-right: 4px solid #0284c7;
       color: #0c4a6e;
     }
-    .alert-success {
-      background: #ecfdf5;
-      border-right: 4px solid #10b981;
-      color: #065f46;
-    }
 
-    /* Grid Roadmap Cards */
-    .roadmap-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
+    /* Tables */
+    .table-wrapper {
+      overflow-x: auto;
       margin: 24px 0;
-    }
-    .roadmap-card {
-      background: #f8fafc;
-      border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
-      transition: all 0.2s ease;
+      border: 1px solid var(--border);
     }
-    .roadmap-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+      font-size: 14.5px;
     }
-    .roadmap-card-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      font-size: 16px;
+    th {
+      background: #f1f5f9;
       color: #0f172a;
-      margin-bottom: 8px;
+      padding: 14px 18px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
     }
-    .roadmap-card-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      color: #334155;
     }
+    tr:nth-child(even) { background: #f8fafc; }
 
     /* Code Block */
     .vscode-window {
@@ -230,6 +222,7 @@
     .fn { color: #dcdcaa; }
     .str { color: #ce9178; }
     .cm { color: #6a9955; font-style: italic; }
+    .var { color: #9cdcfe; }
 
     /* Footer Note */
     .lesson-footer {
@@ -257,50 +250,15 @@
     
     <!-- Lesson Header -->
     <header class="lesson-header">
-      <span class="lesson-badge">الدرس 01 | قسم Plugin Handbook</span>
-      <h1 class="lesson-title">مقدمة وخريطة طريق دليل تطوير الإضافات (Plugin Handbook)</h1>
-      <p class="lesson-subtitle">تفكيك المعمارية الهيكلية للنظام، والقاعدة الذهبية في حماية النواة Core.</p>
+      <span class="lesson-badge">الدرس 06 | قسم Plugin Basics</span>
+      <h1 class="lesson-title">الترخيص البرمجي وطرق الحذف والتنظيف (License & Uninstall Methods)</h1>
+      <p class="lesson-subtitle">التثبيت القانوني GPLv2+، التمييز بين Deactivation و Uninstall، والبناء الآمن لملف uninstall.php.</p>
     </header>
 
     <!-- Technical Content -->
     
-    <h2>1. المعمارية الهيكلية لدليل الإضافات (Plugin Developer Handbook)</h2>
-    <p>دليل تطوير الإضافات الرسمي هو المرجع الأساسي لتطوير برمجيات ووردبريس. بناءً على الخريطة الرسمية، لا تعمل الإضافة في ووردبريس كبرنامج منفصل، بل كـ <strong>توسعة ديناميكية (Dynamic Extension)</strong> ترتبط بالمنظومة عبر 4 ركائز معمارية رئيسية:</p>
-
-    <div class="roadmap-grid">
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🔗 1. نظام الخطاطيف (Hooks System)</div>
-        <div class="roadmap-card-desc">العصب المركزي المكون من <code class="inline-code">Actions</code> و <code class="inline-code">Filters</code>، ويتيح لك ضخ أكوادك أو تعديل البيانات أثناء تحميل الصفحة.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🗄️ 2. إدارة البيانات والكيانات (Entities)</div>
-        <div class="roadmap-card-desc">التعامل مع قاعدة البيانات من خلال Custom Post Types, Taxonomies, Metadata, والحقول المخصصة.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🎨 3. الواجهة والتحكم (Admin UX)</div>
-        <div class="roadmap-card-desc">دمج لوحات التحكم والإعدادات داخل الـ Dashboard عبر Administration Menus و Settings API.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">⚙️ 4. الخلفية والمهام (Integrations & Cron)</div>
-        <div class="roadmap-card-desc">الاتصال بالخدمات الخارجية عبر HTTP API، وتنفيذ المهمات المجدولة خلفياً عبر WP-Cron.</div>
-      </div>
-    </div>
-
-    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
-
-    <h2>2. القاعدة الذهبية: حماية النواة (Don't Touch WordPress Core)</h2>
-    <p>القاعدة الأولى والأهم في عالم ووردبريس هي: <strong>لا تقم أبداً بتعديل أي ملف من ملفات نواة ووردبريس (WordPress Core)!</strong></p>
-
-    <div class="alert alert-info">
-      <strong>📌 العلة التقنية (Technical Rationale):</strong>
-      عند تحديث ووردبريس إلى إصدار جديد، يتم استبدال جميع ملفات النواة تلقائياً. أي تعديل مباشر في ملفات النواة سيتم مسحه فوراً، فضلاً عن التسبب في ثغرات أمنية وأخطاء برمجية غير متوقعة. البديل الآمن دائماً هو استخدام نظام الـ <strong>Hooks</strong>.
-    </div>
-
-    <h2>3. نمط الهيكل الأساسي للإضافة (Core Blueprint)</h2>
-    <p>هذا كود مبسط يوضح كيف يتم تجميع مكونات الإضافة والتسجيل في نظام الـ Hooks دون المساس بالنواة:</p>
+    <h2>1. تضمين ترخيص البرمجيات (Including a Software License)</h2>
+    <p>تتم إتاحة معظم إضافات ووردبريس تحت رخصة **GPLv2 أو أحدث** المتوافقة مع ووردبريس ذاته. يُفضل دائماً توضيح الترخيص في تعليق الترويسة ووضع كتلة تعليق الترخيص (License Block) في بداية الملف الرئيسي للإضافة لحماية الحقوق وتحديد المسؤولية.</p>
 
     <div class="vscode-window">
       <div class="vscode-header">
@@ -309,29 +267,92 @@
           <div class="vscode-dot dot-yellow"></div>
           <div class="vscode-dot dot-green"></div>
         </div>
-        <div class="vscode-filename">my-first-plugin.php</div>
+        <div class="vscode-filename">license-block-header.php</div>
       </div>
       <pre><code><span class="kw">&lt;?php</span>
-<span class="cm">/**
- * Plugin Name: Core Architecture Demo
- * Description: نموذج هيكلي موحد لتنفيذ إضافة ووردبريس قياسية.
- * Version: 1.0.0
- */</span>
+<span class="cm">/*
+ * {Plugin Name} is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * any later version.
+ *
+ * {Plugin Name} is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ */</span></code></pre>
+    </div>
 
-<span class="cm">// 1. حماية الملف من الوصول المباشر</span>
-<span class="kw">if</span> ( ! <span class="fn">defined</span>( <span class="str">'ABSPATH'</span> ) ) {
-    <span class="kw">exit</span>;
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>2. التمييز المعماري: التعطيل (Deactivation) مقابل الحذف (Uninstall)</h2>
+    <p>يقع بعض المطورين غير المبتدئين في خطأ استخدام Deactivation Hook لحذف بيانات قاعدة البيانات. الجدول التالي يوضح الفرق المعماري الواجب اتّباعه:</p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>السيناريو والاختبار</th>
+            <th>عند التعطيل (Deactivation Hook)</th>
+            <th>عند الحذف النهائي (Uninstall Hook)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>تفريغ الكاش والملفات المؤقتة (Flush Cache / Temp)</td>
+            <td>✅ نعم</td>
+            <td>❌ غير مطلوب</td>
+          </tr>
+          <tr>
+            <td>تفريغ وتحديث الروابط (Flush Permalinks)</td>
+            <td>✅ نعم</td>
+            <td>❌ غير مطلوب</td>
+          </tr>
+          <tr>
+            <td>حذف الإعدادات والخيارات من <code class="inline-code">{$wpdb->prefix}_options</code></td>
+            <td>❌ <strong>ممنوع قطعياً</strong></td>
+            <td>✅ <strong>واجب لتنظيف قاعدة البيانات</strong></td>
+          </tr>
+          <tr>
+            <td>إسقاط الجداول المخصصة من <code class="inline-code">$wpdb</code></td>
+            <td>❌ <strong>ممنوع قطعياً</strong></td>
+            <td>✅ <strong>واجب لتنظيف قاعدة البيانات</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>3. الطريقة القياسية للحذف: ملف <code class="inline-code">uninstall.php</code></h2>
+    <p>عند حذف الإضافة من لوحة التحكم، يبحث ووردبريس تلقائياً عن ملف <code class="inline-code">uninstall.php</code> في جذر الإضافة وينفذه. يجب حماية هذا الملف بالثابت <code class="inline-code">WP_UNINSTALL_PLUGIN</code> لمنع تشغيله المباشر عبر المتصفح:</p>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">uninstall.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// 1. فحص الحماية الأمني الحاسم: التأكد أن ووردبريس هو من استدعى الملف</span>
+<span class="kw">if</span> ( ! <span class="fn">defined</span>( <span class="str">'WP_UNINSTALL_PLUGIN'</span> ) ) {
+    <span class="kw">die</span>;
 }
 
-<span class="cm">// 2. التسجيل في نظام الـ Hooks (إصدار Custom Post Type)</span>
-<span class="fn">add_action</span>( <span class="str">'init'</span>, <span class="str">'my_custom_post_type_init'</span> );
+<span class="cm">// 2. حذف خيارات الإضافة مخزنة في wp_options</span>
+<span class="var">$option_name</span> = <span class="str">'wporg_option'</span>;
+<span class="fn">delete_option</span>( <span class="var">$option_name</span> );
 
-<span class="kw">function</span> <span class="fn">my_custom_post_type_init</span>() {
-    <span class="fn">register_post_type</span>( <span class="str">'book'</span>, <span class="kw">array</span>(
-        <span class="str">'public'</span> => <span class="kw">true</span>,
-        <span class="str">'label'</span>  => <span class="str">'Books'</span>,
-    ) );
-}</code></pre>
+<span class="cm">// لدعم الشبكات المتعددة Multisite</span>
+<span class="fn">delete_site_option</span>( <span class="var">$option_name</span> );
+
+<span class="cm">// 3. إسقاط الجداول المخصصة عبر $wpdb</span>
+<span class="kw">global</span> <span class="var">$wpdb</span>;
+<span class="var">$wpdb</span>->query( <span class="str">"DROP TABLE IF EXISTS {$wpdb->prefix}mytable"</span> );
+</code></pre>
     </div>
 
     <!-- Footer -->
@@ -341,5 +362,6 @@
     </footer>
 
   </div>
+
 </body>
 </html>

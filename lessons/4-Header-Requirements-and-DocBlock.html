@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Header Requirements & DocBlock | كورس تطوير إضافات ووردبريس الشامل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --accent: #10b981;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --vscode-bg: #1e1e1e;
+      --vscode-header: #2d2d2d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      padding-bottom: 60px;
+    }
+
+    /* Top Navigation Bar */
+    .top-nav {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .top-nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 17px;
+      color: #ffffff;
+      text-decoration: none;
+    }
+    .top-nav-brand span {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .nav-btn {
+      background: rgba(255,255,255,0.1);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover { background: var(--primary); }
+
+    /* Main Container */
+    .container {
+      max-width: 980px;
+      margin: 40px auto;
+      background: var(--card-bg);
+      padding: 48px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+    }
+
+    /* Lesson Header */
+    .lesson-header {
+      border-bottom: 2px dashed var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 28px;
+    }
+    .lesson-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .lesson-title {
+      font-size: 30px;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+    .lesson-subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Section Typography */
+    h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 36px 0 18px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-right: 4px solid var(--primary);
+      padding-right: 12px;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 24px 0 12px 0;
+    }
+    p { margin-bottom: 16px; font-size: 15.5px; color: #334155; }
+
+    /* Alert Boxes */
+    .alert {
+      padding: 18px 22px;
+      border-radius: 12px;
+      margin: 20px 0;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .alert-info {
+      background: #f0f9ff;
+      border-right: 4px solid #0284c7;
+      color: #0c4a6e;
+    }
+    .alert-warning {
+      background: #fffbe6;
+      border-right: 4px solid #f59e0b;
+      color: #78350f;
+    }
+
+    /* Tables */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 24px 0;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+      font-size: 14.5px;
+    }
+    th {
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 14px 18px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--border);
+    }
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      color: #334155;
+    }
+    tr:nth-child(even) { background: #f8fafc; }
+
+    /* Code Block */
+    .vscode-window {
+      background: var(--vscode-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 24px 0;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+      border: 1px solid #334155;
+    }
+    .vscode-header {
+      background: var(--vscode-header);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #3b3b3b;
+    }
+    .vscode-dots { display: flex; gap: 8px; }
+    .vscode-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
+    .vscode-filename {
+      color: #94a3b8;
+      font-size: 13px;
+      font-family: 'Fira Code', monospace;
+      direction: ltr;
+    }
+    pre code {
+      display: block;
+      padding: 20px;
+      color: #d4d4d4;
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-x: auto;
+      direction: ltr;
+      text-align: left;
+    }
+    .cm { color: #6a9955; font-style: italic; }
+
+    /* Footer Note */
+    .lesson-footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 2px dashed var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="top-nav">
+    <a href="../index.html" class="top-nav-brand">
+      <span>WPORG</span>
+      كورس تطوير إضافات ووردبريس الشامل
+    </a>
+    <a href="../index.html" class="nav-btn">⬅️ العودة للمنصة الرئيسية</a>
+  </nav>
+
+  <div class="container">
+    
+    <!-- Lesson Header -->
+    <header class="lesson-header">
+      <span class="lesson-badge">الدرس 02 | قسم Plugin Basics</span>
+      <h1 class="lesson-title">ترويسة الإضافة والحقول الـ 14 (Header Requirements)</h1>
+      <p class="lesson-subtitle">شرح Plugin DocBlock، الحقول الـ 14 المتاحة، الحماية بـ Update URI، والحقول الحديثة مثل Requires Plugins.</p>
+    </header>
+
+    <!-- Technical Content -->
+    
+    <h2>1. الحد الأدنى الإجباري (Minimum Fields)</h2>
+    <p>لكي يتعرف ووردبريس على ملف PHP كـ إضافة، يلزم وجود حقل إجباري واحد فقط في تعليق الترويسة وهو <strong>Plugin Name</strong>:</p>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">minimum-header.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">/*
+ * Plugin Name: MY PLUGIN NAME
+ */</span></code></pre>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>2. تفكيك الحقول الـ 14 المتاحة (Available Header Fields)</h2>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>اسم الحقل (Header Field)</th>
+            <th>حالة الحقل</th>
+            <th>الوصف والاستخدام التقني</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline-code">Plugin Name</code></td>
+            <td><strong>إجباري (Required)</strong></td>
+            <td>اسم الإضافة الذي يظهر في قائمة الإضافات في لوحة التحكم.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">Plugin URI</code></td>
+            <td>اختياري</td>
+            <td>صفحة الإضافة الرئيسية (يُمنع استخدام رابط wordpress.org هنا).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">Description</code></td>
+            <td>اختياري</td>
+            <td>وصف كافٍ ومختصر للإضافة (يفضل أقل من 140 حرفاً).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">Version</code></td>
+            <td>اختياري</td>
+            <td>رقم الإصدار الحالي (مثل 1.0 أو 1.0.3).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">Requires at least</code></td>
+            <td>موصى به</td>
+            <td>أدنى إصدار لووردبريس تتوافق معه الإضافة (مثل 5.2).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">Requires PHP</code></td>
+            <td>موصى به</td>
+            <td>أدنى إصدار لـ PHP مطلوب لتشغيل الإضافة (مثل 7.2).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">Author</code></td>
+            <td>اختياري</td>
+            <td>اسم المطور أو المطورين (يفصل بينهم بفاصلة).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">Author URI</code></td>
+            <td>اختياري</td>
+            <td>رابط موقع المطور أو صفحته الشخصية.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">License</code></td>
+            <td>موصى به</td>
+            <td>الاسم المختصر لرخصة الإضافة (مثل GPLv2).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">License URI</code></td>
+            <td>اختياري</td>
+            <td>رابط النص الكامل للرخصة.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">Text Domain</code></td>
+            <td>مهم للترجمة</td>
+            <td>معرف الترجمة الخاص بالإضافة لاستخدامه مع <code class="inline-code">gettext</code>.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">Domain Path</code></td>
+            <td>اختياري</td>
+            <td>مسار مجلد ملفات الترجمة (مثل <code class="inline-code">/languages</code>).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">Network</code></td>
+            <td>اختياري</td>
+            <td>تحديد ما إذا كانت الإضافة تُفعل على مستوى الشبكة فقط (<code class="inline-code">true</code>).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">Update URI</code></td>
+            <td><strong>حماية أمنية</strong></td>
+            <td>يمنع استبدال الإضافات الخاصة بتحديثات إضافة بنفس الاسم من دليلك الرسمي.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">Requires Plugins</code></td>
+            <td><strong>حقل جديد (WP 6.5)</strong></td>
+            <td>قائمة التبعيات (Slugs) للإضافات الأخرى المطلوبة لتشغيل هذه الإضافة.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>نموذج الترويسة الكامل الشامل (Full Header & DocBlock)</h3>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">my-advanced-plugin.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">/**
+ * File Level Description
+ *
+ * @package PluginPackage
+ * @author Author Name
+ * @copyright 2026 Author Name
+ * @license GPL-2.0-or-later
+ *
+ * @wordpress-plugin
+ * Plugin Name: My Advanced Plugin
+ * Plugin URI: https://example.com/plugins/my-plugin/
+ * Description: Handle the basics and advanced functionality neatly.
+ * Version: 1.10.3
+ * Requires at least: 5.2
+ * Requires PHP: 7.4
+ * Author: John Smith
+ * Author URI: https://author.example.com/
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Update URI: https://example.com/my-plugin/
+ * Text Domain: my-advanced-plugin
+ * Domain Path: /languages
+ * Requires Plugins: woocommerce, elementor
+ */</span></code></pre>
+    </div>
+
+    <div class="alert alert-warning">
+      <strong>⚠️ ملاحظة هامة حول مقارنة رقم الإصدار (Version Comparison Note):</strong>
+      يستخدم ووردبريس الدالة القياسية في PHP المسماة <code class="inline-code">version_compare()</code> لمقارنة أرقام إصدار الإضافة مع التحديثات. تأكد دائماً أن رقم الإصدار الجديد يعتبر "أكبر" حسابياً في PHP. على سبيل المثال: <strong>الإصدار 1.02 يعتبر في PHP أكبر حسابياً من الإصدار 1.1!</strong>
+    </div>
+
+    <!-- Footer -->
+    <footer class="lesson-footer">
+      <div><strong>كورس تطوير إضافات ووردبريس الشامل</strong> - جميع الحقوق محفوظة</div>
+      <a href="../index.html" class="nav-btn">⬅️ الصفحة الرئيسية للمنصة</a>
+    </footer>
+
+  </div>
+
+</body>
+</html>

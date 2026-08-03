@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plugin Handbook Overview | كورس تطوير إضافات ووردبريس الشامل</title>
+  <title>Nonces & CSRF Protection | كورس تطوير إضافات ووردبريس الشامل</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,6 @@
       --primary: #0284c7;
       --primary-dark: #0369a1;
       --primary-light: #e0f2fe;
-      
       --accent: #10b981;
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -102,7 +101,7 @@
       margin-bottom: 12px;
     }
     .lesson-title {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 900;
       color: #0f172a;
       line-height: 1.3;
@@ -142,49 +141,15 @@
       font-size: 15px;
       line-height: 1.7;
     }
+    .alert-danger {
+      background: #fef2f2;
+      border-right: 4px solid #ef4444;
+      color: #991b1b;
+    }
     .alert-info {
       background: #f0f9ff;
       border-right: 4px solid #0284c7;
       color: #0c4a6e;
-    }
-    .alert-success {
-      background: #ecfdf5;
-      border-right: 4px solid #10b981;
-      color: #065f46;
-    }
-
-    /* Grid Roadmap Cards */
-    .roadmap-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      margin: 24px 0;
-    }
-    .roadmap-card {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      transition: all 0.2s ease;
-    }
-    .roadmap-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.08);
-    }
-    .roadmap-card-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      font-size: 16px;
-      color: #0f172a;
-      margin-bottom: 8px;
-    }
-    .roadmap-card-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
     }
 
     /* Code Block */
@@ -230,6 +195,7 @@
     .fn { color: #dcdcaa; }
     .str { color: #ce9178; }
     .cm { color: #6a9955; font-style: italic; }
+    .var { color: #9cdcfe; }
 
     /* Footer Note */
     .lesson-footer {
@@ -257,50 +223,30 @@
     
     <!-- Lesson Header -->
     <header class="lesson-header">
-      <span class="lesson-badge">الدرس 01 | قسم Plugin Handbook</span>
-      <h1 class="lesson-title">مقدمة وخريطة طريق دليل تطوير الإضافات (Plugin Handbook)</h1>
-      <p class="lesson-subtitle">تفكيك المعمارية الهيكلية للنظام، والقاعدة الذهبية في حماية النواة Core.</p>
+      <span class="lesson-badge">الدرس 03 | قسم Plugin Security</span>
+      <h1 class="lesson-title">الحماية من ثغرات التزوير (Nonces & CSRF Protection)</h1>
+      <p class="lesson-subtitle">ما هو الـ Nonce؟ حماية النماذج والـ AJAX والروابط، ودوال التوليد والتحقق القياسية.</p>
     </header>
 
     <!-- Technical Content -->
     
-    <h2>1. المعمارية الهيكلية لدليل الإضافات (Plugin Developer Handbook)</h2>
-    <p>دليل تطوير الإضافات الرسمي هو المرجع الأساسي لتطوير برمجيات ووردبريس. بناءً على الخريطة الرسمية، لا تعمل الإضافة في ووردبريس كبرنامج منفصل، بل كـ <strong>توسعة ديناميكية (Dynamic Extension)</strong> ترتبط بالمنظومة عبر 4 ركائز معمارية رئيسية:</p>
+    <h2>1. ما هو الـ Nonce ولماذا نستخدمه؟ (Why use a Nonce?)</h2>
+    <p>الـ **Nonce** هو رمز تفويض مؤقت (Hash) يساعد في حماية الروابط والنماذج من التزوير عبر المواقع (CSRF - Cross-Site Request Forgery). يمتد العمر الافتراضي للرمز بين **12 إلى 24 ساعة** لعملية ومستخدم معينين.</p>
 
-    <div class="roadmap-grid">
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🔗 1. نظام الخطاطيف (Hooks System)</div>
-        <div class="roadmap-card-desc">العصب المركزي المكون من <code class="inline-code">Actions</code> و <code class="inline-code">Filters</code>، ويتيح لك ضخ أكوادك أو تعديل البيانات أثناء تحميل الصفحة.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🗄️ 2. إدارة البيانات والكيانات (Entities)</div>
-        <div class="roadmap-card-desc">التعامل مع قاعدة البيانات من خلال Custom Post Types, Taxonomies, Metadata, والحقول المخصصة.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">🎨 3. الواجهة والتحكم (Admin UX)</div>
-        <div class="roadmap-card-desc">دمج لوحات التحكم والإعدادات داخل الـ Dashboard عبر Administration Menus و Settings API.</div>
-      </div>
-
-      <div class="roadmap-card">
-        <div class="roadmap-card-header">⚙️ 4. الخلفية والمهام (Integrations & Cron)</div>
-        <div class="roadmap-card-desc">الاتصال بالخدمات الخارجية عبر HTTP API، وتنفيذ المهمات المجدولة خلفياً عبر WP-Cron.</div>
-      </div>
+    <div class="alert alert-danger">
+      <strong>🚨 كيف تحدث ثغرة الـ CSRF بدون Nonce؟</strong>
+      افتراضياً، إذا قام المطور بإنشاء رابط حذف مقال مثل: <code class="inline-code">post.php?post=123&amp;action=trash</code>، يمكن للمخترق وضع صورة خفية في موقع خارجي متضمنة هذا الرابط في الـ <code class="inline-code">src</code>! وعند زيارة المسؤول لذلك الموقع الخارجي، يرسل المتصفح الكوكيز تلقائياً ويتم حذف المقال دون علم المسؤول! أخذ رمز الـ Nonce بـ <code class="inline-code">_wpnonce=b192fc4204</code> يمنع هذا الهجوم ويرد بـ <strong>403 Forbidden</strong>.
     </div>
 
     <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
 
-    <h2>2. القاعدة الذهبية: حماية النواة (Don't Touch WordPress Core)</h2>
-    <p>القاعدة الأولى والأهم في عالم ووردبريس هي: <strong>لا تقم أبداً بتعديل أي ملف من ملفات نواة ووردبريس (WordPress Core)!</strong></p>
+    <h2>2. دوال إنشاء الـ Nonce (Creating a Nonce)</h2>
 
-    <div class="alert alert-info">
-      <strong>📌 العلة التقنية (Technical Rationale):</strong>
-      عند تحديث ووردبريس إلى إصدار جديد، يتم استبدال جميع ملفات النواة تلقائياً. أي تعديل مباشر في ملفات النواة سيتم مسحه فوراً، فضلاً عن التسبب في ثغرات أمنية وأخطاء برمجية غير متوقعة. البديل الآمن دائماً هو استخدام نظام الـ <strong>Hooks</strong>.
-    </div>
-
-    <h2>3. نمط الهيكل الأساسي للإضافة (Core Blueprint)</h2>
-    <p>هذا كود مبسط يوضح كيف يتم تجميع مكونات الإضافة والتسجيل في نظام الـ Hooks دون المساس بالنواة:</p>
+    <ul>
+      <li><strong>في الروابط (URL):</strong> نستخدم الدالة <code class="inline-code">wp_nonce_url( $url, 'trash-post_' . $post_id )</code>.</li>
+      <li><strong>في النماذج (HTML Forms):</strong> نستخدم الدالة <code class="inline-code">wp_nonce_field( 'delete-comment_' . $comment_id )</code> وتطبع حقلين مخفيين تلقائياً.</li>
+      <li><strong>في طلبات الـ AJAX أو الحالات المخصصة:</strong> نستخدم <code class="inline-code">wp_create_nonce( 'my-action_' . $post_id )</code> لإنشاء الرمز مباشرة.</li>
+    </ul>
 
     <div class="vscode-window">
       <div class="vscode-header">
@@ -309,29 +255,50 @@
           <div class="vscode-dot dot-yellow"></div>
           <div class="vscode-dot dot-green"></div>
         </div>
-        <div class="vscode-filename">my-first-plugin.php</div>
+        <div class="vscode-filename">nonce-creation.php</div>
       </div>
       <pre><code><span class="kw">&lt;?php</span>
-<span class="cm">/**
- * Plugin Name: Core Architecture Demo
- * Description: نموذج هيكلي موحد لتنفيذ إضافة ووردبريس قياسية.
- * Version: 1.0.0
- */</span>
+<span class="cm">// 1. إضافة Nonce إلى رابط</span>
+<span class="var">$secure_url</span> = <span class="fn">wp_nonce_url</span>( <span class="var">$bare_url</span>, <span class="str">'trash-post_'</span> . <span class="var">$post_id</span> );
 
-<span class="cm">// 1. حماية الملف من الوصول المباشر</span>
-<span class="kw">if</span> ( ! <span class="fn">defined</span>( <span class="str">'ABSPATH'</span> ) ) {
-    <span class="kw">exit</span>;
-}
+<span class="cm">// 2. إضافة Nonce داخل نموذج Form</span>
+<span class="kw">echo</span> <span class="str">'&lt;form method="post"&gt;'</span>;
+<span class="fn">wp_nonce_field</span>( <span class="str">'delete-comment_'</span> . <span class="var">$comment_id</span> );
+<span class="kw">echo</span> <span class="str">'&lt;input type="submit" value="Delete"&gt;&lt;/form&gt;'</span>;
+</code></pre>
+    </div>
 
-<span class="cm">// 2. التسجيل في نظام الـ Hooks (إصدار Custom Post Type)</span>
-<span class="fn">add_action</span>( <span class="str">'init'</span>, <span class="str">'my_custom_post_type_init'</span> );
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
 
-<span class="kw">function</span> <span class="fn">my_custom_post_type_init</span>() {
-    <span class="fn">register_post_type</span>( <span class="str">'book'</span>, <span class="kw">array</span>(
-        <span class="str">'public'</span> => <span class="kw">true</span>,
-        <span class="str">'label'</span>  => <span class="str">'Books'</span>,
-    ) );
+    <h2>3. دوال التحقق من الـ Nonce (Verifying a Nonce)</h2>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">nonce-verification.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// 1. التحقق في صفحات لوحة التحكم (يقوم بإيقاف السكربت ورفع 403 تلقائياً)</span>
+<span class="fn">check_admin_referer</span>( <span class="str">'delete-comment_'</span> . <span class="var">$comment_id</span> );
+
+<span class="cm">// 2. التحقق في طلبات الـ AJAX</span>
+<span class="fn">check_ajax_referer</span>( <span class="str">'process-comment'</span> );
+
+<span class="cm">// 3. التحقق اليدوي الخالص (يعيد true أو false)</span>
+<span class="kw">if</span> ( ! <span class="fn">wp_verify_nonce</span>( <span class="var">$_POST</span>[<span class="str">'my_nonce'</span>], <span class="str">'process-comment'</span> . <span class="var">$comment_id</span> ) ) {
+    <span class="fn">wp_die</span>( <span class="str">'Security check failed!'</span> );
 }</code></pre>
+    </div>
+
+    <div class="alert alert-info">
+      <strong>📌 تخصيص مدة حياة الـ Nonce:</strong>
+      يمكنك تعديل المدة الإفتراضية لـ Nonce (24 ساعة) عبر الفلتر <code class="inline-code">nonce_life</code>. مثلاً لتقليلها إلى 4 ساعات:
+      <br>
+      <code class="inline-code">add_filter( 'nonce_life', function() { return 4 * HOUR_IN_SECONDS; } );</code>
     </div>
 
     <!-- Footer -->
@@ -341,5 +308,6 @@
     </footer>
 
   </div>
+
 </body>
 </html>

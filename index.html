@@ -11,7 +11,6 @@
     :root {
       --primary: #0284c7;
       --primary-dark: #0369a1;
-      --youtube-red: #ff0000;
       --accent: #10b981;
       --bg: #0f172a;
       --sidebar-bg: #1e293b;
@@ -54,7 +53,7 @@
       gap: 10px;
     }
     .brand-badge {
-      background: var(--youtube-red);
+      background: var(--primary);
       color: #ffffff;
       padding: 3px 8px;
       border-radius: 6px;
@@ -98,6 +97,7 @@
       height: calc(100vh - 60px);
       overflow: hidden;
       position: relative;
+      flex-direction: row-reverse; /* Right-to-left layout */
     }
 
     /* Left Content Viewer Area (الشرح على اليسار) */
@@ -120,17 +120,20 @@
     /* Right Sidebar (القائمة على اليمين) */
     .sidebar {
       width: 380px;
+      height: 100%;
       background: var(--sidebar-bg);
       border-left: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
+      overflow: hidden;
       transition: transform 0.3s ease;
       z-index: 1000;
     }
     .sidebar-header {
       padding: 18px 20px 14px;
       border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
     }
     .sidebar-header h2 {
       font-size: 16px;
@@ -183,11 +186,26 @@
 
     .lessons-list {
       flex: 1;
+      min-height: 0;
       overflow-y: auto;
+      overflow-x: hidden;
       padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 10px;
+    }
+    .lessons-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    .lessons-list::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    .lessons-list::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+    .lessons-list::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
     }
     .lesson-item {
       background: rgba(255,255,255,0.03);
@@ -249,6 +267,85 @@
       font-size: 10.5px;
       padding: 2px 6px;
       border-radius: 4px;
+    }
+
+    /* Section Groups UI (الأقسام الرئيسية والدروس التابعة) */
+    .section-group {
+      margin-bottom: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      background: #141e30;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .section-group.open {
+      border-color: rgba(2, 132, 199, 0.4);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+    .section-header {
+      padding: 13px 16px;
+      background: #000;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+    .section-group.open .section-header {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      background: #000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .section-header:hover {
+      background: #334155;
+    }
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #f8fafc;
+      word-break: break-word;
+    }
+    .section-title .section-icon {
+      font-size: 16px;
+      color: #38bdf8;
+    }
+    .section-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .section-count {
+      font-size: 11px;
+      background: rgba(2, 132, 199, 0.2);
+      color: #38bdf8;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-weight: 700;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+    .section-arrow {
+      font-size: 11px;
+      color: #94a3b8;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .section-group.open .section-arrow {
+      transform: rotate(180deg);
+      color: #38bdf8;
+    }
+    .section-content {
+      display: none;
+      padding: 10px;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .section-group.open .section-content {
+      display: flex;
     }
 
     .no-results {
@@ -344,96 +441,337 @@
 
       <div class="lessons-list" id="lessonsList">
         
-        <div class="lesson-item active" data-id="1" data-path="lessons/1-Plugin-Basics-and-Introduction.html" data-keywords="مقدمة قاعدة ذهبية core تعديل النواة مفاهيم الإضافة architecture" onclick="loadLesson(this, 'lessons/1-Plugin-Basics-and-Introduction.html', 1)">
-          <div class="lesson-item-header">
-            <span class="lesson-item-tag">الدرس 01</span>
-            <span>⬅️</span>
+        <!-- Section 1: Plugin Handbook -->
+        <div class="section-group" id="section-handbook">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-title">
+              <span class="section-icon">📌</span>
+              <span>1. Plugin Handbook</span>
+            </div>
+            <div class="section-meta">
+              <span class="section-count">درس واحد</span>
+              <span class="section-arrow">▼</span>
+            </div>
           </div>
-          <div class="lesson-item-title">المقدمة والقاعدة الذهبية في تطوير ووردبريس</div>
-          <div class="lesson-item-desc">مفهوم الإضافة، أسباب منع تعديل النواة Core.</div>
-          <div class="topic-tags">
-            <span class="topic-badge">القاعدة الذهبية</span>
-            <span class="topic-badge">Core Protection</span>
-          </div>
-        </div>
-
-        <div class="lesson-item" data-id="2" data-path="lessons/2-Header-Requirements-and-Structure.html" data-keywords="ترويسة plugin header docblock minimum fields plugin name requires plugins update uri phpversion 14 حقل" onclick="loadLesson(this, 'lessons/2-Header-Requirements-and-Structure.html', 2)">
-          <div class="lesson-item-header">
-            <span class="lesson-item-tag">الدرس 02</span>
-            <span>⬅️</span>
-          </div>
-          <div class="lesson-item-title">ترويسة الإضافة (Plugin Header) والحقول الـ 14</div>
-          <div class="lesson-item-desc">شرح Plugin DocBlock، الحقول الـ 14 و Requires Plugins.</div>
-          <div class="topic-tags">
-            <span class="topic-badge">Plugin Name</span>
-            <span class="topic-badge">Requires Plugins</span>
-            <span class="topic-badge">Update URI</span>
-          </div>
-        </div>
-
-        <div class="lesson-item" data-id="3" data-path="lessons/3-Activation-and-Deactivation-Hooks.html" data-keywords="تفعيل تعطيل activation deactivation hook register_activation_hook register_deactivation_hook flush_rewrite_rules 404 CPT uninstall" onclick="loadLesson(this, 'lessons/3-Activation-and-Deactivation-Hooks.html', 3)">
-          <div class="lesson-item-header">
-            <span class="lesson-item-tag">الدرس 03</span>
-            <span>⬅️</span>
-          </div>
-          <div class="lesson-item-title">خطاطيف التفعيل والتعطيل (Activation & Deactivation)</div>
-          <div class="lesson-item-desc">تفعيل وتنظيف الإضافة وحل مشكلة أخطاء 404.</div>
-          <div class="topic-tags">
-            <span class="topic-badge">register_activation_hook</span>
-            <span class="topic-badge">flush_rewrite_rules</span>
+          <div class="section-content">
+            <div class="lesson-item active" data-id="1" data-path="lessons/1-Plugin-Basics-and-Introduction.html" data-keywords="مقدمة handbook handbook overview core تعديل النواة مفاهيم الإضافة architecture roadmap" onclick="loadLesson(this, 'lessons/1-Plugin-Basics-and-Introduction.html', 1)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 01</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Plugin Handbook Overview</div>
+              <div class="lesson-item-desc">مقدمة وخريطة طريق الدليل الرسمي وتفكيك معمارية الإضافة.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">Plugin Handbook</span>
+                <span class="topic-badge">Core Protection</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="lesson-item" data-id="4" data-path="lessons/3-Plugin-Security-and-Protection.html" data-keywords="أمان سيكيورتي abspath sanitization escaping nonces capabilities وصول مباشر تعقيم هروب" onclick="loadLesson(this, 'lessons/3-Plugin-Security-and-Protection.html', 4)">
-          <div class="lesson-item-header">
-            <span class="lesson-item-tag">الدرس 04</span>
-            <span>⬅️</span>
+        <!-- Section 2: Introduction to Plugin Development -->
+        <div class="section-group" id="section-intro">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-title">
+              <span class="section-icon">🚀</span>
+              <span>2. Introduction to Plugin Development</span>
+            </div>
+            <div class="section-meta">
+              <span class="section-count">درس واحد</span>
+              <span class="section-arrow">▼</span>
+            </div>
           </div>
-          <div class="lesson-item-title">أمان الإضافات وحماية ABSPATH</div>
-          <div class="lesson-item-desc">منع الوصول المباشر، Sanitization، و Escaping.</div>
-          <div class="topic-tags">
-            <span class="topic-badge">ABSPATH Check</span>
-            <span class="topic-badge">Nonces</span>
-            <span class="topic-badge">Escaping</span>
-          </div>
-        </div>
-
-        <div class="lesson-item" data-id="5" data-path="lessons/4-WordPress-Hooks-Actions-and-Filters.html" data-keywords="خطاطيف هوكس hooks actions filters add_action add_filter priority priority callback أفعال مرشحات" onclick="loadLesson(this, 'lessons/4-WordPress-Hooks-Actions-and-Filters.html', 5)">
-          <div class="lesson-item-header">
-            <span class="lesson-item-tag">الدرس 05</span>
-            <span>⬅️</span>
-          </div>
-          <div class="lesson-item-title">الخطاطيف والربط (Actions & Filters)</div>
-          <div class="lesson-item-desc">الفرق الجوهري بين add_action و add_filter.</div>
-          <div class="topic-tags">
-            <span class="topic-badge">add_action</span>
-            <span class="topic-badge">add_filter</span>
-          </div>
-        </div>
-
-        <div class="lesson-item" data-id="6" data-path="lessons/5-WordPress-Bootstrapping-and-Database-wpdb.html" data-keywords="إقلاع دورة الإقلاع bootstrapping wpdb prepare table_prefix index.php wp-settings.php active_plugins قاعدة البيانات" onclick="loadLesson(this, 'lessons/5-WordPress-Bootstrapping-and-Database-wpdb.html', 6)">
-          <div class="lesson-item-header">
-            <span class="lesson-item-tag">الدرس 06</span>
-            <span>⬅️</span>
-          </div>
-          <div class="lesson-item-title">تسلسل دورة الإقلاع وقواعد البيانات ($wpdb)</div>
-          <div class="lesson-item-desc">دورة الإقلاع الكاملة والتعامل الآمن مع $wpdb.</div>
-          <div class="topic-tags">
-            <span class="topic-badge">Bootstrapping</span>
-            <span class="topic-badge">$wpdb->prepare</span>
+          <div class="section-content">
+            <div class="lesson-item" data-id="2" data-path="lessons/2-Introduction-to-Plugin-Development-and-What-is-a-Plugin.html" data-keywords="introduction intro what is a plugin cardinal rule core protection hello dolly docblock single file plugin ticketing system" onclick="loadLesson(this, 'lessons/2-Introduction-to-Plugin-Development-and-What-is-a-Plugin.html', 2)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 01</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Introduction & What is a Plugin?</div>
+              <div class="lesson-item-desc">أسباب صناعة الإضافات، القاعدة الأساسية، وحزمة برمجية Hello Dolly.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">What is a Plugin</span>
+                <span class="topic-badge">Hello Dolly</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="lesson-item" data-id="7" data-path="lessons/6-Advanced-Topics-Admin-Menus-and-APIs.html" data-keywords="متقدمة admin menus add_menu_page shortcodes custom post types rest api svn readme.txt صفحات الإدارة" onclick="loadLesson(this, 'lessons/6-Advanced-Topics-Admin-Menus-and-APIs.html', 7)">
-          <div class="lesson-item-header">
-            <span class="lesson-item-tag">الدرس 07</span>
-            <span>⬅️</span>
+        <!-- Section 3: Plugin Basics -->
+        <div class="section-group" id="section-basics">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-title">
+              <span class="section-icon">📦</span>
+              <span>3. Plugin Basics</span>
+            </div>
+            <div class="section-meta">
+              <span class="section-count">6 دروس</span>
+              <span class="section-arrow">▼</span>
+            </div>
           </div>
-          <div class="lesson-item-title">الموضوعات المتقدمة و REST API والنشر</div>
-          <div class="lesson-item-desc">صفحات الإدارة، Shortcodes، ونشر الإضافة.</div>
-          <div class="topic-tags">
-            <span class="topic-badge">Admin Menus</span>
-            <span class="topic-badge">REST API</span>
+          <div class="section-content">
+            
+            <div class="lesson-item" data-id="3" data-path="lessons/3-Plugin-Basics-Overview-and-Getting-Started.html" data-keywords="basics overview getting started command line terminal core apis options api http api plugin api" onclick="loadLesson(this, 'lessons/3-Plugin-Basics-Overview-and-Getting-Started.html', 3)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 01</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Plugin Basics Overview & Getting Started</div>
+              <div class="lesson-item-desc">بداية إنشاء مجلد الإضافة، أوامر CLI، وآليات تحميل الإضافات ومسح النواة.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">Getting Started</span>
+                <span class="topic-badge">Core APIs</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="4" data-path="lessons/4-Header-Requirements-and-DocBlock.html" data-keywords="ترويسة plugin header docblock minimum fields plugin name requires plugins update uri phpversion 14 حقل" onclick="loadLesson(this, 'lessons/4-Header-Requirements-and-DocBlock.html', 4)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 02</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Header Requirements & DocBlock</div>
+              <div class="lesson-item-desc">شرح Plugin DocBlock، الحقول الـ 14 المتاحة، و Update URI.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">Plugin Header</span>
+                <span class="topic-badge">Requires Plugins</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="5" data-path="lessons/5-Activation-and-Deactivation-Hooks.html" data-keywords="تفعيل تعطيل activation deactivation hook register_activation_hook register_deactivation_hook flush_rewrite_rules 404 CPT uninstall" onclick="loadLesson(this, 'lessons/5-Activation-and-Deactivation-Hooks.html', 5)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 03</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Activation & Deactivation Hooks</div>
+              <div class="lesson-item-desc">خطاطيف التفعيل والتعطيل وحل أخطاء 404 مع Permalinks.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">register_activation_hook</span>
+                <span class="topic-badge">flush_rewrite_rules</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="6" data-path="lessons/6-Best-Practices-and-Naming-Collisions.html" data-keywords="best practices naming collisions prefixing oop folder structure is_admin conditional loading" onclick="loadLesson(this, 'lessons/6-Best-Practices-and-Naming-Collisions.html', 6)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 04</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Best Practices & Naming Collisions</div>
+              <div class="lesson-item-desc">منع تضارب الأسماء، أسلوب الـ OOP، الهيكل المجلدي، والتحميل الشرطي.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">Prefixing</span>
+                <span class="topic-badge">OOP & Namespaces</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="7" data-path="lessons/7-Determining-Plugin-and-Content-Directories.html" data-keywords="مسارات عناوين plugins_url plugin_dir_path plugin_dir_url plugin_basename symlinks file constants" onclick="loadLesson(this, 'lessons/7-Determining-Plugin-and-Content-Directories.html', 7)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 05</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Determining Plugin & Content Directories</div>
+              <div class="lesson-item-desc">تحديد المسارات والـ URLs السيرفرية ومنع المسارات الصلبة.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">plugins_url</span>
+                <span class="topic-badge">plugin_dir_path</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="8" data-path="lessons/8-Software-License-and-Uninstall-Methods.html" data-keywords="software license gpl uninstall uninstall.php WP_UNINSTALL_PLUGIN delete_option drop table wpdb" onclick="loadLesson(this, 'lessons/8-Software-License-and-Uninstall-Methods.html', 8)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 06</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Software License & Uninstall Methods</div>
+              <div class="lesson-item-desc">التثبيت القانوني GPLv2+ وآليات الحذف والتنظيف بـ uninstall.php.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">GPL License</span>
+                <span class="topic-badge">uninstall.php</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Section 4: Plugin Security -->
+        <div class="section-group" id="section-security">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-title">
+              <span class="section-icon">🛡️</span>
+              <span>4. Plugin Security</span>
+            </div>
+            <div class="section-meta">
+              <span class="section-count">5 دروس</span>
+              <span class="section-arrow">▼</span>
+            </div>
+          </div>
+          <div class="section-content">
+            
+            <div class="lesson-item" data-id="9" data-path="lessons/9-Plugin-Security-and-User-Capabilities.html" data-keywords="security mindset capabilities current_user_can user roles edit_others_posts manage_options delete post" onclick="loadLesson(this, 'lessons/9-Plugin-Security-and-User-Capabilities.html', 9)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 01</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Plugin Security & User Capabilities</div>
+              <div class="lesson-item-desc">العقلية الأمنية، عدم الثقة بالمدخلات، وفحص الصلاحيات بـ current_user_can.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">Security Mindset</span>
+                <span class="topic-badge">Capabilities</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="10" data-path="lessons/10-Data-Validation-and-Input-Protection.html" data-keywords="data validation safelist blocklist strict comparison in_array type safe is_email validate_file orderby" onclick="loadLesson(this, 'lessons/10-Data-Validation-and-Input-Protection.html', 10)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 02</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Data Validation & Input Protection</div>
+              <div class="lesson-item-desc">التحقق والرفض المبكر، القائمة المسموحة Safelist، والمقارنة الصارمة.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">Safelist</span>
+                <span class="topic-badge">Strict Checking</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="11" data-path="lessons/11-Nonces-and-CSRF-Protection.html" data-keywords="nonces csrf protection wp_nonce_url wp_nonce_field check_admin_referer check_ajax_referer wp_verify_nonce" onclick="loadLesson(this, 'lessons/11-Nonces-and-CSRF-Protection.html', 11)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 03</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Nonces & CSRF Protection</div>
+              <div class="lesson-item-desc">رموز الحماية المؤقتة منع التزوير والتصدي لثغرات CSRF في النماذج والـ AJAX.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">CSRF Protection</span>
+                <span class="topic-badge">Nonces</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="12" data-path="lessons/12-Output-Escaping-and-Context-Security.html" data-keywords="output escaping escape late esc_html esc_attr esc_url esc_js esc_textarea wp_kses localization xss" onclick="loadLesson(this, 'lessons/12-Output-Escaping-and-Context-Security.html', 12)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 04</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Output Escaping & Context Security</div>
+              <div class="lesson-item-desc">تطهير المخرجات، تفادي ثغرات XSS، وتطبيق قاعدة الهروب المتأخر Escape Late.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">Escape Late</span>
+                <span class="topic-badge">esc_html</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="13" data-path="lessons/13-Data-Sanitization-and-Input-Cleaning.html" data-keywords="data sanitization sanitize_text_field sanitize_email sanitize_key sanitize_url sanitize_file_name UTF-8" onclick="loadLesson(this, 'lessons/13-Data-Sanitization-and-Input-Cleaning.html', 13)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 05</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Data Sanitization & Input Cleaning</div>
+              <div class="lesson-item-desc">تعقيم وتنقية المدخلات قبل التخزين، وما يحدث داخل sanitize_text_field.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">Sanitization</span>
+                <span class="topic-badge">Input Cleaning</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Section 5: WordPress Hooks System -->
+        <div class="section-group" id="section-hooks">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-title">
+              <span class="section-icon">🪝</span>
+              <span>5. WordPress Hooks System</span>
+            </div>
+            <div class="section-meta">
+              <span class="section-count">5 دروس</span>
+              <span class="section-arrow">▼</span>
+            </div>
+          </div>
+          <div class="section-content">
+            
+            <div class="lesson-item" data-id="14" data-path="lessons/14-Hooks-Overview-Actions-vs-Filters.html" data-keywords="hooks overview actions filters actions vs filters side effects return value callback" onclick="loadLesson(this, 'lessons/14-Hooks-Overview-Actions-vs-Filters.html', 14)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 01</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Hooks Overview: Actions vs. Filters</div>
+              <div class="lesson-item-desc">مفهوم الخطاطيف، مقارنة الأفعال والمرشحات، حظر الآثار الجانبية والقيمة المرجعة.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">Actions vs Filters</span>
+                <span class="topic-badge">Hooks Overview</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="15" data-path="lessons/15-WordPress-Actions-and-Priority-Control.html" data-keywords="wordpress actions priority control add_action priority accepted_args save_post init callback" onclick="loadLesson(this, 'lessons/15-WordPress-Actions-and-Priority-Control.html', 15)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 02</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">WordPress Actions & Priority Control</div>
+              <div class="lesson-item-desc">إضافة الأفعال بـ add_action، نظام الأولويات، وتمرير البرامترات الإضافية.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">add_action</span>
+                <span class="topic-badge">Priority System</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="16" data-path="lessons/16-WordPress-Filters-and-Data-Transformation.html" data-keywords="wordpress filters add_filter the_title body_class return data pure functions transformation" onclick="loadLesson(this, 'lessons/16-WordPress-Filters-and-Data-Transformation.html', 16)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 03</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">WordPress Filters & Data Transformation</div>
+              <div class="lesson-item-desc">تعديل البيانات بالمرشحات، إرجاع البيانات المحولة إجبارياً، وتطبيق the_title و body_class.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">add_filter</span>
+                <span class="topic-badge">Data Transformation</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="17" data-path="lessons/17-Creating-Custom-Hooks-in-Plugins.html" data-keywords="creating custom hooks do_action apply_filters extensibility prefixing settings form post type" onclick="loadLesson(this, 'lessons/17-Creating-Custom-Hooks-in-Plugins.html', 17)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 04</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Creating Custom Hooks in Plugins</div>
+              <div class="lesson-item-desc">إنشاء خطاطيف مخصصة بـ do_action و apply_filters لجعل إضافتك قابلة للتوسعة.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">do_action</span>
+                <span class="topic-badge">apply_filters</span>
+              </div>
+            </div>
+
+            <div class="lesson-item" data-id="18" data-path="lessons/18-Advanced-Hooks-Topics-and-Debugging.html" data-keywords="advanced hooks remove_action remove_filter remove_all_actions current_filter did_action all hook debugging" onclick="loadLesson(this, 'lessons/18-Advanced-Hooks-Topics-and-Debugging.html', 18)">
+              <div class="lesson-item-header">
+                <span class="lesson-item-tag">الدرس 05</span>
+                <span>⬅️</span>
+              </div>
+              <div class="lesson-item-title">Advanced Hooks Topics & Debugging</div>
+              <div class="lesson-item-desc">إلغاء الخطاطيف بـ remove_action، فحص الفلتر الحالي، والتتبع الشامل بالهوك all.</div>
+              <div class="topic-tags">
+                <span class="topic-badge">remove_action</span>
+                <span class="topic-badge">Debugging</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Section 6: Additional Tutorials -->
+        <div class="section-group" id="section-additional">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-title">
+              <span class="section-icon">💡</span>
+              <span>6. Additional Tutorials</span>
+            </div>
+            <div class="section-meta">
+              <span class="section-count">قريباً</span>
+              <span class="section-arrow">▼</span>
+            </div>
+          </div>
+          <div class="section-content">
+            <div style="padding: 12px; text-align: center; color: var(--text-muted); font-size: 13px; font-weight: 500;">
+              ⏳ لا توجد دروس حالياً في هذا القسم. سيتم إضافة الشروحات الإضافية لاحقاً.
+            </div>
           </div>
         </div>
 
@@ -466,7 +804,7 @@
       }
 
       // 3. Activate saved lesson or default to Lesson 1
-      if (savedLessonId && savedLessonId >= 1 && savedLessonId <= 7) {
+      if (savedLessonId && savedLessonId >= 1 && savedLessonId <= 20) {
         const targetItem = document.querySelector(`.lesson-item[data-id="${savedLessonId}"]`);
         if (targetItem) {
           const path = targetItem.getAttribute('data-path');
@@ -482,6 +820,11 @@
       }
     });
 
+    function toggleSection(header) {
+      const group = header.closest('.section-group');
+      group.classList.toggle('open');
+    }
+
     function loadLesson(element, path, lessonId, shouldScroll = true) {
       // Remove active class from all items
       const items = document.querySelectorAll('.lesson-item');
@@ -489,6 +832,15 @@
 
       // Add active class to clicked item
       element.classList.add('active');
+
+      // Close all sections first, then open ONLY the parent section of the active lesson
+      const sections = document.querySelectorAll('.section-group');
+      sections.forEach(sec => sec.classList.remove('open'));
+
+      const parentSection = element.closest('.section-group');
+      if (parentSection) {
+        parentSection.classList.add('open');
+      }
 
       // Load URL into iframe on the left
       const iframe = document.getElementById('contentIframe');
@@ -514,6 +866,7 @@
     function filterLessons() {
       const query = document.getElementById('searchInput').value.trim().toLowerCase();
       const items = document.querySelectorAll('.lesson-item');
+      const sections = document.querySelectorAll('.section-group');
       let visibleCount = 0;
 
       items.forEach(item => {
@@ -528,6 +881,11 @@
           item.style.display = 'none';
         }
       });
+
+      // Expand sections if searching
+      if (query !== '') {
+        sections.forEach(sec => sec.classList.add('open'));
+      }
 
       const noResults = document.getElementById('noResults');
       if (visibleCount === 0) {
