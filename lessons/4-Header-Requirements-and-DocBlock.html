@@ -7,239 +7,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #0284c7;
-      --primary-dark: #0369a1;
-      --primary-light: #e0f2fe;
-      --accent: #10b981;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #0f172a;
-      --text-muted: #475569;
-      --border: #e2e8f0;
-      --vscode-bg: #1e1e1e;
-      --vscode-header: #2d2d2d;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.8;
-      padding-bottom: 60px;
-    }
-
-    /* Top Navigation Bar */
-    .top-nav {
-      background: #0f172a;
-      color: #ffffff;
-      padding: 14px 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    }
-    .top-nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      font-size: 17px;
-      color: #ffffff;
-      text-decoration: none;
-    }
-    .top-nav-brand span {
-      background: var(--primary);
-      color: #ffffff;
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-size: 13px;
-    }
-    .nav-btn {
-      background: rgba(255,255,255,0.1);
-      color: #ffffff;
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 14px;
-      transition: all 0.2s;
-    }
-    .nav-btn:hover { background: var(--primary); }
-
-    /* Main Container */
-    .container {
-      max-width: 980px;
-      margin: 40px auto;
-      background: var(--card-bg);
-      padding: 48px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-      border: 1px solid var(--border);
-    }
-
-    /* Lesson Header */
-    .lesson-header {
-      border-bottom: 2px dashed var(--border);
-      padding-bottom: 24px;
-      margin-bottom: 28px;
-    }
-    .lesson-badge {
-      display: inline-block;
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      font-weight: 800;
-      font-size: 13px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      margin-bottom: 12px;
-    }
-    .lesson-title {
-      font-size: 30px;
-      font-weight: 900;
-      color: #0f172a;
-      line-height: 1.3;
-      margin-bottom: 12px;
-    }
-    .lesson-subtitle {
-      font-size: 16px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    /* Section Typography */
-    h2 {
-      font-size: 22px;
-      font-weight: 800;
-      color: #0f172a;
-      margin: 36px 0 18px 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-right: 4px solid var(--primary);
-      padding-right: 12px;
-    }
-    h3 {
-      font-size: 18px;
-      font-weight: 700;
-      color: #1e293b;
-      margin: 24px 0 12px 0;
-    }
-    p { margin-bottom: 16px; font-size: 15.5px; color: #334155; }
-
-    /* Alert Boxes */
-    .alert {
-      padding: 18px 22px;
-      border-radius: 12px;
-      margin: 20px 0;
-      font-size: 15px;
-      line-height: 1.7;
-    }
-    .alert-info {
-      background: #f0f9ff;
-      border-right: 4px solid #0284c7;
-      color: #0c4a6e;
-    }
-    .alert-warning {
-      background: #fffbe6;
-      border-right: 4px solid #f59e0b;
-      color: #78350f;
-    }
-
-    /* Tables */
-    .table-wrapper {
-      overflow-x: auto;
-      margin: 24px 0;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: right;
-      font-size: 14.5px;
-    }
-    th {
-      background: #f1f5f9;
-      color: #0f172a;
-      padding: 14px 18px;
-      font-weight: 800;
-      border-bottom: 2px solid var(--border);
-    }
-    td {
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--border);
-      color: #334155;
-    }
-    tr:nth-child(even) { background: #f8fafc; }
-
-    /* Code Block */
-    .vscode-window {
-      background: var(--vscode-bg);
-      border-radius: 12px;
-      overflow: hidden;
-      margin: 24px 0;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.2);
-      border: 1px solid #334155;
-    }
-    .vscode-header {
-      background: var(--vscode-header);
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #3b3b3b;
-    }
-    .vscode-dots { display: flex; gap: 8px; }
-    .vscode-dot { width: 12px; height: 12px; border-radius: 50%; }
-    .dot-red { background: #ff5f56; }
-    .dot-yellow { background: #ffbd2e; }
-    .dot-green { background: #27c93f; }
-    .vscode-filename {
-      color: #94a3b8;
-      font-size: 13px;
-      font-family: 'Fira Code', monospace;
-      direction: ltr;
-    }
-    pre code {
-      display: block;
-      padding: 20px;
-      color: #d4d4d4;
-      font-family: 'Fira Code', monospace;
-      font-size: 14px;
-      line-height: 1.7;
-      overflow-x: auto;
-      direction: ltr;
-      text-align: left;
-    }
-    .cm { color: #6a9955; font-style: italic; }
-
-    /* Footer Note */
-    .lesson-footer {
-      margin-top: 48px;
-      padding-top: 24px;
-      border-top: 2px dashed var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-  </style>
+  
+  <link rel="stylesheet" href="../main.css" />
 </head>
 <body>
 
   <!-- Top Navigation Bar -->
   <nav class="top-nav">
-    <a href="../index.html" class="top-nav-brand">
-      <span>WPORG</span>
-      كورس تطوير إضافات ووردبريس الشامل
-    </a>
-    <a href="../index.html" class="nav-btn">⬅️ العودة للمنصة الرئيسية</a>
+    <span class="top-nav-brand">كورس تطوير إضافات ووردبريس الشامل</span>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <a href="3-Plugin-Basics-Overview-and-Getting-Started.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'3-Plugin-Basics-Overview-and-Getting-Started.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+      <a href="5-Activation-and-Deactivation-Hooks.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'5-Activation-and-Deactivation-Hooks.html'}, '*'); }" class="nav-btn">الدرس التالي ⬅️</a>
+    </div>
   </nav>
 
   <div class="container">
@@ -247,8 +26,8 @@
     <!-- Lesson Header -->
     <header class="lesson-header">
       <span class="lesson-badge">الدرس 02 | قسم Plugin Basics</span>
-      <h1 class="lesson-title">ترويسة الإضافة والحقول الـ 14 (Header Requirements)</h1>
-      <p class="lesson-subtitle">شرح Plugin DocBlock، الحقول الـ 14 المتاحة، الحماية بـ Update URI، والحقول الحديثة مثل Requires Plugins.</p>
+      <h1 class="lesson-title">ترويسة الإضافة والتوثيق (Header Requirements & PHPDoc)</h1>
+      <p class="lesson-subtitle">تفكيك Plugin DocBlock والحقول الـ 14، والفرق الجوهري بين هيدر ووردبريس وتوسيم التوثيق @package، وإدارة الإصدارات بـ @since.</p>
     </header>
 
     <!-- Technical Content -->
@@ -274,6 +53,50 @@
     <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
 
     <h2>2. تفكيك الحقول الـ 14 المتاحة (Available Header Fields)</h2>
+    <p>فيما يلي النموذج البرمجي الكامل الذي يضم **جميع الحقول الـ 14 المتاحة في ترويسة ووردبريس الرسمية** مرتبة وموضحة داخل الكود قبل تفكيكها في الجدول التالي:</p>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">full-14-header-fields.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">/**
+ * التوثيق البرمجي للملف (PHPDoc Block & @package Types)
+ *
+ * @package    My_Comprehensive_Plugin
+ * @subpackage Includes/Admin
+ * @author     Developer Name &lt;developer@example.com&gt;
+ * @copyright  2026 Developer Name
+ * @license    GPL-2.0-or-later
+ * @version    1.0.0
+ * @since      1.0.0
+ */</span>
+
+<span class="cm">/*
+ * ترويسة إضافة ووردبريس (WordPress Plugin Header - 14 Fields)
+ *
+ * Plugin Name:       My Comprehensive Plugin
+ * Plugin URI:        https://example.com/plugins/my-plugin/
+ * Description:       A complete example demonstrating all 14 WordPress plugin header fields.
+ * Version:           1.0.0
+ * Requires at least: 6.0
+ * Requires PHP:      7.4
+ * Author:            Developer Name
+ * Author URI:        https://example.com/
+ * License:           GPL v2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       my-plugin
+ * Domain Path:       /languages
+ * Network:           false
+ * Update URI:        https://example.com/my-plugin/
+ * Requires Plugins:  woocommerce
+ */</span></code></pre>
+    </div>
 
     <div class="table-wrapper">
       <table>
@@ -303,7 +126,7 @@
           <tr>
             <td><code class="inline-code">Version</code></td>
             <td>اختياري</td>
-            <td>رقم الإصدار الحالي (مثل 1.0 أو 1.0.3).</td>
+            <td>رقم الإصدار الحالي للإضافة ككل (مثل 1.7.2).</td>
           </tr>
           <tr>
             <td><code class="inline-code">Requires at least</code></td>
@@ -364,7 +187,107 @@
       </table>
     </div>
 
-    <h3>نموذج الترويسة الكامل الشامل (Full Header & DocBlock)</h3>
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>3. معنـى @package والفرق الجوهري بين التوثيق وهيدر الإضافة</h2>
+    <p>في لغة PHP ونظام ووردبريس، يُعتبر الوسم <code class="inline-code">@package</code> أحد وسوم التوثيق القياسية (PHPDoc Tags). بالرغم من أنهما يظهران أعلى الملف داخل تعليقات، إلا أن الوظيفة والهدف منهما مختلفان تماماً:</p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>وجه المقارنة</th>
+            <th>هيدر الإضافة (Plugin Header Header)</th>
+            <th>وسوم التوثيق (PHPDoc Header)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>الكود النموذجي</strong></td>
+            <td><code class="inline-code">Plugin Name: Hello Dolly</code><br><code class="inline-code">Version: 1.7.2</code></td>
+            <td><code class="inline-code">/** @package Hello_Dolly */</code><br><code class="inline-code">/** @version 1.7.2 */</code></td>
+          </tr>
+          <tr>
+            <td><strong>المستهدف الأساسي</strong></td>
+            <td><strong>نظام ووردبريس نفسه (WordPress Core)</strong></td>
+            <td><strong>المطورون وأدوات التوثيق التلقائية</strong></td>
+          </tr>
+          <tr>
+            <td><strong>مكان الظهور</strong></td>
+            <td>لوحة تحكم ووردبريس (صفحة الإضافات / Plugins)</td>
+            <td>داخل محرر الأكواد وقارئ الملفات فقط</td>
+          </tr>
+          <tr>
+            <td><strong>درجة الإلزامية</strong></td>
+            <td><strong>إجباري</strong> لتتعرف المنصة على الإضافة</td>
+            <td>اختياري (معيار قياسي من أفضل الممارسات)</td>
+          </tr>
+          <tr>
+            <td><strong>آلية العمل</strong></td>
+            <td>يقرأه ووردبريس برمجياً لإظهار التفعيل، الوصف، والتحديثات</td>
+            <td>تتجاهله نواة ووردبريس تماماً، وتقرأه أدوات مثل <code class="inline-code">phpDocumentor</code> لتوليد التوثيق</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>أهمية الوسم @package برمجياً:</h3>
+    <ul style="margin-right: 24px; margin-bottom: 20px; color: #334155;">
+      <li><strong>التوثيق التلقائي (Automated Documentation):</strong> تقرأ أدوات التوثيق مثل PHPDocumentor هذا الوسم لتجميع وتصنيف كافة الملفات والكلاسات التابعة لنفس المشروع تحت مجلد واحد.</li>
+      <li><strong>تنظيم المشاريع الضخمة:</strong> يساعد المطورين في المشاريع ذات المئات من الملفات على معرفة التبعية البرمجية لكل ملف فور فتحه.</li>
+      <li><strong>معايير ووردبريس القياسية (WordPress Coding Standards):</strong> تشترط معايير WPCS وجود الوسم لتأكيد احترافية وتوحيد نمط الكود.</li>
+    </ul>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>4. اختـلاف رقم إصدار الإضافة عن رقم إصدار التوثيق والحل الذهبي بـ @since</h2>
+    <p>هل يمكن أن يختلف رقم إصدار الإضافة (<code class="inline-code">Version: 1.8.0</code>) عن رقم الإصدار في تعليقات التوثيق (<code class="inline-code">@version 1.5.0</code>)؟ <strong>نعم، وبشدة!</strong></p>
+
+    <h3>لماذا وكيف يحدث هذا الاختلاف؟</h3>
+    <p>يعود السبب لاختلاف <strong>النطاق (Scope)</strong> الذي يعبر عنه كل إصدار:</p>
+
+    <div class="roadmap-grid">
+      <div class="roadmap-card">
+        <h3 style="color: var(--primary);">أ. إصدار الإضافة ككُل (Plugin Version)</h3>
+        <p>يمثل حالة المشروع بأكمله كما يراه المستخدم في لوحة التحكم. عند إطلاق تحديث للإضافة (مثلاً إصلاح ثغرة أو إضافة ميزة)، يتغير الرقم في الهيدر الرئيسي إلى <code class="inline-code">Version: 1.8.0</code>.</p>
+      </div>
+      <div class="roadmap-card">
+        <h3 style="color: var(--accent);">ب. إصدار الملف التوثيقي (PHPDoc @version)</h3>
+        <p>يمثل تاريخ آخر تعديل تم على هذا الملف أو الكلاس المحدد. إذا تم تحديث الإضافة لـ <code class="inline-code">1.8.0</code> ولكن هذا الملف لم يُمس منذ الإصدار <code class="inline-code">1.5.0</code>، يظل التوثيق <code class="inline-code">@version 1.5.0</code>.</p>
+      </div>
+    </div>
+
+    <h3>سيناريو عملي توضيحي:</h3>
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">Plugin Structure</div>
+      </div>
+      <pre><code>my-plugin/
+├── my-plugin.php       <span class="cm">(الملف الرئيسي - Version: 1.1.0)</span>
+└── includes/
+    ├── class-admin.php <span class="cm">(تم تعديله - @version 1.1.0)</span>
+    └── class-api.php   <span class="cm">(لم يتغير - @version 1.0.0)</span></code></pre>
+    </div>
+
+    <div class="alert alert-info">
+      <strong>💡 الحل الذهبي والمعيار الأفضل في ووردبريس: استخدام الوسم <code class="inline-code">@since</code></strong><br />
+      لتجنب اللبس الناتج عن متابعة تغيير أرقام الملفات مع كل إصدار، يفضل مطورو ووردبريس استخدام الوسم <code class="inline-code">@since 1.2.0</code> والذي يعني: <em>"تم إنشاء أو إضافة هذا الملف لأول مرة في إصدار الإضافة رقم 1.2.0"</em>. بهذه الطريقة لا تحتاج لتغيير رقم التوثيق في كل ملف عند التحديث!
+    </div>
+
+    <div class="alert alert-warning">
+      <strong>⚠️ ملاحظة هامة حول مقارنة رقم الإصدار (Version Comparison Note):</strong>
+      يستخدم ووردبريس الدالة القياسية في PHP المسماة <code class="inline-code">version_compare()</code> لمقارنة أرقام إصدار الإضافة مع التحديثات. تأكد دائماً أن رقم الإصدار الجديد يعتبر "أكبر" حسابياً في PHP. على سبيل المثال: <strong>الإصدار 1.02 يعتبر في PHP أكبر حسابياً من الإصدار 1.1!</strong>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>5. إضافة روابط إجراءات تخصيصية بجوار رابط التفعيل (Plugin Action Links)</h2>
+    <p>عند عرض الإضافة في صفحة الإضافات (<code class="inline-code">plugins.php</code>) في لوحة التحكم، يتيح لك ووردبريس إضافة روابط تخصيصية مفيدة للمستخدم مثل رابط <strong>"الإعدادات" (Settings)</strong> أو <strong>"التعليمات" (Docs)</strong> بجوار روابط التفعيل والتعطيل الافتراضية:</p>
 
     <div class="vscode-window">
       <div class="vscode-header">
@@ -373,47 +296,43 @@
           <div class="vscode-dot dot-yellow"></div>
           <div class="vscode-dot dot-green"></div>
         </div>
-        <div class="vscode-filename">my-advanced-plugin.php</div>
+        <div class="vscode-filename">plugin-action-links.php</div>
       </div>
       <pre><code><span class="kw">&lt;?php</span>
-<span class="cm">/**
- * File Level Description
- *
- * @package PluginPackage
- * @author Author Name
- * @copyright 2026 Author Name
- * @license GPL-2.0-or-later
- *
- * @wordpress-plugin
- * Plugin Name: My Advanced Plugin
- * Plugin URI: https://example.com/plugins/my-plugin/
- * Description: Handle the basics and advanced functionality neatly.
- * Version: 1.10.3
- * Requires at least: 5.2
- * Requires PHP: 7.4
- * Author: John Smith
- * Author URI: https://author.example.com/
- * License: GPL v2 or later
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Update URI: https://example.com/my-plugin/
- * Text Domain: my-advanced-plugin
- * Domain Path: /languages
- * Requires Plugins: woocommerce, elementor
- */</span></code></pre>
+<span class="cm">// 1. ربط الفلتر الديناميكي بالمستنـد الرئيسي للإضافة</span>
+<span class="fn">add_filter</span>( <span class="str">'plugin_action_links_'</span> . <span class="fn">plugin_basename</span>( <span class="var">__FILE__</span> ), <span class="str">'my_plugin_add_action_links'</span> );
+
+<span class="kw">function</span> <span class="fn">my_plugin_add_action_links</span>( <span class="var">$links</span> ) {
+    
+    <span class="cm">// 2. إنشاء الروابط الخاصة بك بنصوص قابلة للترجمة</span>
+    <span class="var">$settings_link</span> = <span class="str">'&lt;a href="admin.php?page=my-plugin-settings"&gt;'</span> . <span class="fn">__</span>( <span class="str">'Settings'</span>, <span class="str">'textdomain'</span> ) . <span class="str">'&lt;/a&gt;'</span>;
+    <span class="var">$docs_link</span>     = <span class="str">'&lt;a href="https://example.com/docs" target="_blank"&gt;'</span> . <span class="fn">__</span>( <span class="str">'Docs'</span>, <span class="str">'textdomain'</span> ) . <span class="str">'&lt;/a&gt;'</span>;
+
+    <span class="cm">// 3. إضافة الروابط الجديدة في مصفوفة الروابط</span>
+    <span class="fn">array_push</span>( <span class="var">$links</span>, <span class="var">$settings_link</span>, <span class="var">$docs_link</span> );
+
+    <span class="cm">// 4. إرجاع المصفوفة المحدثة (طبيعة عمل الـ Filter كما تعلمنا!)</span>
+    <span class="kw">return</span> <span class="var">$links</span>;
+}</code></pre>
     </div>
 
-    <div class="alert alert-warning">
-      <strong>⚠️ ملاحظة هامة حول مقارنة رقم الإصدار (Version Comparison Note):</strong>
-      يستخدم ووردبريس الدالة القياسية في PHP المسماة <code class="inline-code">version_compare()</code> لمقارنة أرقام إصدار الإضافة مع التحديثات. تأكد دائماً أن رقم الإصدار الجديد يعتبر "أكبر" حسابياً في PHP. على سبيل المثال: <strong>الإصدار 1.02 يعتبر في PHP أكبر حسابياً من الإصدار 1.1!</strong>
-    </div>
+    <h3>تفكيك أجزاء الفانكشن والفلتر المستخدم (Line-by-Line Breakdown):</h3>
+    <ul style="margin-right: 24px; margin-bottom: 20px; color: #334155;">
+      <li><code class="inline-code">plugin_action_links_{$plugin_file}</code>: خطاف فلتر ديناميكي (Dynamic Filter Hook). يتم استدعاؤه بواسطة نواة ووردبريس لكل إضافة في الجدول، حيث يتم دمجه باسم مسار الإضافة الرئيسي لتحديد الإضافة بدقة دون التأثير على بقية الإضافات.</li>
+      <li><code class="inline-code">plugin_basename(__FILE__)</code>: دالة في ووردبريس تُعيد المسار النسبي لملف الإضافة الرئيسي (مثال: <code class="inline-code">my-plugin/my-plugin.php</code>)، مما يضمن تشغيل الفلتر حصرياً على صف إضافتك أنت.</li>
+      <li><code class="inline-code">$links</code>: مصفوفة تحتوي على الروابط الـ HTML الحالية الخاصة بالإضافة الممررة من ووردبريس (مثل روابط Deactivate / Activate).</li>
+      <li><code class="inline-code">__('Settings', 'textdomain')</code>: دالة الترجمة التدويلية (Internationalization) التي تضمن إمكانية ترجمة كلمة Settings إلى أي لغة بناءً على حقل Text Domain الخاص بالإضافة.</li>
+      <li><code class="inline-code">array_push($links, ...)</code>: دالة في PHP لإضافة العناصر الجديدة إلى <strong>نهاية</strong> المصفوفة. (ملاحظة: إذا أردت ظهور رابط الإعدادات في <strong>بداية</strong> الروابط قبل Deactivate، يمكنك استخدام <code class="inline-code">array_unshift()</code> بدلاً منها).</li>
+      <li><code class="inline-code">return $links;</code>: إرجاع المصفوفة المعدلة إجبارياً لإكمال عقد عمل الفلتر (Filter Contract)، وبدونها لن تظهر أي روابط.</li>
+    </ul>
 
     <!-- Footer -->
     <footer class="lesson-footer">
       <div><strong>كورس تطوير إضافات ووردبريس الشامل</strong> - جميع الحقوق محفوظة</div>
-      <a href="../index.html" class="nav-btn">⬅️ الصفحة الرئيسية للمنصة</a>
     </footer>
 
   </div>
 
+  <script src="../main.js"></script>
 </body>
 </html>

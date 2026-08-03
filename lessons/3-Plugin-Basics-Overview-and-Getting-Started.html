@@ -7,216 +7,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #0284c7;
-      --primary-dark: #0369a1;
-      --primary-light: #e0f2fe;
-      --accent: #10b981;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #0f172a;
-      --text-muted: #475569;
-      --border: #e2e8f0;
-      --vscode-bg: #1e1e1e;
-      --vscode-header: #2d2d2d;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.8;
-      padding-bottom: 60px;
-    }
-
-    /* Top Navigation Bar */
-    .top-nav {
-      background: #0f172a;
-      color: #ffffff;
-      padding: 14px 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    }
-    .top-nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      font-size: 17px;
-      color: #ffffff;
-      text-decoration: none;
-    }
-    .top-nav-brand span {
-      background: var(--primary);
-      color: #ffffff;
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-size: 13px;
-    }
-    .nav-btn {
-      background: rgba(255,255,255,0.1);
-      color: #ffffff;
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 14px;
-      transition: all 0.2s;
-    }
-    .nav-btn:hover { background: var(--primary); }
-
-    /* Main Container */
-    .container {
-      max-width: 980px;
-      margin: 40px auto;
-      background: var(--card-bg);
-      padding: 48px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-      border: 1px solid var(--border);
-    }
-
-    /* Lesson Header */
-    .lesson-header {
-      border-bottom: 2px dashed var(--border);
-      padding-bottom: 24px;
-      margin-bottom: 28px;
-    }
-    .lesson-badge {
-      display: inline-block;
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      font-weight: 800;
-      font-size: 13px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      margin-bottom: 12px;
-    }
-    .lesson-title {
-      font-size: 30px;
-      font-weight: 900;
-      color: #0f172a;
-      line-height: 1.3;
-      margin-bottom: 12px;
-    }
-    .lesson-subtitle {
-      font-size: 16px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    /* Section Typography */
-    h2 {
-      font-size: 22px;
-      font-weight: 800;
-      color: #0f172a;
-      margin: 36px 0 18px 0;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-right: 4px solid var(--primary);
-      padding-right: 12px;
-    }
-    h3 {
-      font-size: 18px;
-      font-weight: 700;
-      color: #1e293b;
-      margin: 24px 0 12px 0;
-    }
-    p { margin-bottom: 16px; font-size: 15.5px; color: #334155; }
-
-    /* Alert Boxes */
-    .alert {
-      padding: 18px 22px;
-      border-radius: 12px;
-      margin: 20px 0;
-      font-size: 15px;
-      line-height: 1.7;
-    }
-    .alert-info {
-      background: #f0f9ff;
-      border-right: 4px solid #0284c7;
-      color: #0c4a6e;
-    }
-    .alert-success {
-      background: #ecfdf5;
-      border-right: 4px solid #10b981;
-      color: #065f46;
-    }
-
-    /* Code Block */
-    .vscode-window {
-      background: var(--vscode-bg);
-      border-radius: 12px;
-      overflow: hidden;
-      margin: 24px 0;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.2);
-      border: 1px solid #334155;
-    }
-    .vscode-header {
-      background: var(--vscode-header);
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #3b3b3b;
-    }
-    .vscode-dots { display: flex; gap: 8px; }
-    .vscode-dot { width: 12px; height: 12px; border-radius: 50%; }
-    .dot-red { background: #ff5f56; }
-    .dot-yellow { background: #ffbd2e; }
-    .dot-green { background: #27c93f; }
-    .vscode-filename {
-      color: #94a3b8;
-      font-size: 13px;
-      font-family: 'Fira Code', monospace;
-      direction: ltr;
-    }
-    pre code {
-      display: block;
-      padding: 20px;
-      color: #d4d4d4;
-      font-family: 'Fira Code', monospace;
-      font-size: 14px;
-      line-height: 1.7;
-      overflow-x: auto;
-      direction: ltr;
-      text-align: left;
-    }
-    .kw { color: #569cd6; font-weight: bold; }
-    .fn { color: #dcdcaa; }
-    .str { color: #ce9178; }
-    .cm { color: #6a9955; font-style: italic; }
-    .var { color: #9cdcfe; }
-
-    /* Footer Note */
-    .lesson-footer {
-      margin-top: 48px;
-      padding-top: 24px;
-      border-top: 2px dashed var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-  </style>
+  
+  <link rel="stylesheet" href="../main.css" />
 </head>
 <body>
 
   <!-- Top Navigation Bar -->
   <nav class="top-nav">
-    <a href="../index.html" class="top-nav-brand">
-      <span>WPORG</span>
-      كورس تطوير إضافات ووردبريس الشامل
-    </a>
-    <a href="../index.html" class="nav-btn">⬅️ العودة للمنصة الرئيسية</a>
+    <span class="top-nav-brand">كورس تطوير إضافات ووردبريس الشامل</span>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <a href="2-Introduction-to-Plugin-Development-and-What-is-a-Plugin.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'2-Introduction-to-Plugin-Development-and-What-is-a-Plugin.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+      <a href="4-Header-Requirements-and-DocBlock.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'4-Header-Requirements-and-DocBlock.html'}, '*'); }" class="nav-btn">الدرس التالي ⬅️</a>
+    </div>
   </nav>
 
   <div class="container">
@@ -225,7 +27,7 @@
     <header class="lesson-header">
       <span class="lesson-badge">الدرس 01 | قسم Plugin Basics</span>
       <h1 class="lesson-title">أساسيات الإضافة وبداية الإنشاء (Getting Started & Overview)</h1>
-      <p class="lesson-subtitle">خطوات إنشاء مجلد الإضافة عبر الترمينال، آليات الكشف في لوحة التحكم، والتعريف الشامل بالـ APIs النواة.</p>
+      <p class="lesson-subtitle">خطوات إنشاء مجلد الإضافة عبر الترمينال، آليات الكشف في لوحة التحكم، والتعريف الشامل بـ Core APIs النواة.</p>
     </header>
 
     <!-- Technical Content -->
@@ -271,21 +73,173 @@ my-plugin-name $ <span class="kw">touch</span> my-plugin-name.php</code></pre>
     <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
 
     <h2>3. واجهات برمجة التطبيقات بالنواة (WordPress Core APIs)</h2>
-    <p>يقدم ووردبريس واجهات برمجة تطبيقات (APIs) جاهزة لتبسيط الكود ومنع إعادة اختراع العجلة:</p>
+    <p>تُعد واجهات برمجة التطبيقات بالنواة <strong>(WordPress Core APIs)</strong> الحجر الأساسي لتطوير الإضافات والقوالب في ووردبريس. الهدف الرئيسي منها هو تقديم أساليب قياسية وآمنة للتعامل مع المهام الشائعة، مما يغنيك عن كتابة أكواد معقدة من الصفر (أو إعادة اختراع العجلة):</p>
 
-    <ul>
-      <li><strong>Options API:</strong> تُسّهل تخزين واسترجاع خيارات وإعدادات الإضافة في جدول <code class="inline-code">wp_options</code> ببيانات منظمة.</li>
-      <li><strong>HTTP API:</strong> تُسّهل إجراء طلبات شبكيّة (HTTP Requests / Remote Fetch) بديلاً عن كتابة كود cURL المعقد يدوياً.</li>
-      <li><strong>Plugin API:</strong> توفر مجموعة ضخمة من الدوال لمساعدة المطورين في ربط وإدارة الـ Hooks والإضافات.</li>
+    <!-- Sub-section 1: Options API -->
+    <h3>أ. Options API (إدارة الإعدادات والخيارات)</h3>
+    <p>تُستخدم هذه الواجهة لتخزين، قراءة، وتحديث البيانات في قاعدة بيانات ووردبريس (تحديداً في جدول <code class="inline-code">wp_options</code>). وهي مثالية لحفظ إعدادات إضافتك، مثل لون معين اختاره المستخدم، أو مفتاح API، أو حالة خيار معين (تفعيل/تعطيل).</p>
+    
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><code class="inline-code">get_option($option_name)</code>: لجلب قيمة خيار معين من قاعدة البيانات.</li>
+      <li><code class="inline-code">update_option($option_name, $new_value)</code>: لتحديث قيمة خيار (أو إنشائه إذا لم يكن موجوداً).</li>
+      <li><code class="inline-code">add_option($option_name, $value)</code>: لإضافة خيار جديد فقط إذا لم يكن مخزناً من قبل.</li>
+      <li><code class="inline-code">delete_option($option_name)</code>: لحذف الخيار نهائياً من قاعدة البيانات.</li>
     </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">options-api-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// 1. حفظ خيار في قاعدة البيانات (أو تحديثه)</span>
+<span class="fn">update_option</span>( <span class="str">'my_plugin_theme_color'</span>, <span class="str">'blue'</span> );
+
+<span class="cm">// 2. استرجاع القيمة في مكان آخر داخل الكود (مع قيمة افتراضية 'default_red')</span>
+<span class="var">$color</span> = <span class="fn">get_option</span>( <span class="str">'my_plugin_theme_color'</span>, <span class="str">'default_red'</span> );
+
+<span class="kw">echo</span> <span class="var">$color</span>; <span class="cm">// المخرج: blue</span></code></pre>
+    </div>
+
+    <!-- Sub-section 2: HTTP API -->
+    <h3>ب. HTTP API (إجراء الطلبات الشبكية)</h3>
+    <p>بدلاً من كتابة كود cURL طويل ومعقد أو الاعتماد على مكتبات مثل <code class="inline-code">file_get_contents</code> (التي قد تكون معطلة على بعض الاستضافات لعدم حمايتها)، توفر هذه الواجهة طريقة موحدة وآمنة لإرسال واستقبال البيانات من خوادم خارجية (مواقع أخرى أو APIs خارجية):</p>
+
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><code class="inline-code">wp_remote_get($url)</code>: لطلب بيانات من موقع خارجي عبر (GET Request).</li>
+      <li><code class="inline-code">wp_remote_post($url, $args)</code>: لإرسال بيانات إلى موقع خارجي عبر (POST Request).</li>
+      <li><code class="inline-code">wp_remote_retrieve_body($response)</code>: لاستخراج نص الاستجابة المقروء فقط من الرد.</li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">http-api-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// إرسال طلب GET إلى API خارجي</span>
+<span class="var">$response</span> = <span class="fn">wp_remote_get</span>( <span class="str">'https://api.example.com/data'</span> );
+
+<span class="cm">// التأكد من عدم وجود خطأ في الاتصال بواسطة is_wp_error</span>
+<span class="kw">if</span> ( ! <span class="fn">is_wp_error</span>( <span class="var">$response</span> ) ) {
+    <span class="cm">// استخراج نص الاستجابة (عادة ما يكون بتنسيق JSON)</span>
+    <span class="var">$body</span> = <span class="fn">wp_remote_retrieve_body</span>( <span class="var">$response</span> );
+    <span class="var">$data</span> = <span class="fn">json_decode</span>( <span class="var">$body</span> );
+}</code></pre>
+    </div>
+
+    <!-- Sub-section 3: Plugin API -->
+    <h3>ج. Plugin API (إدارة الأحداث والخطافات - Hooks)</h3>
+    <p>هذه الواجهة هي **"قلب ووردبريس النابض"**. تسمح للمطورين بالربط مع دورة حياة ووردبريس، إما لتنفيذ كود معين عند حدث محدد، أو لتعديل وتصفية البيانات قبل عرضها. تُقسم إلى نوعين أساسيين:</p>
+
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>الأفعال (Actions):</strong> لتنفيذ وظيفة ما في وقت معين (مثلاً: إرسال بريد إلكتروني عند نشر مقال جديد).</li>
+      <li><strong>الفلاتر (Filters):</strong> لتعديل نص أو بيانات قبل معالجتها أو عرضها على الشاشة (مثل دالة <code class="inline-code">wptexturize</code>).</li>
+    </ul>
+
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><code class="inline-code">add_action($hook_name, $callback_function)</code>: لربط دالتك بحدث معين.</li>
+      <li><code class="inline-code">add_filter($hook_name, $callback_function)</code>: لربط دالتك بفلتر لتعديل بيانات.</li>
+      <li><code class="inline-code">do_action($hook_name)</code>: لإنشاء خطاف حدث جديد خاص بإضافتك.</li>
+      <li><code class="inline-code">apply_filters($hook_name, $value)</code>: لإنشاء خطاف فلتر جديد خاص بإضافتك.</li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">plugin-api-filter-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// مثال على Filter الجاهز للنواة: إضافة نص تلقائي في نهاية كل مقال منفرد</span>
+<span class="kw">function</span> <span class="fn">add_footer_to_content</span>( <span class="var">$content</span> ) {
+    <span class="kw">if</span> ( <span class="fn">is_single</span>() ) {
+        <span class="var">$content</span> .= <span class="str">'&lt;p&gt;شكراً لقراءة المقال!&lt;/p&gt;'</span>;
+    }
+    <span class="kw">return</span> <span class="var">$content</span>;
+}
+<span class="fn">add_filter</span>( <span class="str">'the_content'</span>, <span class="str">'add_footer_to_content'</span> );</code></pre>
+    </div>
+
+    <!-- Practical Clinic Pricing apply_filters & add_filter combination example -->
+    <h4>مثال عملي تطبيقي للربط بين <code class="inline-code">apply_filters</code> و <code class="inline-code">add_filter</code> (حساب أسعار العيادة):</h4>
+    <p>في هذا المثال، توفر إضافة حجز العيادة دالة لحساب السعر مع إتاحة خطافات الفلاتر <code class="inline-code">apply_filters</code> لتعديل السعر والنص، بينما تقوم دوال الفلتر المستقلة بخصم 20% للأطفال وتعديل النص المطبوع عبر <code class="inline-code">add_filter</code> مع تحديد الأولوية 20:</p>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">clinic-appointment-price-filters.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// 1. دالة حساب سعر الكشف وتمرير البيانات عبر الخطافات apply_filters</span>
+<span class="kw">function</span> <span class="fn">get_final_appointment_price</span>( <span class="var">$base_price</span>, <span class="var">$textBeforePrice</span> = <span class="str">"السعر النهائي بعد الخصم والضريبة هو: "</span> ) {
+
+    <span class="cm">// يمر السعر والنص هنا لإتاحة تعديلهما بواسطة أي add_filter يعترض الطريق</span>
+    <span class="var">$final_price</span>     = <span class="fn">apply_filters</span>( <span class="str">'calculate_clinic_price'</span>, <span class="var">$base_price</span> );
+    <span class="var">$textBeforePrice</span> = <span class="fn">apply_filters</span>( <span class="str">'calculate_clinic_textBeforePrice'</span>, <span class="var">$textBeforePrice</span> );
+
+    <span class="kw">return</span> <span class="var">$textBeforePrice</span> . <span class="var">$final_price</span>;
+}
+
+<span class="cm">// 2. استدعاء الدالة بسعر أساسي 100 (قبل تسجيل الفلاتر)</span>
+<span class="kw">echo</span> <span class="fn">get_final_appointment_price</span>( 100 ) . <span class="str">"&lt;br&gt;"</span>;
+
+<span class="cm">// 3. دالة خصم الأطفال (أخذ السعر الجديد، وخصم 20% منه)</span>
+<span class="kw">function</span> <span class="fn">apply_kids_discount</span>( <span class="var">$price</span> ) {
+    <span class="kw">return</span> <span class="var">$price</span> - ( <span class="var">$price</span> * 0.20 );
+}
+
+<span class="cm">// 4. دالة تعديل نص ما قبل السعر</span>
+<span class="kw">function</span> <span class="fn">apply_kids_discountX</span>( <span class="var">$textBeforePrice</span> ) {
+    <span class="kw">return</span> <span class="var">$textBeforePrice</span>;
+}
+
+<span class="cm">// 5. تسجيل الدوال بالخطافات عبر add_filter (الأولوية 20 لتعمل بعد معالجة الضريبة)</span>
+<span class="fn">add_filter</span>( <span class="str">'calculate_clinic_price'</span>, <span class="str">'apply_kids_discount'</span>, 20 );
+<span class="fn">add_filter</span>( <span class="str">'calculate_clinic_textBeforePrice'</span>, <span class="str">'apply_kids_discountX'</span>, 20 );
+
+<span class="cm">// 6. السعر الأساسي للخدمة هو 100 مع نص مخصص</span>
+<span class="var">$price_to_pay</span> = <span class="fn">get_final_appointment_price</span>( 100, <span class="str">"السعر النهائي بعد الفلتر: "</span> );
+
+<span class="kw">echo</span> <span class="var">$price_to_pay</span>;</code></pre>
+    </div>
+
+    <!-- Summary Box -->
+    <div class="alert alert-success">
+      <strong>✨ خلاصة فوائد استخدام Core APIs:</strong>
+      <ol style="margin-right: 20px; margin-top: 8px;">
+        <li><strong>الأمان والحماية:</strong> دوال Core APIs تُراعي معايير الأمان وتُعالج البيانات تلقائياً ضد الثغرات.</li>
+        <li><strong>التوافقية (Compatibility):</strong> تضمن أن كودك سيعمل على مختلف أنواع الاستضافات وبغض النظر عن إعدادات السيرفر.</li>
+        <li><strong>النظافة والإنتاجية:</strong> اختصار عشرات أسطر الكود المعقدة إلى دالة واحدة بسيطة وواضحة.</li>
+      </ol>
+    </div>
 
     <!-- Footer -->
     <footer class="lesson-footer">
       <div><strong>كورس تطوير إضافات ووردبريس الشامل</strong> - جميع الحقوق محفوظة</div>
-      <a href="../index.html" class="nav-btn">⬅️ الصفحة الرئيسية للمنصة</a>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <a href="2-Introduction-to-Plugin-Development-and-What-is-a-Plugin.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'2-Introduction-to-Plugin-Development-and-What-is-a-Plugin.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+        <a href="4-Header-Requirements-and-DocBlock.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'4-Header-Requirements-and-DocBlock.html'}, '*'); }" class="nav-btn">الدرس التالي ⬅️</a>
+      </div>
     </footer>
 
   </div>
 
+  <script src="../main.js"></script>
 </body>
 </html>

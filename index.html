@@ -7,394 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #0284c7;
-      --primary-dark: #0369a1;
-      --accent: #10b981;
-      --bg: #0f172a;
-      --sidebar-bg: #1e293b;
-      --card-bg: #ffffff;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --border: #334155;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Tajawal', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Top Bar Header */
-    .top-header {
-      height: 60px;
-      background: #090d16;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      flex-shrink: 0;
-      z-index: 1100;
-    }
-    .brand-title {
-      font-size: 16px;
-      font-weight: 800;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .brand-badge {
-      background: var(--primary);
-      color: #ffffff;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 11px;
-    }
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .mobile-menu-toggle {
-      display: none;
-      background: var(--primary);
-      color: #ffffff;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: 'Tajawal', sans-serif;
-    }
-    .open-standalone-btn {
-      background: rgba(255,255,255,0.1);
-      color: #ffffff;
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 12.5px;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    .open-standalone-btn:hover {
-      background: var(--primary);
-    }
-
-    /* App Layout */
-    .app-layout {
-      display: flex;
-      flex: 1;
-      height: calc(100vh - 60px);
-      overflow: hidden;
-      position: relative;
-      flex-direction: row-reverse; /* Right-to-left layout */
-    }
-
-    /* Left Content Viewer Area (الشرح على اليسار) */
-    .viewer-area {
-      flex: 1;
-      background: #ffffff;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      position: relative;
-      height: 100%;
-    }
-
-    .viewer-iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* Right Sidebar (القائمة على اليمين) */
-    .sidebar {
-      width: 380px;
-      height: 100%;
-      background: var(--sidebar-bg);
-      border-left: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      overflow: hidden;
-      transition: transform 0.3s ease;
-      z-index: 1000;
-    }
-    .sidebar-header {
-      padding: 18px 20px 14px;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .sidebar-header h2 {
-      font-size: 16px;
-      font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .progress-save-badge {
-      background: rgba(16, 185, 129, 0.2);
-      color: #34d399;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 6px;
-    }
-
-    /* Search Box Input */
-    .search-box-wrapper {
-      position: relative;
-      margin-top: 6px;
-    }
-    .search-input {
-      width: 100%;
-      background: #0f172a;
-      border: 1px solid var(--border);
-      color: #ffffff;
-      padding: 10px 38px 10px 14px;
-      border-radius: 10px;
-      font-size: 13.5px;
-      font-family: 'Tajawal', sans-serif;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .search-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2);
-    }
-    .search-icon {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      font-size: 14px;
-      pointer-events: none;
-    }
-
-    .lessons-list {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .lessons-list::-webkit-scrollbar {
-      width: 6px;
-    }
-    .lessons-list::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.5);
-    }
-    .lessons-list::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 3px;
-    }
-    .lessons-list::-webkit-scrollbar-thumb:hover {
-      background: var(--primary);
-    }
-    .lesson-item {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .lesson-item:hover {
-      background: rgba(255,255,255,0.08);
-      border-color: var(--primary);
-    }
-    .lesson-item.active {
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.25), rgba(15, 23, 42, 0.7));
-      border-color: var(--primary);
-      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.25);
-    }
-    .lesson-item-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .lesson-item-tag {
-      background: rgba(2, 132, 199, 0.2);
-      color: #38bdf8;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 2px 8px;
-      border-radius: 6px;
-    }
-    .lesson-item.active .lesson-item-tag {
-      background: var(--primary);
-      color: #ffffff;
-    }
-    .lesson-item-title {
-      font-size: 14.5px;
-      font-weight: 700;
-      color: #ffffff;
-      line-height: 1.4;
-    }
-    .lesson-item-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-    .topic-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      margin-top: 4px;
-    }
-    .topic-badge {
-      background: rgba(255,255,255,0.06);
-      color: #cbd5e1;
-      font-size: 10.5px;
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-
-    /* Section Groups UI (الأقسام الرئيسية والدروس التابعة) */
-    .section-group {
-      margin-bottom: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      background: #141e30;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-    .section-group.open {
-      border-color: rgba(2, 132, 199, 0.4);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    }
-    .section-header {
-      padding: 13px 16px;
-      background: #000;
-      border-radius: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      user-select: none;
-      transition: background 0.2s ease;
-    }
-    .section-group.open .section-header {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-      background: #000;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .section-header:hover {
-      background: #334155;
-    }
-    .section-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13.5px;
-      font-weight: 800;
-      color: #f8fafc;
-      word-break: break-word;
-    }
-    .section-title .section-icon {
-      font-size: 16px;
-      color: #38bdf8;
-    }
-    .section-meta {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-    .section-count {
-      font-size: 11px;
-      background: rgba(2, 132, 199, 0.2);
-      color: #38bdf8;
-      padding: 3px 9px;
-      border-radius: 999px;
-      font-weight: 700;
-      border: 1px solid rgba(56, 189, 248, 0.2);
-    }
-    .section-arrow {
-      font-size: 11px;
-      color: #94a3b8;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .section-group.open .section-arrow {
-      transform: rotate(180deg);
-      color: #38bdf8;
-    }
-    .section-content {
-      display: none;
-      padding: 10px;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .section-group.open .section-content {
-      display: flex;
-    }
-
-    .no-results {
-      display: none;
-      text-align: center;
-      padding: 30px 10px;
-      color: var(--text-muted);
-      font-size: 14px;
-    }
-
-    /* Mobile Backdrop */
-    .mobile-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(4px);
-      z-index: 950;
-    }
-
-    /* Mobile Responsive Media Query (< 768px) */
-    @media (max-width: 768px) {
-      .mobile-menu-toggle {
-        display: block;
-      }
-      .brand-title span:first-child {
-        font-size: 14px;
-      }
-      .open-standalone-btn {
-        display: none;
-      }
-      .sidebar {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 85%;
-        max-width: 340px;
-        transform: translateX(100%);
-        box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-      }
-      .sidebar.open {
-        transform: translateX(0);
-      }
-      .mobile-backdrop.open {
-        display: block;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="main.css">
 </head>
 <body>
 
@@ -402,11 +15,10 @@
   <header class="top-header">
     <div class="brand-title">
       <span>📚 دورة تطوير إضافات ووردبريس</span>
-      <span class="brand-badge">العرض التفاعلي</span>
     </div>
     <div class="header-actions">
       <button class="mobile-menu-toggle" onclick="toggleMobileSidebar()">
-        ☰ قائمة الدروس والبحث
+        ☰ قائمة الدروس 
       </button>
       <a id="standaloneLink" href="lessons/1-Plugin-Basics-and-Introduction.html" target="_blank" class="open-standalone-btn">
         🔗 صفحة مستقلة ↗
@@ -430,12 +42,12 @@
       <div class="sidebar-header">
         <h2>
           <span>📚 دروس الدورة (7 دروس)</span>
-          <span class="progress-save-badge">💾 حفظ التقدم تلقائياً</span>
+          <!-- <span class="progress-save-badge">💾 حفظ التقدم تلقائياً</span> -->
         </h2>
         <!-- Live Topic Search Box -->
         <div class="search-box-wrapper">
           <span class="search-icon">🔍</span>
-          <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن عنوان، دالة (مثل wpdb)، أو موضوع..." oninput="filterLessons()" />
+          <input type="search" id="searchInput" class="search-input" placeholder="ابحث عن عنوان، دالة (مثل wpdb)، أو موضوع..." oninput="filterLessons()" />
         </div>
       </div>
 
@@ -808,7 +420,7 @@
         const targetItem = document.querySelector(`.lesson-item[data-id="${savedLessonId}"]`);
         if (targetItem) {
           const path = targetItem.getAttribute('data-path');
-          loadLesson(targetItem, path, savedLessonId, false);
+          loadLesson(targetItem, path, savedLessonId, false, false);
           return;
         }
       }
@@ -816,7 +428,7 @@
       // Default load Lesson 1
       const defaultItem = document.querySelector('.lesson-item[data-id="1"]');
       if (defaultItem) {
-        loadLesson(defaultItem, 'lessons/1-Plugin-Basics-and-Introduction.html', 1, false);
+        loadLesson(defaultItem, 'lessons/1-Plugin-Basics-and-Introduction.html', 1, false, false);
       }
     });
 
@@ -825,7 +437,7 @@
       group.classList.toggle('open');
     }
 
-    function loadLesson(element, path, lessonId, shouldScroll = true) {
+    function loadLesson(element, path, lessonId, shouldScroll = true, isUserClick = true) {
       // Remove active class from all items
       const items = document.querySelectorAll('.lesson-item');
       items.forEach(item => item.classList.remove('active'));
@@ -908,6 +520,25 @@
       sidebar.classList.remove('open');
       backdrop.classList.remove('open');
     }
+  
+    // Cross-Frame Navigation Message Listener
+    window.addEventListener('message', (event) => {
+      if (event.data && event.data.type === 'WP_COURSE_NAV') {
+        const filename = event.data.filename;
+        if (filename) {
+          const items = document.querySelectorAll('.lesson-item');
+          items.forEach(item => {
+            const itemPath = item.getAttribute('data-path') || '';
+            if (itemPath.includes(filename)) {
+              const lessonId = parseInt(item.getAttribute('data-id'), 10);
+              loadLesson(item, itemPath, lessonId, true);
+            }
+          });
+        }
+      }
+    });
+
   </script>
+  <script src="main.js"></script>
 </body>
 </html>
