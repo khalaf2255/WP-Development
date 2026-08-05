@@ -33,20 +33,188 @@
     <!-- Technical Content -->
     
     <h2>1. بناء العقلية الأمنية (Developing a Security Mindset)</h2>
-    <p>تهانينا، كودك يعمل! ولكن هل هو آمن؟ ونظراً لأن الإضافات والقوالب تعمل عبر آلاف المواقع، فإنها تمثل الهدف الأكثر استهدافاً من الثغرات في ووردبريس.</p>
+    <p>هذا النص يُمثل **الفلسفة الأساسية والأصل الذهبي للأمان في ووردبريس (WordPress Security Core Philosophy)**. كثير من المطورين المبتدئين يقعون في فخ <em>"طالما الكود يعمل بدون أخطاء، فكل شيء تمام"</em>، بينما المطور المحترف يتعامل مع كل بيئة مدخلات كأنها محاولة اختراق محتملة!</p>
 
     <div class="alert alert-danger">
-      <strong>🚨 المبدأ الأول والأهم: لا تضع ثقتك في أي بيانات (Never Trust Any Data)!</strong>
-      لا تقم أبداً بالثوق في المدخلات الواردة من المستخدم، ولا البيانات القادمة من واجهات 3rd-party APIs، بل وحتى البيانات المخزنة داخل قاعدة بياناتك الخاصة! يجب التحقق والتعقيم دائماً.
+      <strong>🚨 فلسفة الأمان الذهبية: التعامل مع أي مدخل كتهديد محتمل!</strong><br />
+      نظراً لأن الإضافات والقوالب تعمل عبر ملايين المواقع بمختلف التهئيات السيرفرية، فإنها تمثل الهدف الأكثر استهدافاً من المخترقين. الكود الآمن لا يفترض البراءة في أي بيانات إطلاقاً.
     </div>
 
-    <h3>القواعد التوجيهية الأربع (Guiding Principles)</h3>
-    <ol style="margin-right: 24px; margin-bottom: 24px; color: #334155;">
-      <li><strong>عدم الثقة مطلقاً:</strong> أي مدخل غير مفحوص هو ثغرة محتملة.</li>
-      <li><strong>الهروب المتأخر جداً (Escape as late as possible):</strong> قم بتطهير وهروب المخرجات فوراً لحظة طباعتها بـ <code class="inline-code">echo</code>.</li>
-      <li><strong>التدرج الهرمي للصلاحيات:</strong> لا تُنفذ الأوامر الحساسة إلا بعد التأكد من صلاحية المستخدم.</li>
-      <li><strong>التحقق والرفض أفضل من مجرد التعقيم:</strong> الـ Validation أضمن وأقوى من الـ Sanitization مجرداً.</li>
+    <h3>تفكيك القواعد التوجيهية الأربع (The 4 Guiding Principles)</h3>
+
+    <h4>1. عدم الثقة مطلقاً (Never Trust Any Data)</h4>
+    <p><strong>الفكرة الأساسية:</strong> سواء كانت البيانات قادمة من حقل إدخال كتبه زائر (<code class="inline-code">$_POST</code>)، أو عبر رابط HTTP GET (<code class="inline-code">$_GET</code>)، أو كوكيز (<code class="inline-code">$_COOKIE</code>)، أو حتى استجابة قادمة من API خارجي موثوق، أو بيانات كانت مخزنة بالفعل في جدول <code class="inline-code">wp_options</code>.. <strong>لا تفترض أبداً أن البيانات سليمة 100%!</strong></p>
+    <div class="alert alert-warning">
+      <strong>💡 لماذا البيانات المخزنة في قاعدة بياناتك قد تكون خطيرة؟</strong><br />
+      لأنه لو تم تجاوز فحص مدخل خبيث في مكان ما، أو وصلت البيانات لقاعدة البيانات عن طريق إضافة أخرى مثبتة على الموقع أو اختراق سابق، فإن طباعتك المباشرة لها دون تطهير ستتسبب في ثغرة <strong>XSS (Cross-Site Scripting)</strong> فوراً!
+    </div>
+
+    <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 28px 0;" />
+
+    <h4>2. التحقق والرفض أفضل من مجرد التعقيم (Validation vs. Sanitization)</h4>
+    <p>هنا يكمن الفرق الجوهري بين مطور يحمي موقعه بذكاء، ومطور يترك ثغرات خلفه:</p>
+
+    <ul style="margin-right: 24px; margin-bottom: 20px; color: #334155;">
+      <li>
+        <strong>أ. التحقق من الصحة (Validation) ➔ "هل البيانات بالطبيعة والشكل الصحيح؟"</strong>
+        <br />هو فحص البيانات قبل قبولها أو معالجتها، وإذا لم تكن تطابق الشرط تُرفض تماماً ويُعرض خطأ إيقافي بـ <code class="inline-code">wp_die()</code>.
+        <br /><em>مثال:</em> إذا كنت تتوقع بريداً إلكترونياً، تحقق هل هو بريد بالفعل عبر <code class="inline-code">is_email()</code>؟ وإذا كان متوقعاً كـ رقم، هل هو رقم؟
+      </li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">validation-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="var">$email</span> = <span class="var">$_POST</span>[<span class="str">'user_email'</span>];
+
+<span class="cm">// Validation: إذا لم يكن البريد الإلكتروني صحيحاً، نوقف العملية فوراً!</span>
+<span class="kw">if</span> ( ! <span class="fn">is_email</span>( <span class="var">$email</span> ) ) {
+    <span class="fn">wp_die</span>( <span class="str">'البريد الإلكتروني المدخل غير صحيح!'</span> );
+}</code></pre>
+    </div>
+
+    <ul style="margin-right: 24px; margin-bottom: 20px; color: #334155;">
+      <li>
+        <strong>ب. التعقيم (Sanitization) ➔ "تنظيف البيانات وتجريدها من الأكواد الضارة"</strong>
+        <br />هو تنظيف المدخلات وتجريدها من أي أكواد JS أو HTML خطيرة قبل حفظها في قاعدة البيانات عبر دوال مثل <code class="inline-code">sanitize_text_field()</code>.
+      </li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">sanitization-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// Sanitization: تنظيف النص وتجريده من الوسوم الضارة قبل الحفظ</span>
+<span class="var">$clean_name</span> = <span class="fn">sanitize_text_field</span>( <span class="var">$_POST</span>[<span class="str">'user_name'</span>] );
+<span class="fn">update_option</span>( <span class="str">'kcc_admin_name'</span>, <span class="var">$clean_name</span> );</code></pre>
+    </div>
+
+    <div class="alert alert-info">
+      <strong>💡 القاعدة الذهبية: Validate First (تحقق أولاً وارفض)، فإن مرت البيانات اعمل لها Sanitize (عقمها واحفظها).</strong>
+    </div>
+
+    <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 28px 0;" />
+
+    <h4>3. التدرج الهرمي للصلاحيات (Capabilities & Nonces)</h4>
+    <p>حتى لو كانت البيانات منظفة ومفحوصة، يظل السؤال الأهم: <strong>من الذي يقوم بهذا الإجراء؟ وهل قام به بنفسه؟</strong></p>
+    <p>تأمين أي عملية حساسة ينقسم دائماً لجزأين مكملين لبعضهما:</p>
+    
+    <ol style="margin-right: 24px; margin-bottom: 20px; color: #334155;">
+      <li><strong>فحص الصلاحية (<code class="inline-code">current_user_can</code>):</strong> هل هذا الشخص مدير بالفعل لكي يحذف هذا المقال أو يغير الإعدادات؟</li>
+      <li><strong>فحص الشرعية والرمز الآمن (<code class="inline-code">wp_verify_nonce</code>):</strong> هل قام المستخدم بالنقر على الزر بنفسه داخل موقعنا؟ أم تم خداعه عبر رابط خبيث من موقع آخر لحثه على تنفيذ الأمر رغماً عنه (CSRF Attack)؟</li>
     </ol>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">capabilities-nonces-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// 1. فحص الـ Nonce لمنع هجمات التزوير عبر المواقع (CSRF Attack)</span>
+<span class="kw">if</span> ( ! <span class="kw">isset</span>( <span class="var">$_POST</span>[<span class="str">'_wpnonce'</span>] ) || ! <span class="fn">wp_verify_nonce</span>( <span class="var">$_POST</span>[<span class="str">'_wpnonce'</span>], <span class="str">'kcc_save_action'</span> ) ) {
+    <span class="fn">wp_die</span>( <span class="str">'طلب غير مشروع أو رمز الـ Nonce غير صحيح!'</span> );
+}
+
+<span class="cm">// 2. فحص الصلاحية الفعلي للمستخدم الحقيقي</span>
+<span class="kw">if</span> ( ! <span class="fn">current_user_can</span>( <span class="str">'manage_options'</span> ) ) {
+    <span class="fn">wp_die</span>( <span class="str">'عفواً، لا تملك الصلاحية لتنفيذ هذا الإجراء.'</span> );
+}</code></pre>
+    </div>
+
+    <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 28px 0;" />
+
+    <h4>4. الهروب المتأخر جداً (Escape as Late as Possible)</h4>
+    <p>هذه القوانين تُعد من أشهر وأهم القواعد في مراجعات الأكواد الرسمية بووردبريس (WordPress Code Review Guidelines).</p>
+    <p><strong>ماذا تعني؟</strong> تعني ألا تقوم بتطهير المخرجات (Escaping) في بداية الكود أو داخل المتغيرات المؤقتة، بل في لحظة طباعتها بـ <code class="inline-code">echo</code> مباشرة أمام عينيك!</p>
+
+    <p><strong>❌ ممارسة خاطئة (Early Escaping):</strong></p>
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">wrong-early-escaping.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="var">$user_title</span> = <span class="fn">esc_html</span>( <span class="var">$data</span>[<span class="str">'title'</span>] ); <span class="cm">// تطهير مبكر في بداية الملف</span>
+
+<span class="cm">// ... 50 سطر كود برمجية ومعالجات ...</span>
+
+<span class="kw">echo</span> <span class="var">$user_title</span>; <span class="cm">// ❌ طباعة بدون Escaping في لحظتها (قد ينسى المطور هل تم تطهيرها أم لا)</span></code></pre>
+    </div>
+
+    <p><strong>✅ الممارسة الصحيحة والآمنة (Late Escaping):</strong></p>
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">correct-late-escaping.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="var">$user_title</span> = <span class="var">$data</span>[<span class="str">'title'</span>]; 
+
+<span class="cm">// ... 50 سطر كود برمجية ومعالجات ...</span>
+
+<span class="cm">// ✅ التطهير والـ Escaping يتم في لحظة الـ echo مباشرة أمام العين!</span>
+<span class="kw">echo</span> <span class="fn">esc_html</span>( <span class="var">$user_title</span> );</code></pre>
+    </div>
+
+    <h4>🛡️ أشهر دوال التطهير والهروب (Escaping Functions) للاستخدام اليومي:</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>دالة الـ Escaping</th>
+            <th>السياق والمكان المستهدف</th>
+            <th>مثال الاستخدام في الكود</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline-code">esc_html()</code></td>
+            <td>لطباعة النصوص العادية داخل عناصر HTML مثل <code class="inline-code">&lt;p&gt;</code> أو <code class="inline-code">&lt;span&gt;</code>.</td>
+            <td><code class="inline-code">&lt;span&gt;&lt;?php echo esc_html( $title ); ?&gt;&lt;/span&gt;</code></td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">esc_attr()</code></td>
+            <td>لطباعة القيم داخل خصائص HTML مثل <code class="inline-code">value="..."</code> أو <code class="inline-code">alt="..."</code>.</td>
+            <td><code class="inline-code">&lt;input type="text" value="&lt;?php echo esc_attr( $name ); ?&gt;" /&gt;</code></td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">esc_url()</code></td>
+            <td>لطباعة الروابط والعناوين داخل <code class="inline-code">href="..."</code> أو <code class="inline-code">src="..."</code>.</td>
+            <td><code class="inline-code">&lt;a href="&lt;?php echo esc_url( $link ); ?&gt;"&gt;رابط&lt;/a&gt;</code></td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">wp_kses_post()</code></td>
+            <td>عند السماح بنصوص تحتوي على HTML آمن (مثل المحتوى) وتجريد السكريبتات الخبيثة.</td>
+            <td><code class="inline-code">&lt;div class="content"&gt;&lt;?php echo wp_kses_post( $html ); ?&gt;&lt;/div&gt;</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
 

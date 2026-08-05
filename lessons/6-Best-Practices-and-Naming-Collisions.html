@@ -27,22 +27,68 @@
     <header class="lesson-header">
       <span class="lesson-badge">الدرس 04 | قسم Plugin Basics</span>
       <h1 class="lesson-title">أفضل الممارسات ومنع تضارب الأسماء (Best Practices & Naming Collisions)</h1>
-      <p class="lesson-subtitle">تقنيات البادئات (Prefixing)، البرمجة الكائنية (OOP)، الهيكل المجلدي المنظم، والتحميل الشرطي is_admin.</p>
+      <p class="lesson-subtitle">تقنيات البادئات (Prefixing)، النطاقات (Namespaces)، التخزين المؤقت (Transients)، البرمجة الكائنية (OOP)، والتحميل الشرطي.</p>
     </header>
 
     <!-- Technical Content -->
     
     <h2>1. منع تضارب الأسماء (Avoid Naming Collisions)</h2>
-    <p>يحدث تضارب الأسماء (Naming Collision) عندما تستخدم إضافتك نفس اسم المتغير أو الدالة أو الكلاس الذي تستخدمه إضافة أخرى أو نواة ووردبريس في الـ Global Namespace. لحل هذه المشكلة، توجد طريقتان أساسيتان:</p>
+    <p>تُعتبر هذه القاعدة القانون الأول والأهم في تطوير إضافات وقوالب ووردبريس. يحدث تضارب الأسماء (Naming Collision) عندما تستخدم إضافتك نفس اسم المتغير أو الدالة أو الكلاس الذي تستخدمه إضافة أخرى على نفس الموقع أو نواة ووردبريس في الـ Global Scope.</p>
+
+    <div class="alert alert-warning">
+      <strong>💡 ما هي المشكلة في الأصل؟</strong><br />
+      لغة PHP في البرمجة الإجرائية لا تسمح بوجود دالتين أو كلاسين يحملان نفس الاسم بالضبط في النطاق العام. إذا قمت بإنشاء دالة باسم <code class="inline-code">get_user_data()</code>، وقام مطور إضافة أخرى على نفس الموقع بإنشاء دالة بنفس الاسم: <strong>سينهار الموقع فوراً ويظهر خطأ قاتل:</strong><br />
+      <code class="inline-code" style="color: #ef4444; font-weight: 700;">Fatal error: Cannot redeclare function get_user_data()</code>
+    </div>
 
     <h3>الطريقة الأولى: التسمية المسبوقة (Prefix Everything)</h3>
-    <p>في البرمجة الإجرائية (Procedural PHP)، يجب إضافة **بادئة فريدة (Prefix)** لا تقل عن 4 إلى 5 أحرف لكل عنصر متاح في الـ Global Scope:</p>
-    <ul>
-      <li>الدوال غير المعرفة داخل Classes أو Namespaces.</li>
-      <li>الكلاسات والـ Interfaces والـ Traits.</li>
-      <li>الـ Namespaces والـ Global Variables.</li>
-      <li>أسماء الـ Options والـ Transients في قاعدة البيانات.</li>
-    </ul>
+    <p>تعتمد الفكرة على اختيار بادئة فريدة مخصصة لإضافتك (عادة من 3 إلى 5 أحرف) ووضعها في بداية اسم كل عنصر تتيحه في الـ Global Scope. على سبيل المثال، إذا كانت إضافتك اسمها <em>Kids Care Clinic</em>، يمكنك اختيار البادئة: <code class="inline-code">kcc_</code> أو <code class="inline-code">kidscare_</code>:</p>
+
+    <p><strong>مقارنة شمولية لتطبيق البادئة الفريدة (Prefixing) على عناصر الكود المختلفة:</strong></p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>عنصر الكود (Code Element)</th>
+            <th>❌ طريقة سيئة (عرضة للتضارب والانهيار)</th>
+            <th>✅ طريقة صحيحة ومحمية (مزودة ببادئة kcc_)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. الدوال (Functions)</strong></td>
+            <td><code class="inline-code" style="color: #ef4444;">function save_settings() { ... }</code></td>
+            <td><code class="inline-code" style="color: #10b981; font-weight: 700;">function kcc_save_settings() { ... }</code></td>
+          </tr>
+          <tr>
+            <td><strong>2. الكلاسات (Classes & Traits)</strong></td>
+            <td><code class="inline-code" style="color: #ef4444;">class Patient { ... }</code></td>
+            <td><code class="inline-code" style="color: #10b981; font-weight: 700;">class KCC_Patient { ... }</code></td>
+          </tr>
+          <tr>
+            <td><strong>3. المتغيرات العامة (Globals)</strong></td>
+            <td><code class="inline-code" style="color: #ef4444;">$database_version = '1.0';</code></td>
+            <td><code class="inline-code" style="color: #10b981; font-weight: 700;">$kcc_database_version = '1.0';</code></td>
+          </tr>
+          <tr>
+            <td><strong>4. مساحات الأسماء (Namespaces)</strong></td>
+            <td><code class="inline-code" style="color: #ef4444;">namespace Core\Admin;</code></td>
+            <td><code class="inline-code" style="color: #10b981; font-weight: 700;">namespace KidsCareClinic\Core\Admin;</code></td>
+          </tr>
+          <tr>
+            <td><strong>5. خيارات DB (Options API)</strong></td>
+            <td><code class="inline-code" style="color: #ef4444;">update_option( 'api_key', '12345' );</code></td>
+            <td><code class="inline-code" style="color: #10b981; font-weight: 700;">update_option( 'kcc_api_key', '12345' );</code></td>
+          </tr>
+          <tr>
+            <td><strong>6. التخزين المؤقت (Transients)</strong></td>
+            <td><code class="inline-code" style="color: #ef4444;">set_transient( 'recent_posts', $data );</code></td>
+            <td><code class="inline-code" style="color: #10b981; font-weight: 700;">set_transient( 'kcc_recent_posts', $data );</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="alert alert-danger">
       <strong>🚨 بادئات يُحظر استخدامها تماماً:</strong>
@@ -51,8 +97,12 @@
 
     <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
 
-    <h2>2. أسلوب البرمجة الكائنية (Object Oriented Programming - OOP)</h2>
-    <p>الأسلوب الأسهل والأحدث لمنع تضارب الأسماء هو كبسلة كود الإضافة بالكامل داخل **Class** أو **Namespace**:</p>
+    <h2>2. أسلوب البرمجة الكائنية والـ Namespaces (OOP & Namespaces)</h2>
+    <p>الأسلوب الأحدث والأسهل لمنع تضارب الأسماء هو كبسولة كود الإضافة بالكامل داخل **Class** أو **Namespace** مع فحص وجود الكلاس أولاً بـ <code class="inline-code">class_exists()</code>:</p>
+
+    <h3>ما هو الـ Namespace؟ وكيف نستخدمه؟</h3>
+    <p>الـ Namespace (مساحة الأسماء) هو أشبه بـ **"المجلدات الوهمية"** داخل الكود. في جهاز الكمبيوتر، لا يمكنك وضع ملفين باسم <code class="inline-code">index.php</code> داخل نفس المجلد، ولكن يمكنك وضع ملف باسم <code class="inline-code">index.php</code> في مجلد <code class="inline-code">folder1</code> وملف آخر بنفس الاسم في مجلد <code class="inline-code">folder2</code>.</p>
+    <p>هذا بالضبط ما يفعله الـ Namespace في PHP! فهو يسمح لك بتسمية الكلاسات والدوال بأسماء عادية دون الخوف من تضارب الأسماء مع إضافات أخرى.</p>
 
     <div class="vscode-window">
       <div class="vscode-header">
@@ -61,27 +111,118 @@
           <div class="vscode-dot dot-yellow"></div>
           <div class="vscode-dot dot-green"></div>
         </div>
-        <div class="vscode-filename">includes/class-wporg-plugin.php</div>
+        <div class="vscode-filename">includes/class-settings.php (تعريف الـ Namespace)</div>
       </div>
       <pre><code><span class="kw">&lt;?php</span>
-<span class="kw">if</span> ( ! <span class="fn">class_exists</span>( <span class="str">'WPOrg_Plugin'</span> ) ) {
-    <span class="kw">class</span> <span class="fn">WPOrg_Plugin</span> {
-        <span class="kw">public static function</span> <span class="fn">init</span>() {
-            <span class="fn">register_setting</span>( <span class="str">'wporg_settings'</span>, <span class="str">'wporg_option_foo'</span> );
-        }
+<span class="kw">namespace</span> <span class="fn">KidsCareClinic\Admin</span>; <span class="cm">// 1. تعريف المجلد الوهمي الخاص بإضافتك</span>
 
-        <span class="kw">public static function</span> <span class="fn">get_foo</span>() {
-            <span class="kw">return</span> <span class="fn">get_option</span>( <span class="str">'wporg_option_foo'</span> );
-        }
+<span class="kw">class</span> <span class="fn">Settings</span> {
+    <span class="kw">public function</span> <span class="fn">display</span>() {
+        <span class="kw">echo</span> <span class="str">"إعدادات عيادة الأطفال"</span>;
     }
-
-    <span class="fn">WPOrg_Plugin::init</span>();
 }</code></pre>
+    </div>
+
+    <h4>طرق استدعاء الكلاس من مكان آخر:</h4>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">plugin-main.php (استدعاء الكلاس)</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// الطريقة الأولى (استخدام كلمة use - الأفضل والأسهل):</span>
+<span class="kw">use</span> <span class="fn">KidsCareClinic\Admin\Settings</span>;
+
+<span class="var">$settings</span> = <span class="kw">new</span> <span class="fn">Settings</span>();
+<span class="var">$settings</span>-><span class="fn">display</span>();
+
+<span class="cm">// الطريقة الثانية (الاسم الكامل المباشر):</span>
+<span class="var">$settings_direct</span> = <span class="kw">new</span> <span class="fn">\KidsCareClinic\Admin\Settings</span>();
+<span class="var">$settings_direct</span>-><span class="fn">display</span>();</code></pre>
     </div>
 
     <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
 
-    <h2>3. الهيكل المجلدي المنظم والتحميل الشرطي (Folder Structure & Conditional Loading)</h2>
+    <h2>3. الـ Transients في ووردبريس وكيفية استخدامها (WordPress Transients)</h2>
+    
+    <h3>ما هو الـ Transients؟ وكيف نستخدمه؟</h3>
+    <p>الـ Transient في ووردبريس هو نوع من **التخزين المؤقت (Caching)** لبيانات خفيفة داخل قاعدة البيانات (في جدول <code class="inline-code">wp_options</code>) مع تحديد مدة صلاحية (Expiration Time) محددة بالثواني.</p>
+    <p>تستخدمه عندما يكون لديك عملية بطيئة أو ثقيلة (مثل جلب بيانات من API خارجي، أو تنفيذ استعلام معقد في قاعدة البيانات)، فتقوم بحفظ النتيجة مؤقتاً لمدة ساعتين مثلاً، بدلاً من إعادة جلبها مع كل زائر يفتح الصفحة مما يُسرّع الموقع ويخفف الضغط على السيرفر.</p>
+
+    <h4>الدوال الـ 3 الأساسية للتعامل مع الـ Transients:</h4>
+    <ol style="margin-right: 24px; margin-bottom: 20px; color: #334155;">
+      <li><code class="inline-code">set_transient($transient, $value, $expiration)</code>: لحفظ البيانات مؤقتاً وتحديد مدة الصلاحية بالثواني.</li>
+      <li><code class="inline-code">get_transient($transient)</code>: لقراءة البيانات المخزنة مؤقتاً، وتُعيد <code class="inline-code">false</code> في حال عدم وجود البيانات أو انتهاء صلاحيتها.</li>
+      <li><code class="inline-code">delete_transient($transient)</code>: لحذف البيانات المؤقتة يدوياً قبل انتهاء وقتها عند التحديث.</li>
+    </ol>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">transients-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// 1. محاولة قراءة البيانات المخزنة مؤقتاً</span>
+<span class="var">$cached_posts</span> = <span class="fn">get_transient</span>( <span class="str">'kcc_latest_posts'</span> );
+
+<span class="kw">if</span> ( <span class="kw">false</span> === <span class="var">$cached_posts</span> ) {
+    <span class="cm">// البيانات غير موجودة أو انتهت صلاحيتها! جلبها من جديد من قاعدة البيانات أو الـ API</span>
+    <span class="var">$cached_posts</span> = <span class="kw">array</span>( <span class="str">'post1'</span>, <span class="str">'post2'</span> );
+
+    <span class="cm">// حفظ البيانات مؤقتاً لمدة ساعتين (2 * HOUR_IN_SECONDS)</span>
+    <span class="fn">set_transient</span>( <span class="str">'kcc_latest_posts'</span>, <span class="var">$cached_posts</span>, 2 * <span class="kw">HOUR_IN_SECONDS</span> );
+}
+
+<span class="cm">// 2. استخدام البيانات الجاهزة فوراً دون إجهاد السيرفر</span>
+<span class="fn">print_r</span>( <span class="var">$cached_posts</span> );
+
+<span class="cm">// 3. حذف التخزين المؤقت يدوياً عند تحديث المقالات</span>
+<span class="fn">delete_transient</span>( <span class="str">'kcc_latest_posts'</span> );</code></pre>
+    </div>
+
+    <div class="alert alert-info">
+      <strong>💡 الثوابت الزمنية الجاهزة في ووردبريس:</strong>
+      توفر نواة ووردبريس ثوابت جاهزة للوقت لتسهيل تحديد المدة الزمنية:
+      <code class="inline-code">MINUTE_IN_SECONDS</code> (60 ثانية)، <code class="inline-code">HOUR_IN_SECONDS</code> (3600 ثانية)، <code class="inline-code">DAY_IN_SECONDS</code> (86400 ثانية)، <code class="inline-code">WEEK_IN_SECONDS</code>، و <code class="inline-code">YEAR_IN_SECONDS</code>.
+    </div>
+
+    <h3>📊 جدول مقارنة وتلخيص سريع بين Namespace و Transients:</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>المفهوم (Concept)</th>
+            <th>الهدف الأساسي منه</th>
+            <th>متى وأين تستخدمه؟</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Namespace</strong></td>
+            <td>تنظيم الكود ومنع تضارب أسماء الكلاسات والدوال في PHP.</td>
+            <td>عند كتابة إضافات وقوالب باستخدام البرمجة الكائنية OOP أو الهيكلية الحديثة.</td>
+          </tr>
+          <tr>
+            <td><strong>Transients</strong></td>
+            <td>تسريع الموقع عبر التخزين المؤقت للبيانات الثقيلة في قاعدة البيانات.</td>
+            <td>عند إرسال طلبات لـ API خارجي أو تنفيذ استعلامات DB معقدة وبطيئة.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h2>4. الهيكل المجلدي المنظم والتحميل الشرطي (Folder Structure & Conditional Loading)</h2>
     <p>يُنصح بجمع الملفات ذات الوظائف المتشابهة في مجلدات فرعية واضحة داخل جذر الإضافة:</p>
 
     <div class="vscode-window">
@@ -108,8 +249,16 @@
     └── /images/</code></pre>
     </div>
 
-    <h3>التحميل الشرطي لكود لوحة التحكم (<code class="inline-code">is_admin()</code>)</h3>
-    <p>لفصل كود لوحة التحكم عن الواجهة العامة للموقع وتخفيف استهلاك الذاكرة، نستخدم الدالة الشرطية <code class="inline-code">is_admin()</code>:</p>
+    <h3>التحميل الشرطي الشامل ودوال الفحص الشرطي (WordPress Conditional Tags)</h3>
+    <p>إلى جانب الدالة <code class="inline-code">is_admin()</code>، يوفر نظام ووردبريس مجموعة واسعة من **الدوال الشرطية (Conditional Tags)** التي تمكنك من التحكم الكامل في مكان وزمان تنفيذ أي كود برمجي (سواء في لوحة التحكم، أو الواجهة الأمامية، أو أثناء طلبات AJAX، أو المهام المجدولة الخفية).</p>
+
+    <h4>1. التمييز بين البيئات والسياقات السيرفرية (Environment & Context Conditions)</h4>
+
+    <p><strong>أ. <code class="inline-code">is_admin()</code></strong></p>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>التعريف:</strong> تتحقق ممّا إذا كان الطلب الحالي يدور داخل صفحات لوحة التحكم الإدارية (<code class="inline-code">wp-admin</code>).</li>
+      <li><strong>متى نستخدمها؟</strong> لتحميل ملفات CSS/JS الخاصة بالإدارة فقط، أو منع تشغيل أكواد لوحة التحكم في الواجهة الأمامية للموقع لزيادة السرعة والأمان.</li>
+    </ul>
 
     <div class="vscode-window">
       <div class="vscode-header">
@@ -118,27 +267,522 @@
           <div class="vscode-dot dot-yellow"></div>
           <div class="vscode-dot dot-green"></div>
         </div>
-        <div class="vscode-filename">plugin-name.php</div>
+        <div class="vscode-filename">is-admin-example.php</div>
       </div>
       <pre><code><span class="kw">&lt;?php</span>
-<span class="kw">if</span> ( ! <span class="fn">defined</span>( <span class="str">'ABSPATH'</span> ) ) {
-    <span class="kw">exit</span>; <span class="cm">// الحماية من الوصول المباشر</span>
+<span class="kw">if</span> ( <span class="fn">is_admin</span>() ) {
+    <span class="cm">// كود يُنفذ فقط للمدير داخل لوحة التحكم wp-admin</span>
+    <span class="fn">add_action</span>( <span class="str">'admin_menu'</span>, <span class="str">'kcc_add_custom_menu'</span> );
+}</code></pre>
+    </div>
+
+    <p><strong>ب. <code class="inline-code">wp_doing_ajax()</code></strong></p>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>التعريف:</strong> تتحقق ممّا إذا كان الطلب الحالي عبارة عن طلب AJAX صامت في الخلفية.</li>
+      <li><strong>متى نستخدمها؟</strong> عندما تريد معالجة بيانات مرسلة عن بُعد دون إعادة تحميل الصفحة، وتجنب طباعة عناصر HTML عادية أثناء طلبات الـ AJAX.</li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">doing-ajax-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="kw">if</span> ( <span class="fn">wp_doing_ajax</span>() ) {
+    <span class="cm">// تنفيذ استجابة سريعة لطلب Ajax</span>
+    <span class="fn">add_action</span>( <span class="str">'wp_ajax_kcc_save_data'</span>, <span class="str">'kcc_process_ajax'</span> );
+}</code></pre>
+    </div>
+
+    <p><strong>ج. <code class="inline-code">wp_doing_cron()</code></strong></p>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>التعريف:</strong> تتحقق ممّا إذا كان ووردبريس يقوم حالياً بتشغيل مهام مبرمجة في الخلفية (WP-Cron) (مثل إرسال النشرات البريدية المجدولة).</li>
+      <li><strong>متى نستخدمها؟</strong> لمنع تشغيل أكواد تفاعلية مخصصة للزائر أثناء تنفيذ المهام الخفية التلقائية وتخفيف الضغط على السيرفر.</li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">doing-cron-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="kw">if</span> ( <span class="fn">wp_doing_cron</span>() ) {
+    <span class="cm">// كود خاص بتخفيف الحمل أثناء المهام المجدولة في الخلفية</span>
+    <span class="fn">error_log</span>( <span class="str">'جاري تنفيذ مهام الصيانة المجدولة...'</span> );
+}</code></pre>
+    </div>
+
+    <p><strong>د. <code class="inline-code">wp_is_json_request()</code> أو <code class="inline-code">REST_REQUEST</code></strong></p>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>التعريف:</strong> تتحقق ممّا إذا كان الطلب القادم مستهدفاً لـ REST API الخاص بووردبريس.</li>
+      <li><strong>متى نستخدمها؟</strong> عند بناء تطبيقات موبايل أو ربط موقعك بأنظمة خارجية عبر API وتود تخصيص الاستجابة بتنسيق JSON فقط.</li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">json-rest-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="kw">if</span> ( <span class="fn">wp_is_json_request</span>() ) {
+    <span class="cm">// تخصيص البيانات المرسلة عبر REST API وتصفية الهيدر</span>
+}</code></pre>
+    </div>
+
+    <p><strong>هـ. <code class="inline-code">is_ssl()</code> و <code class="inline-code">is_multisite()</code></strong></p>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong><code class="inline-code">is_ssl()</code>:</strong> تتحقق مما إذا كان الموقع يتصفح عبر اتصال مشفر آمن HTTPS، وتستخدم لتغيير روابط الموارد الخارجية لتبدأ بـ <code class="inline-code">https://</code>.</li>
+      <li><strong><code class="inline-code">is_multisite()</code>:</strong> تتحقق مما إذا كان الموقع يعمل بنظام الشبكة المتعددة (Multisite Network).</li>
+    </ul>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h4>2. التحكم بناءً على صلاحيات وحالة المستخدمين (User & Capability Conditions)</h4>
+
+    <p><strong>أ. <code class="inline-code">is_user_logged_in()</code></strong></p>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>التعريف:</strong> تتحقق مما إذا كان الزائر مسجلاً لدخوله في الموقع أم مجرد زائر مجهول (Guest).</li>
+      <li><strong>متى نستخدمها؟</strong> لعرض محتوى حصري للأعضاء المسجلين أو إعادة توجيه الزوار لصفحة التسجيل.</li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">logged-in-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="kw">if</span> ( <span class="fn">is_user_logged_in</span>() ) {
+    <span class="kw">echo</span> <span class="str">"مرحباً بك مجدداً في عيادتنا!"</span>;
+} <span class="kw">else</span> {
+    <span class="kw">echo</span> <span class="str">"يرجى تسجيل الدخول لحجز موعد."</span>;
+}</code></pre>
+    </div>
+
+    <p><strong>ب. <code class="inline-code">current_user_can( $capability )</code></strong></p>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>التعريف:</strong> تتحقق ممّا إذا كان المستخدم الحالي يملك صلاحية معينة (تُسمى في ووردبريس بـ <code class="inline-code">Capabilities</code>)، والممنوحة لأدوار المستخدمين المختلفة (<code class="inline-code">Administrator</code>, <code class="inline-code">Editor</code>, <code class="inline-code">Author</code>, <code class="inline-code">Contributor</code>, <code class="inline-code">Subscriber</code>).</li>
+      <li><strong>متى نستخدمها؟</strong> لحماية الأمان الفعلي! لا تعتمد على <code class="inline-code">is_admin()</code> وحدها لحماية الأكواد والروابط الحساسة، بل استخدم دائماً <code class="inline-code">current_user_can()</code>.</li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">user-can-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// التأكد من أن المستخدم مدير ويحق له تعديل الإعدادات</span>
+<span class="kw">if</span> ( <span class="fn">current_user_can</span>( <span class="str">'manage_options'</span> ) ) {
+    <span class="cm">// كود التعديل على قاعدة البيانات أو حفظ الإعدادات</span>
+}</code></pre>
+    </div>
+
+    <h3>📋 القائمة الشاملة والمصنّفة لأهم الصلاحيات الرسمية في ووردبريس:</h3>
+
+    <!-- Category 1: Admin & Settings -->
+    <h4>1. إدارة النظام والإعدادات (Administrative & Settings Capabilities)</h4>
+    <p>هذه الصلاحيات عادة ما يملكها المدير (Administrator) فقط لحماية نواة وإعدادات الموقع:</p>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>الصلاحية (Capability)</th>
+            <th>الدور المعتاد</th>
+            <th>الوصف والتأثير البرمجي</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline-code">manage_options</code></td>
+            <td><span style="background: #fef2f2; color: #991b1b; padding: 3px 8px; border-radius: 4px; font-weight: 700;">Administrator</span></td>
+            <td>الصلاحية الأشهر للمدراء! تُستخدم للوصول لإعدادات الموقع العامة وحفظ خيارات الإضافات.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">install_plugins</code></td>
+            <td>Administrator</td>
+            <td>تثبيت إضافات جديدة إلى الموقع.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">activate_plugins</code></td>
+            <td>Administrator</td>
+            <td>تفعيل أو تعطيل الإضافات المثبتة.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">edit_plugins</code></td>
+            <td>Administrator</td>
+            <td>تعديل أكواد الإضافات مباشرة من محرر ووردبريس المدمج.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">delete_plugins</code></td>
+            <td>Administrator</td>
+            <td>حذف ملفات الإضافات نهائياً من السيرفر.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">install_themes</code></td>
+            <td>Administrator</td>
+            <td>تثبيت قوالب جديدة للموقع.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">switch_themes</code></td>
+            <td>Administrator</td>
+            <td>تغيير القالب المفعّل حالياً للموقع.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">edit_themes</code></td>
+            <td>Administrator</td>
+            <td>تعديل ملفات القالب من محرر التنسيقات الإداري.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">edit_theme_options</code></td>
+            <td>Administrator</td>
+            <td>التعديل على خيارات القالب والودجات (Widgets) والمخصص (Customizer) والقوائم.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">update_core</code></td>
+            <td>Administrator / Super Admin</td>
+            <td>تحديث نظام ووردبريس الأساسي لإصدارات جديدة.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Category 2: User Management -->
+    <h4>2. إدارة المستخدمين والأعضاء (User Management Capabilities)</h4>
+    <p>تُستخدم للتحكم في حسابات وتراخيص وأدوار المستخدمين داخل النظام:</p>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>الصلاحية (Capability)</th>
+            <th>الوصف والتأثير البرمجي</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline-code">list_users</code></td>
+            <td>رؤية وعرض قائمة جميع المستخدمين والأعضاء في لوحة التحكم.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">create_users</code></td>
+            <td>إنشاء وإضافة حسابات مستخدمين جدد يدوياً.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">edit_users</code></td>
+            <td>تعديل بيانات وملفات المستخدمين الآخرين وكلمات مرورهم.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">delete_users</code></td>
+            <td>حذف حسابات المستخدمين وتنظيف/نقل منشوراتهم.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">promote_users</code></td>
+            <td>تغيير دور المستخدم (مثلاً ترقيته من كاتب Contributor إلى محرر Editor).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">remove_users</code></td>
+            <td>إزالة مستخدم من موقع محدد داخل شبكات المالتوسايت (Multisite Network).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Category 3: Posts & Custom Post Types -->
+    <h4>3. إدارة المقالات والأنواع المخصصة (Posts & Custom Post Types)</h4>
+    <p>تضمن التحكم في إنشاء وتعديل ونشر المقالات (يمتلك أغلبها المحرر Editor والكاتب Author):</p>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>الصلاحية (Capability)</th>
+            <th>فئة الصلاحية</th>
+            <th>الوصف والتأثير البرمجي</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline-code">read</code></td>
+            <td>أساسية (Basic)</td>
+            <td>صلاحية أساسية تسمح للمستخدم بالدخول للوحة التحكم وقراءة المقالات المتاحة له (حتى للـ Subscriber).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">edit_posts</code></td>
+            <td>أساسية (Basic)</td>
+            <td>إنشاء وتعديل المقالات الخاصة بحساب المستخدم نفسه.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">publish_posts</code></td>
+            <td>أساسية (Basic)</td>
+            <td>نشر المقالات مباشرة لتصبح مرئية للزوار في الموقع.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">delete_posts</code></td>
+            <td>أساسية (Basic)</td>
+            <td>حذف المسودات والمقالات الخاصة بالحساب نفسه.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">edit_others_posts</code></td>
+            <td>متقدمة للمحررين (Editor)</td>
+            <td>تعديل مقالات كتبها مستخدمون وكُتّاب آخرون.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">delete_others_posts</code></td>
+            <td>متقدمة للمحررين (Editor)</td>
+            <td>حذف مقالات كتبها مستخدمون آخرون.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">edit_published_posts</code></td>
+            <td>متقدمة للمحررين (Editor)</td>
+            <td>تعديل المقالات بعد أن تم نشرها بالفعل على الموقع.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">delete_published_posts</code></td>
+            <td>متقدمة للمحررين (Editor)</td>
+            <td>حذف المقالات المنشورة بالفعل.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">read_private_posts</code></td>
+            <td>متقدمة للمحررين (Editor)</td>
+            <td>قراءة المقالات المحمية والمغلقة كخاصة (Private).</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">edit_private_posts</code></td>
+            <td>متقدمة للمحررين (Editor)</td>
+            <td>تعديل المقالات الخاصة.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">delete_private_posts</code></td>
+            <td>متقدمة للمحررين (Editor)</td>
+            <td>حذف المقالات الخاصة.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Category 4: Pages -->
+    <h4>4. إدارة الصفحات الثابتة (Pages Capabilities)</h4>
+    <p>الصفحات الثابتة (Pages) تمتاز بصلاحيات منفصلة عن المقالات التقليدية (Posts):</p>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>الصلاحية (Capability)</th>
+            <th>الوصف والتأثير البرمجي</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline-code">edit_pages</code></td>
+            <td>إنشاء وتعديل الصفحات الثابتة الخاصة بالحساب.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">publish_pages</code></td>
+            <td>نشر الصفحات الثابتة لتصبح مرئية في الواجهة.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">delete_pages</code></td>
+            <td>حذف الصفحات الثابتة الخاصة بالحساب.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">edit_others_pages</code></td>
+            <td>تعديل صفحات أنشأها كُتّاب أو مستخدمون آخرون.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">delete_others_pages</code></td>
+            <td>حذف صفحات أنشأها مستخدمون آخرون.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">edit_published_pages</code></td>
+            <td>تعديل الصفحات الثابتة المنشورة بالفعل.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">delete_published_pages</code></td>
+            <td>حذف الصفحات الثابتة المنشورة بالفعل.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Category 5: Media & Taxonomy -->
+    <h4>5. الوسائط والملفات والتعليقات والتصنيفات (Media, Comments & Taxonomies)</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>القسم</th>
+            <th>الصلاحية (Capability)</th>
+            <th>الوصف والتأثير البرمجي</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>الوسائط والملفات</strong></td>
+            <td><code class="inline-code">upload_files</code></td>
+            <td>رفع الصور والملفات والمستندات إلى مكتبة الوسائط.</td>
+          </tr>
+          <tr>
+            <td><strong>الوسائط والملفات</strong></td>
+            <td><code class="inline-code">unfiltered_html</code></td>
+            <td>إدخال أكواد HTML وJavaScript كاملة دون تصفيتها بواسطة ووردبريس (صلاحية حساسة جداً للمدراء والمحررين).</td>
+          </tr>
+          <tr>
+            <td><strong>التعليقات</strong></td>
+            <td><code class="inline-code">moderate_comments</code></td>
+            <td>الموافقة على تعليقات الزوار، تعديلها، أو حظرها وسحبها للسلة.</td>
+          </tr>
+          <tr>
+            <td><strong>التصنيفات والوسوم</strong></td>
+            <td><code class="inline-code">manage_categories</code></td>
+            <td>إضافة، تعديل، وحذف التصنيفات (Categories) والوسوم (Tags) والتاكسونومي المخصص.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert alert-success">
+      <strong>💡 ملاحظات واحترافيات مخصصة للمطورين (Pro Tips for Developers):</strong>
+      <ol style="margin-right: 20px; margin-top: 8px; color: #065f46;">
+        <li>
+          <strong>التحقق من كائن أو عنصر محدد (Object Check):</strong>
+          <br />يمكنك تمرير الـ ID الخاص بمقال أو عنصر معين في البرامتر الثاني للتحقق مما إذا كان المستخدم يملك صلاحية تعديل هذا المقال بالذات:
+          <br /><code class="inline-code">if ( current_user_can( 'edit_post', $post_id ) ) { ... }</code>
+        </li>
+        <li style="margin-top: 10px;">
+          <strong>إنشاء صلاحيات خاصة بإضافتك (Custom Capabilities):</strong>
+          <br />عند إنشاء إضافة مخصصة، يمكنك ابتكار صلاحية جديدة باسم إضافتك ومنحها لأدوار محددة للتحكم في الوصول:
+          <br /><code class="inline-code">if ( current_user_can( 'manage_kidscare_clinic' ) ) { ... }</code>
+        </li>
+      </ol>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h4>3. التحكم في الواجهة الأمامية (Frontend Conditions)</h4>
+    <p>تُستخدم هذه الشروط لتحديد نوع الصفحة التي يزورها الزائر حالياً في الواجهة الأمامية:</p>
+
+    <ul style="margin-right: 24px; margin-bottom: 20px; color: #334155;">
+      <li><strong><code class="inline-code">is_front_page()</code> / <code class="inline-code">is_home()</code>:</strong> <code class="inline-code">is_front_page()</code> تتحقق ممّا إذا كان الزائر واقفاً على الصفحة الرئيسية للموقع (سواء كانت صفحة ثابتة أو آخر المقالات). تُستخدم لتحميل السلايدر (Slider) أو الأكواد الخاصة بالصفحة الرئيسية فقط دون باقي الصفحات.</li>
+      <li style="margin-top: 10px;"><strong><code class="inline-code">is_single()</code> / <code class="inline-code">is_page()</code> / <code class="inline-code">is_singular()</code>:</strong> 
+        <br />• <code class="inline-code">is_single()</code>: للتحقق من أن الصفحة الحالية هي مقال فردي (Post) أو Post Type مخصص.
+        <br />• <code class="inline-code">is_page()</code>: للتحقق من أن الصفحة الحالية هي صفحة ثابتة (Page) (مثل صفحة "من نحن").
+        <br />• <code class="inline-code">is_singular('book')</code>: تشمل الاثنين معاً + أي نوع منشور مخصص (Custom Post Type).
+      </li>
+      <li style="margin-top: 10px;"><strong><code class="inline-code">is_category()</code> / <code class="inline-code">is_tag()</code> / <code class="inline-code">is_tax()</code>:</strong> للتحقق من عرض صفحات التصنيفات والوسوم والوسوم التخصصية (Taxonomies).</li>
+      <li style="margin-top: 10px;"><strong><code class="inline-code">is_archive()</code> / <code class="inline-code">is_search()</code> / <code class="inline-code">is_404()</code>:</strong> للتحقق من صفحة الأرشيف العام، صفحة نتائج البحث، أو صفحة الخطأ 404.</li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">frontend-singular-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// هل الزائر في صفحة عرض منشور من نوع "book"؟</span>
+<span class="kw">if</span> ( <span class="fn">is_singular</span>( <span class="str">'book'</span> ) ) {
+    <span class="kw">echo</span> <span class="str">"أنت تقرأ كتاباً الآن!"</span>;
 }
 
-<span class="cm">// تحميل كود لوحة التحكم فقط عند زيارة Admin Dashboard</span>
-<span class="kw">if</span> ( <span class="fn">is_admin</span>() ) {
-    <span class="kw">require_once</span> <span class="var">__DIR__</span> . <span class="str">'/admin/plugin-name-admin.php'</span>;
+<span class="cm">// هل الزائر في الصفحة الرئيسية فقط؟</span>
+<span class="kw">if</span> ( <span class="fn">is_front_page</span>() ) {
+    <span class="fn">wp_enqueue_style</span>( <span class="str">'kcc-home-slider-css'</span> );
 }</code></pre>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h3>📊 جدول ملخص شامل لأهم الدوال الشرطية في ووردبريس:</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>الشرط (Conditional Tag)</th>
+            <th>المكان والسياق الذي يفحصه</th>
+            <th>أكثر استخدام شائع له</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="inline-code">is_admin()</code></td>
+            <td>صفحات لوحة التحكم (<code class="inline-code">wp-admin</code>)</td>
+            <td>تحميل سكربتات وكلاسات الإدارة فقط.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">wp_doing_ajax()</code></td>
+            <td>طلبات الخلفية السريعة (AJAX Requests)</td>
+            <td>معالجة استجابات الـ AJAX دون طباعة HTML.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">wp_doing_cron()</code></td>
+            <td>المهام المجدولة (WP-Cron Jobs)</td>
+            <td>تخفيف الحمل أثناء تشغيل الصيانة التلقائية.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">wp_is_json_request()</code></td>
+            <td>طلبات REST API والتطبيقات الخارجيّة</td>
+            <td>تخصيص البيانات المرجعة في صيغة JSON.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">current_user_can('cap')</code></td>
+            <td>صلاحية المستخدم الحالي الحقيقية</td>
+            <td>حماية الأكواد والروابط الحساسة وعمليات الحذف.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">is_user_logged_in()</code></td>
+            <td>حالة تصفح الزائر (تسجيل الدخول)</td>
+            <td>إظهار وإخفاء محتوى للأعضاء والزوار.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">is_front_page()</code></td>
+            <td>الواجهة الأمامية (الصفحة الرئيسية)</td>
+            <td>تخصيص تأثيرات وسلايدر الصفحة الرئيسية.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">is_singular('custom_type')</code></td>
+            <td>صفحة منشور منفرد لـ CPT معين</td>
+            <td>إضافة عناصر وميتا بوكس لنوع منشور محدد.</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">is_ssl()</code></td>
+            <td>اتصال بروتوكول HTTPS الآمن</td>
+            <td>تحميل الموارد عبر اتصالات مشفرة فقط.</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- Footer -->
     <footer class="lesson-footer">
       <div><strong>كورس تطوير إضافات ووردبريس الشامل</strong> - جميع الحقوق محفوظة</div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <a href="5-Activation-and-Deactivation-Hooks.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'5-Activation-and-Deactivation-Hooks.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+        <a href="7-Determining-Plugin-and-Content-Directories.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'7-Determining-Plugin-and-Content-Directories.html'}, '*'); }" class="nav-btn">الدرس التالي ⬅️</a>
+      </div>
     </footer>
 
   </div>
 
-  
   <script src="../main.js"></script>
 </body>
 </html>

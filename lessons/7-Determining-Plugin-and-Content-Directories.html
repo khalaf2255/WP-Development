@@ -33,69 +33,459 @@
     <!-- Technical Content -->
     
     <h2>1. العلة التقنية لمنع المسارات الصلبة (Why Avoid Hardcoded Paths?)</h2>
-    <p>يتيح ووردبريس للمستخدمين والشركات تغيير اسم ومكان مجلد <code class="inline-code">wp-content</code> لأسباب أمنية وتنظيمية. علاوة على ذلك، فإن الثابت السحري في PHP <code class="inline-code">__FILE__</code> يترجم الـ Symlinks تلقائياً. لذلك، فإن استخدام مسارات صلبة يتسبب في انكسار الإضافة تماماً.</p>
+    <p>هذا الموضوع يُعتبر أحد أهم أركان البرمجة السليمة والمحترفة في ووردبريس، ومهم جداً لمنع توقف الموقع أو ظهور خطأ الصفحة البيضاء القاتل (White Screen of Death).</p>
+
+    <h3>ما هي "المسارات الصلبة" (Hardcoded Paths) ولماذا نبتعد عنها؟</h3>
+    <p>المسار الصلب هو كتابة عنوان الملف أو المجلد بشكل يدوي وثابت ومباشر في كود الـ PHP، مثل:</p>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">bad-hardcoded-path.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// ❌ مسار صلب خافٍ ومضر جداً:</span>
+<span class="kw">require_once</span> <span class="str">'/var/www/html/wp-content/plugins/my-plugin/includes/admin.php'</span>;</code></pre>
+    </div>
+
+    <div class="alert alert-warning">
+      <strong>💡 العلة التقنية لمنع المسارات الصلبة:</strong>
+      <ol style="margin-right: 20px; margin-top: 8px; color: #0c4a6e;">
+        <li>
+          <strong>تغير بيئة التشغيل (Environments):</strong>
+          عندما تبرمج الإضافة على جهازك الشخصي (<code class="inline-code">Localhost</code>) سيكون المسار مثلاً <code class="inline-code">C:/xampp/htdocs/...</code> وعند نقلها لسيرفر استضافة حقيقي سيتغير المسار إلى <code class="inline-code">/var/www/html/...</code>. إذا كتبت مساراً صلباً، ستتوقف الإضافة عن العمل فوراً!
+        </li>
+        <li style="margin-top: 10px;">
+          <strong>تغيير مجلد <code class="inline-code">wp-content</code> لأسباب أمنية:</strong>
+          كثير من أصحاب المواقع والشركات يقومون بتغيير اسم مجلد <code class="inline-code">wp-content</code> إلى اسم آخر (مثل <code class="inline-code">assets</code> أو <code class="inline-code">app</code>) لحماية الموقع من الثغرات، أو يغيرون مكانه خارج المجلد الرئيسي للموقع. كتابة المسار الصلب تؤدي لانكسار روابط الصور والملفات فوراً.
+        </li>
+        <li style="margin-top: 10px;">
+          <strong>مشكلة الـ Symlinks (الروابط الرمزية):</strong>
+          عند تطوير الإضافات، يقوم بعض المطورين بعمل "اختصار" للمجلد (Symlink) من مكان آخر في السيرفر. الثابت السحري في PHP <code class="inline-code">__FILE__</code> يقرأ المسار الحقيقي الفيزيائي على القرص الصلب (Physical Path) وليس المسار الظاهري، مما يُسبب تعارضاً إذا لم تُستخدم دوال ووردبريس المخصصة لمعالجته.
+        </li>
+      </ol>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h3>2. التفرقة الأساسية: الفرق بين Server Path و Client URL</h3>
+    <p>قبل استخدام الدوال، يجب أن تفرق بين مفهومين حاسمين في معمارية مواقع الويب وووردبريس:</p>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">Server Path vs Client URL Architecture</div>
+      </div>
+      <pre><code>                  ┌─────────────────────────────────────────┐
+                  │              موقع ووردبريس              │
+                  └────────────────────┬────────────────────┘
+                                       │
+                ┌──────────────────────┴──────────────────────┐
+                ▼                                             ▼
+       [ Server Path ]                                 [ Client URL ]
+     مسار داخل السيرفر                                 عنوان في المتصفح
+---------------------------------             ---------------------------------
+• يقرأه المعالج PHP فقط.                     • يقرأه المتصفح (Browser) والزائر.
+• يُستخدم مع:                                 • يُستخدم مع:
+  require_once, include, file_exists            wp_enqueue_script, &lt;img&gt;, &lt;link&gt;
+• مثال:                                       • مثال:
+  /var/www/html/wp-content/...                  https://site.com/wp-content/...</code></pre>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h3>3. شرح الدوال وأهميتها وتفاصيل معاملات كل دالة (Parameters Breakdown)</h3>
+    <p>ليعفيك ووردبريس من دوامة المسارات، وفر لك هذه الدوال الجاهزة التي تحسب المسار الصحيح ديناميكياً مهما تغير مكان الموقع أو بيئة الاستضافة:</p>
+
+    <h4>1️⃣ <code class="inline-code">plugin_dir_path( $file )</code> ➔ [ Server Path ]</h4>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>ماذا ترجع؟</strong> المسار البرمجي الداخلي للأنظمة والسيرفر، وتنتهي دائماً بـ slash <code class="inline-code">/</code>.</li>
+      <li><strong>متى نستخدمها؟</strong> لتضمين ملفات PHP داخل بعضها البعض باستعمال <code class="inline-code">require_once</code> أو <code class="inline-code">include</code>.</li>
+      <li><strong>عدد المعاملات (Parameters Count):</strong> <strong>معامل واحد فقط (1 Parameter)</strong>.</li>
+      <li><strong>تعريف المعامل:</strong>
+        <br />• <code class="inline-code">$file</code> (نوع البيانات: <code class="inline-code">string</code> - إجباري): مسار الملف الحالي على السيرفر، وعادة ما نمرر الثابت السحري <code class="inline-code">__FILE__</code>.
+      </li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">plugin_dir_path_example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// تضمين ملف داخل الإضافة بشكل آمن وديناميكي</span>
+<span class="kw">require_once</span> <span class="fn">plugin_dir_path</span>( <span class="var">__FILE__</span> ) . <span class="str">'includes/functions.php'</span>;</code></pre>
+    </div>
+
+    <h4>2️⃣ <code class="inline-code">plugin_dir_url( $file )</code> ➔ [ Client URL ]</h4>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>ماذا ترجع؟</strong> رابط الـ HTTP المباشر للمجلد الخاص بإضافتك، وتنتهي دائماً بـ slash <code class="inline-code">/</code>.</li>
+      <li><strong>متى نستخدمها؟</strong> عندما تريد طباعة رابط صورة أو إحالة لمجلد إضافتك في الواجهة.</li>
+      <li><strong>عدد المعاملات (Parameters Count):</strong> <strong>معامل واحد فقط (1 Parameter)</strong>.</li>
+      <li><strong>تعريف المعامل:</strong>
+        <br />• <code class="inline-code">$file</code> (نوع البيانات: <code class="inline-code">string</code> - إجباري): مسار الملف الحالي على السيرفر، وعادة ما نمرر الثابت السحري <code class="inline-code">__FILE__</code>.
+      </li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">plugin_dir_url_example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// طباعة رابط صورة مباشرة في HTML الواجهة</span>
+<span class="kw">echo</span> <span class="str">'&lt;img src="'</span> . <span class="fn">plugin_dir_url</span>( <span class="var">__FILE__</span> ) . <span class="str">'images/logo.png" alt="Logo" /&gt;'</span>;</code></pre>
+    </div>
+
+    <h4>3️⃣ <code class="inline-code">plugins_url( $path, $plugin )</code> ➔ [ Client URL ]</h4>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>ماذا ترجع؟</strong> الرابط الكامل لملف معين (JS أو CSS أو صورة) داخل إضافتك.</li>
+      <li><strong>متى نستخدمها؟</strong> بشكل أساسي عند تسجيل وتضمين ملفات السكربتات والتنسيقات لـ ووردبريس بـ <code class="inline-code">wp_enqueue_script</code>.</li>
+      <li><strong>عدد المعاملات (Parameters Count):</strong> <strong>معاملان اثنان (2 Parameters - كلاهما اختياري في الأصل ولكن يُمرران عملياً)</strong>.</li>
+      <li><strong>تعريف المعاملات:</strong>
+        <br />• <code class="inline-code">$path</code> (نوع البيانات: <code class="inline-code">string</code> - اختياري، الافتراضي <code class="inline-code">''</code>): المسار النسبي للملف المراد جلب رابطه (مثل <code class="inline-code">'js/script.js'</code>).
+        <br />• <code class="inline-code">$plugin</code> (نوع البيانات: <code class="inline-code">string</code> - اختياري، الافتراضي <code class="inline-code">''</code>): المسار المباشر لملف الإضافة على السيرفر (وعادة ما نمرر <code class="inline-code">__FILE__</code>) لحساب الرابط بالنسبة لمجلد إضافتك.
+      </li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">plugins_url_example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// تسجيل وتضمين ملف Javascript بشكل آمن</span>
+<span class="fn">wp_enqueue_script</span>( 
+    <span class="str">'my-script'</span>, 
+    <span class="fn">plugins_url</span>( <span class="str">'assets/js/main.js'</span>, <span class="var">__FILE__</span> ) 
+);</code></pre>
+    </div>
+
+    <h4>4️⃣ <code class="inline-code">plugin_basename( $file )</code> ➔ [ Relative Path ]</h4>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>ماذا ترجع؟</strong> مسار نسبي مختصر يربط بين مجلد الإضافات الرئيسي والملف الحالي (مثل: <code class="inline-code">my-plugin/my-plugin.php</code>).</li>
+      <li><strong>متى نستخدمها؟</strong> للتعرف على الإضافة في الخطافات (Hooks) الخاصة بالنظام، مثل فلتر <code class="inline-code">plugin_action_links_</code> لإضافة رابط الإعدادات.</li>
+      <li><strong>عدد المعاملات (Parameters Count):</strong> <strong>معامل واحد فقط (1 Parameter)</strong>.</li>
+      <li><strong>تعريف المعامل:</strong>
+        <br />• <code class="inline-code">$file</code> (نوع البيانات: <code class="inline-code">string</code> - إجباري): المسار المطلق الكامل للملف على السيرفر (عادة <code class="inline-code">__FILE__</code>) ليقوم ووردبريس باقتطاعه وإرجاع المسار النسبي فقط ابتداءً من مجلد <code class="inline-code">plugins/</code>.
+      </li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">plugin_basename_example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// ربط فلتر خيارات الإضافة بصفحة Plugins في لوحة التحكم</span>
+<span class="fn">add_filter</span>( <span class="str">'plugin_action_links_'</span> . <span class="fn">plugin_basename</span>( <span class="var">__FILE__</span> ), <span class="str">'my_settings_link'</span> );</code></pre>
+    </div>
 
     <div class="table-wrapper">
       <table>
         <thead>
           <tr>
-            <th>الدالة</th>
-            <th>نوع المخرج</th>
-            <th>القيمة المرجعة النموذجية</th>
+            <th>الدالة والتعريض البرمجي</th>
+            <th>عدد المعاملات</th>
+            <th>شرح المعاملات (Parameters)</th>
+            <th>نوع المخرج والمرجع</th>
             <th>الاستخدام الرئيسي</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><code class="inline-code">plugins_url('js/script.js', __FILE__)</code></td>
-            <td>URL كامل للمتصفح</td>
-            <td><code class="inline-code">https://site.com/wp-content/plugins/my-plugin/js/script.js</code></td>
-            <td>تحميل السكريبتات بـ <code class="inline-code">wp_enqueue_script</code></td>
-          </tr>
-          <tr>
-            <td><code class="inline-code">plugin_dir_url(__FILE__)</code></td>
-            <td>URL مجلد الإضافة</td>
-            <td><code class="inline-code">https://site.com/wp-content/plugins/my-plugin/</code></td>
-            <td>عنوان الويب المباشر لمجلد الإضافة</td>
-          </tr>
-          <tr>
-            <td><code class="inline-code">plugin_dir_path(__FILE__)</code></td>
+            <td><code class="inline-code">plugin_dir_path( $file )</code></td>
+            <td>1</td>
+            <td><code class="inline-code">$file</code>: مسار الملف الحالي (<code class="inline-code">__FILE__</code>)</td>
             <td>Server Path للسيرفر</td>
-            <td><code class="inline-code">/var/www/html/wp-content/plugins/my-plugin/</code></td>
-            <td>تضمين الملفات بـ <code class="inline-code">require_once</code></td>
+            <td>تضمين الملفات بـ <code class="inline-code">require_once</code> أو <code class="inline-code">include</code></td>
           </tr>
           <tr>
-            <td><code class="inline-code">plugin_basename(__FILE__)</code></td>
-            <td>Relative Path نسبي</td>
-            <td><code class="inline-code">my-plugin/my-plugin.php</code></td>
-            <td>التعرف على الإضافة في الـ Hooks والشبكات</td>
+            <td><code class="inline-code">plugin_dir_url( $file )</code></td>
+            <td>1</td>
+            <td><code class="inline-code">$file</code>: مسار الملف الحالي (<code class="inline-code">__FILE__</code>)</td>
+            <td>URL مجلد الإضافة المباشر</td>
+            <td>عنوان الويب المباشر لمجلد الإضافة للصور والروابط</td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">plugins_url( $path, $plugin )</code></td>
+            <td>2</td>
+            <td>
+              1. <code class="inline-code">$path</code>: المسار النسبي للملف<br />
+              2. <code class="inline-code">$plugin</code>: مسار الإضافة (<code class="inline-code">__FILE__</code>)
+            </td>
+            <td>URL كامل للمتصفح</td>
+            <td>تحميل السكريبتات والتنسيقات بـ <code class="inline-code">wp_enqueue_script</code></td>
+          </tr>
+          <tr>
+            <td><code class="inline-code">plugin_basename( $file )</code></td>
+            <td>1</td>
+            <td><code class="inline-code">$file</code>: المسار المطلق للملف (<code class="inline-code">__FILE__</code>)</td>
+            <td>Relative Path نسبي للمجلد</td>
+            <td>التعرف على الإضافة في الـ Hooks والفلترة</td>
           </tr>
         </tbody>
       </table>
     </div>
 
+    <h3>مثال تطبيقي عملي: استدعاء وتضمين ملف JavaScript عبر <code class="inline-code">plugins_url()</code></h3>
+    <p>في تطوير ووردبريس الاحترافي، لا نكتفي بإنشاء مسار الملف بل نربطه بالـ Action Hook الرسمي <code class="inline-code">wp_enqueue_scripts</code> بالشكل التالي:</p>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">enqueue-script-example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="fn">add_action</span>( <span class="str">'wp_enqueue_scripts'</span>, <span class="kw">function</span> () {
+    <span class="fn">wp_enqueue_script</span>(
+        <span class="str">'my-custom-js'</span>,                             <span class="cm">// 1. اسم مميز للسكربت (Handle)</span>
+        <span class="fn">plugins_url</span>( <span class="str">'js/script.js'</span>, <span class="var">__FILE__</span> ),     <span class="cm">// 2. مسار الملف الصحيح عبر plugins_url</span>
+        <span class="kw">array</span>(),                                    <span class="cm">// 3. التبعيات (مثل array('jquery') إن وجد)</span>
+        <span class="str">'1.0.0'</span>,                                    <span class="cm">// 4. رقم الإصدار</span>
+        <span class="kw">true</span>                                        <span class="cm">// 5. true ليركب في الفوتر قبل إغلاق &lt;/body&gt;</span>
+    );
+} );</code></pre>
+    </div>
+
+    <div class="alert alert-success">
+      <strong>🎯 ملخص ذهبي سريع:</strong>
+      <ul style="margin-right: 20px; margin-top: 8px; color: #065f46;">
+        <li>تضمين ملفات PHP البرمجية؟ ➔ استخدم <code class="inline-code">plugin_dir_path()</code></li>
+        <li style="margin-top: 6px;">ربط ملفات CSS / JS / Images؟ ➔ استخدم <code class="inline-code">plugins_url()</code> أو <code class="inline-code">plugin_dir_url()</code></li>
+        <li style="margin-top: 6px;">استهداف الإضافة في الـ Hooks والفلترة؟ ➔ استخدم <code class="inline-code">plugin_basename()</code></li>
+      </ul>
+    </div>
+
     <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
 
     <h2>2. دوال مسارات ووردبريس الشاملة (WordPress Core Directory Functions)</h2>
-    <p>بالإضافة لدوال الإضافات، يوفر ووردبريس دوال مسارات عامة للوصول لكافة أجزاء النظام:</p>
+    <p>هذه الدوال هي أدوات الملاحة والتوجيه الأساسية في ووردبريس، وتُستخدم لجلب العناوين والمسارات المختلفة للموقع بشكل ديناميكي دون كتابة أجزاء من الرابط يدوياً (مثل <code class="inline-code">https://example.com/wp-content</code>).</p>
 
-    <ul>
-      <li><code class="inline-code">home_url()</code>: عنوان الصفحة الرئيسية للموقع Web Front-end.</li>
-      <li><code class="inline-code">site_url()</code>: عنوان مجلد ووردبريس الأساسي الذي يحتوي على ملفات النواة.</li>
-      <li><code class="inline-code">admin_url()</code>: عنوان لوحة التحكم <code class="inline-code">/wp-admin/</code>.</li>
-      <li><code class="inline-code">includes_url()</code>: عنوان مجلد تضمين النواة <code class="inline-code">/wp-includes/</code>.</li>
-      <li><code class="inline-code">content_url()</code>: عنوان مجلد المحتوى <code class="inline-code">/wp-content/</code>.</li>
-      <li><code class="inline-code">wp_upload_dir()</code>: يعيد Array تفصيلي بمسارات وعناوين مجلد المرفقات والرفوعات.</li>
+    <h3>1. التفرقة المهمة: <code class="inline-code">home_url()</code> مقابل <code class="inline-code">site_url()</code></h3>
+    <p>كثير من المطورين يخلطون بين هاتين الدالتين، ولكن بينهما فرق جوهري وتنفيذي حاسم في معمارية الموقع:</p>
+
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li>
+        <strong>أ. <code class="inline-code">home_url( $path )</code> ➔ عنوان الواجهة الأمامية للموقع (Web Front-end URL):</strong>
+        <br />• <em>ماذا ترجع؟</em> الرابط الرئيسي الذي يزوره المستخدمون لتصفح الموقع (مثلاً: <code class="inline-code">https://mysite.com</code>).
+        <br />• <em>متى نستخدمها؟</em> عندما تريد توجيه الزائر لصفحة داخل الموقع، أو إنشاء روابط داخلية في القوائم والأزرار.
+      </li>
     </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">home_url_example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// إرجاع رابط صفحة اتصل بنا بشكل ديناميكي</span>
+<span class="var">$contact_url</span> = <span class="fn">home_url</span>( <span class="str">'/contact-us/'</span> ); 
+<span class="cm">// النتيجة: https://mysite.com/contact-us/</span></code></pre>
+    </div>
+
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li>
+        <strong>ب. <code class="inline-code">site_url( $path )</code> ➔ عنوان مجلد ووردبريس الأساسي (WordPress Core Directory):</strong>
+        <br />• <em>ماذا ترجع؟</em> المكان الحقيقي الذي تعيش فيه ملفات نواة ووردبريس (WordPress Core Files).
+        <br />• <em>متى يختلف عن <code class="inline-code">home_url()</code>؟</em> في بعض المواقع الاحترافية، يقوم المطور بوضع ملفات ووردبريس في مجلد فرعي (مثل <code class="inline-code">https://mysite.com/wordpress</code>) ولكن الموقع يفتح للزوار عبر <code class="inline-code">https://mysite.com</code>.
+        <br />&nbsp;&nbsp;- <code class="inline-code">home_url()</code> ستُرجع: <code class="inline-code">https://mysite.com</code>
+        <br />&nbsp;&nbsp;- <code class="inline-code">site_url()</code> ستُرجع: <code class="inline-code">https://mysite.com/wordpress</code>
+        <br />• <em>متى نستخدمها؟</em> للوصول إلى ملفات النظام نفسها مثل صفحة تسجيل الدخول (<code class="inline-code">wp-login.php</code>).
+      </li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">site_url_example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// إرجاع رابط صفحة تسجيل الدخول بالنواة</span>
+<span class="var">$login_url</span> = <span class="fn">site_url</span>( <span class="str">'wp-login.php'</span> );
+<span class="cm">// النتيجة: https://mysite.com/wp-login.php</span></code></pre>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h3>2. دوال الوصول للوحة التحكم والنواة</h3>
+
+    <p><strong>أ. <code class="inline-code">admin_url( $path )</code> ➔ عنوان لوحة التحكم (<code class="inline-code">wp-admin</code>)</strong></p>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>ماذا ترجع؟</strong> رابط مجلد الإدارة <code class="inline-code">wp-admin</code> مُضافاً إليه المسار الذي تطلبه.</li>
+      <li><strong>متى نستخدمها؟</strong> لتوجيه المدير لصفحة إعدادات إضافتك، أو لرابط صفحة معينة في لوحة التحكم (مثل صفحة إضافة مقال جديد).</li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">admin_url_example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// رابط صفحة إعدادات إضافتك في لوحة التحكم</span>
+<span class="var">$settings_url</span> = <span class="fn">admin_url</span>( <span class="str">'admin.php?page=my-plugin-settings'</span> );
+<span class="cm">// النتيجة: https://mysite.com/wp-admin/admin.php?page=my-plugin-settings</span></code></pre>
+    </div>
+
+    <p><strong>ب. <code class="inline-code">includes_url( $path )</code> ➔ عنوان مجلد <code class="inline-code">wp-includes</code></strong></p>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>ماذا ترجع؟</strong> رابط المجلد الذي يحتوي على مكتبات السكربتات والأكواد الأساسية لووردبريس (مثل jQuery و MediaElement).</li>
+      <li><strong>متى نستخدمها؟</strong> نادراً ما تحتاج إليها، ولكنها تُستخدم إذا أردت استدعاء أصول (Assets) أو سكربتات مدمجة مسبقاً في نواة النظام.</li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">includes_url_example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// رابط مكتبة jQuery المدمجة بالنواة</span>
+<span class="var">$jquery_url</span> = <span class="fn">includes_url</span>( <span class="str">'js/jquery/jquery.min.js'</span> );</code></pre>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 36px 0;" />
+
+    <h3>3. دوال الوصول للمحتوى والملفات المرفوعة</h3>
+
+    <p><strong>أ. <code class="inline-code">content_url( $path )</code> ➔ عنوان مجلد المحتوى (<code class="inline-code">wp-content</code>)</strong></p>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>ماذا ترجع؟</strong> الرابط المباشر لمجلد <code class="inline-code">wp-content</code> (والذي يحتوي على القوالب والإضافات والملفات المرفوعة).</li>
+      <li><strong>متى نستخدمها؟</strong> للوصول لأي ملفات عامة مخزنة داخل مجلد <code class="inline-code">wp-content</code>.</li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">content_url_example.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="cm">// رابط ملف تنسيقات عام في مجلد wp-content</span>
+<span class="var">$custom_css</span> = <span class="fn">content_url</span>( <span class="str">'uploads/custom-styles.css'</span> );</code></pre>
+    </div>
+
+    <p><strong>ب. <code class="inline-code">wp_upload_dir()</code> ➔ الدالة المظلية للرفوعات (Uploads Array)</strong></p>
+    <ul style="margin-right: 24px; margin-bottom: 16px; color: #334155;">
+      <li><strong>ما المُميز فيها؟</strong> هذه الدالة لا ترجع مجرد نص عادي (<code class="inline-code">String</code>)، بل ترجع <strong>مصفوفة تفصيلية (Array)</strong> تحتوي على المسارات للسيرفر (Paths) والعناوين للمتصفح (URLs) لمجلد المرفقات الحقيقي (بما في ذلك تقسيمات السنة والشهر تلقائياً).</li>
+      <li><strong>متى نستخدمها؟</strong> عندما تريد رفع ملف برمجياً إلى السيرفر، أو قراءة ملف تم رفعه في مجلد <code class="inline-code">uploads</code>.</li>
+    </ul>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">wp_upload_dir_structure.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="var">$upload_dir</span> = <span class="fn">wp_upload_dir</span>();
+
+<span class="cm">/* 
+المخرجات تكون مصفوفة تفصيلية بالشكل التالي:
+Array (
+    [path]    => /var/www/html/wp-content/uploads/2026/08   (مسار السيرفر للشهر الحالي)
+    [url]     => https://site.com/wp-content/uploads/2026/08 (رابط المتصفح للشهر الحالي)
+    [subdir]  => /2026/08                                   (المجلد الفرعي)
+    [basedir] => /var/www/html/wp-content/uploads          (مسار السيرفر الأساسي للرفوعات)
+    [baseurl] => https://site.com/wp-content/uploads        (رابط المتصفح الأساسي للرفوعات)
+    [error]   => false                                      (حالة وجود أخطاء في الصلاحيات)
+)
+*/</span></code></pre>
+    </div>
+
+    <h4>🛠️ مثال عملي لاستخدام مصفوفة <code class="inline-code">wp_upload_dir()</code>:</h4>
+
+    <div class="vscode-window">
+      <div class="vscode-header">
+        <div class="vscode-dots">
+          <div class="vscode-dot dot-red"></div>
+          <div class="vscode-dot dot-yellow"></div>
+          <div class="vscode-dot dot-green"></div>
+        </div>
+        <div class="vscode-filename">wp_upload_dir_usage.php</div>
+      </div>
+      <pre><code><span class="kw">&lt;?php</span>
+<span class="var">$upload_dir</span> = <span class="fn">wp_upload_dir</span>();
+
+<span class="cm">// 1. استخدام [basedir] لإنشاء وحفظ ملف جديد على السيرفر بـ PHP</span>
+<span class="var">$file_path</span> = <span class="var">$upload_dir</span>[<span class="str">'basedir'</span>] . <span class="str">'/my-custom-folder/data.json'</span>;
+<span class="fn">file_put_contents</span>( <span class="var">$file_path</span>, <span class="fn">json_encode</span>( <span class="var">$data</span> ) );
+
+<span class="cm">// 2. استخدام [baseurl] لعرض رابط الملف للزائر في المتصفح</span>
+<span class="var">$file_url</span> = <span class="var">$upload_dir</span>[<span class="str">'baseurl'</span>] . <span class="str">'/my-custom-folder/data.json'</span>;
+<span class="kw">echo</span> <span class="str">'&lt;a href="'</span> . <span class="fn">esc_url</span>( <span class="var">$file_url</span> ) . <span class="str">'"&gt;تحميل الملف&lt;/a&gt;'</span>;</code></pre>
+    </div>
+
+    <div class="alert alert-info">
+      <strong>🎯 ملخص سريع للاستخدام اليومي لدوال النواة:</strong>
+      <ul style="margin-right: 20px; margin-top: 8px; color: #0c4a6e;">
+        <li>توجيه الزائر لصفحة داخل الموقع؟ ➔ <code class="inline-code">home_url()</code></li>
+        <li style="margin-top: 6px;">توجيه المستخدم لرابط في لوحة التحكم؟ ➔ <code class="inline-code">admin_url()</code></li>
+        <li style="margin-top: 6px;">توجيه المستخدم لصفحة تسجيل الدخول للنواة؟ ➔ <code class="inline-code">site_url('wp-login.php')</code></li>
+        <li style="margin-top: 6px;">رفع ملفات أو التعامل مع صور مرفوعة في السيرفر؟ ➔ <code class="inline-code">wp_upload_dir()</code></li>
+      </ul>
+    </div>
 
     <!-- Footer -->
     <footer class="lesson-footer">
       <div><strong>كورس تطوير إضافات ووردبريس الشامل</strong> - جميع الحقوق محفوظة</div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <a href="6-Best-Practices-and-Naming-Collisions.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'6-Best-Practices-and-Naming-Collisions.html'}, '*'); }" class="nav-btn">➡️ الدرس السابق</a>
+        <a href="8-Software-License-and-Uninstall-Methods.html" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({type:'WP_COURSE_NAV', filename:'8-Software-License-and-Uninstall-Methods.html'}, '*'); }" class="nav-btn">الدرس التالي ⬅️</a>
+      </div>
     </footer>
 
   </div>
 
-  
   <script src="../main.js"></script>
 </body>
 </html>
